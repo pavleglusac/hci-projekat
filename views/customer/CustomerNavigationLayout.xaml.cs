@@ -1,5 +1,4 @@
-﻿using HCIProjekat.views.auth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HCIProjekat
+namespace HCIProjekat.views.customer
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CustomerNavigationLayout.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CustomerNavigationLayout : Page
     {
-        private List<Button> customerNavigation = new List<Button>();
-        private List<Button> managerNavigation = new List<Button>();
-        public MainWindow()
+        public CustomerNavigationLayout()
         {
             InitializeComponent();
-            MainFrame.Content = new Login();
+            CustomerFrame.Content = new Timetable();
         }
     }
 }

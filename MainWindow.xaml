@@ -15,94 +15,11 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
-    <StackPanel>
-        <Grid Height="60" Background="#2d2c94">
-            <Grid.RowDefinitions>
-                 <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
-
-            <Image HorizontalAlignment="Left" Grid.Column="0" Source="pack://application:,,,/assets/logo3.png" Width="80" Margin="20 0"/>
-
-            <!-- registered customer -->
-            <Button x:Name="timetableNavButton"
-                    Grid.Row="0" Grid.Column="1"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Red vožnje" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="linesNavButton"
-                    Grid.Row="0" Grid.Column="2"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
-                <AccessText Text="Mreža linija" TextWrapping="Wrap" TextAlignment="Center"/>
-                
-            </Button>
-            <Button x:Name="reservationHistoryNavButton"
-                    Grid.Row="0" Grid.Column="3"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Istorija rezervacija" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-
-            <!-- registered customer -->
-            <Button x:Name="systemControlNavButton"
-                    Grid.Row="0" Grid.Column="1"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Upravljanje sistemom" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="reportNavButton"
-                    Grid.Row="0" Grid.Column="2"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Izveštaji" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="5">
-
-                <!-- login/register -->
-                <Button x:Name="loginButton"
-                    Width="110"
-                    Grid.Row="0" Grid.Column="1"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                    <AccessText Text="Prijavi se" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-                <Border Width="1.5" Margin="0 14" Background="#EEE"/>
-                <Button x:Name="registerButton"
-                    Width="110"
-                    Grid.Row="0" Grid.Column="0"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                    <AccessText Text="Registruj se" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+    <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" 
+                HorizontalAlignment="Stretch"
+	            VerticalAlignment="Stretch"
+	            HorizontalContentAlignment="Stretch"
+	            VerticalContentAlignment="Stretch"/>
+    </Grid>
 </Window>

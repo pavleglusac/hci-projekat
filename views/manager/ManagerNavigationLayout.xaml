@@ -1,0 +1,63 @@
+﻿<Page x:Class="HCIProjekat.views.manager.ManagerNavigationLayout"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.manager"
+      mc:Ignorable="d"
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="ManagerNavigationLayout">
+
+    <StackPanel>
+        <Grid Height="60" Background="#2d2c94">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image HorizontalAlignment="Left" Grid.Column="0" Source="pack://application:,,,/assets/logo3.png" Width="80" Margin="20 0"/>
+
+            <!-- manager options -->
+            <Button x:Name="systemControlNavButton"
+                    Grid.Row="0" Grid.Column="1"
+                    Height="45"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    Foreground="White"
+                    ToolTip="MaterialDesignFlatLightButton"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                <AccessText Text="Upravljanje sistemom" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button>
+            <Button x:Name="reportNavButton"
+                    Grid.Row="0" Grid.Column="2"
+                    Height="45"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    Foreground="White"
+                    ToolTip="MaterialDesignFlatLightButton"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                <AccessText Text="Izveštaji" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button>
+
+            <!-- logout -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="5">
+                <Button x:Name="logoutButton"
+                    Width="110"
+                    Height="45"
+                    Grid.Row="0" Grid.Column="0"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    Foreground="White"
+                    ToolTip="MaterialDesignFlatLightButton"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                    <AccessText Text="Odjavi se" TextWrapping="Wrap" TextAlignment="Center"/>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+        <Frame x:Name="ManagerFrame"/>
+    </StackPanel>
+</Page>
