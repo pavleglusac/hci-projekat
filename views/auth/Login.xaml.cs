@@ -39,7 +39,7 @@ namespace HCIProjekat.views.auth
             //if successful -> transfer to navigation
             if (email == "test" && password == "test")
             {
-                ShowComponent(new ManagerNavigationLayout());
+                ShowComponent(new CustomerNavigationLayout());
             }
 
         }
@@ -51,11 +51,7 @@ namespace HCIProjekat.views.auth
 
         private void ShowComponent(object component)
         {
-            MainWindow? window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            if (window != null)
-            {
-                window.MainFrame.Content = component;
-            }
+            NavigationService?.Navigate(component);
         }
     }
 }
