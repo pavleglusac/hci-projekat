@@ -25,5 +25,31 @@ namespace HCIProjekat.views.customer
             InitializeComponent();
             CustomerFrame.Content = new Timetable();
         }
+
+        private void timetableNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerFrame.Content = new Timetable();
+        }
+
+        private void linesNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerFrame.Content = new RouteMap();
+        }
+
+        private void reservationHistoryNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerFrame.Content = new ReservationHistory();
+        }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+                ShowComponent(new auth.Login());
+        }
+
+
+        private void ShowComponent(object component)
+        {
+            NavigationService?.Navigate(component);
+        }
     }
 }

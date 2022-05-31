@@ -41,6 +41,10 @@ namespace HCIProjekat.views.auth
             {
                 ShowComponent(new CustomerNavigationLayout());
             }
+            if (email == "admin" && password == "test")
+            {
+                ShowComponent(new ManagerNavigationLayout());
+            }
 
         }
 

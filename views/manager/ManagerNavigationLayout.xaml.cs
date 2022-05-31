@@ -23,6 +23,29 @@ namespace HCIProjekat.views.manager
         public ManagerNavigationLayout()
         {
             InitializeComponent();
+            ManagerFrame.Content = new pages.SystemManagment();
+        }
+
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowComponent(new auth.Login());
+        }
+
+        private void ShowComponent(object component)
+        {
+            NavigationService?.Navigate(component);
+        }
+
+        private void systemControlNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.SystemManagment();
+        }
+
+        private void reportNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.Report();
+
         }
     }
 }

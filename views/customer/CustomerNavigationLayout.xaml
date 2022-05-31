@@ -30,7 +30,7 @@
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="timetableNavButton_Click" >
                 <AccessText Text="Red vožnje" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
             <Button x:Name="linesNavButton"
@@ -39,7 +39,7 @@
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="linesNavButton_Click">
                 <AccessText Text="Mreža linija" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
             <Button x:Name="reservationHistoryNavButton"
@@ -48,7 +48,7 @@
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Left" Margin="0,8,0,8" Width="192" Click="reservationHistoryNavButton_Click" >
                 <AccessText Text="Istorija rezervacija" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
             
@@ -61,7 +61,7 @@
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="logoutButton_Click" >
                     <AccessText Text="Odjavi se" TextWrapping="Wrap" TextAlignment="Center"/>
                 </Button>
             </StackPanel>
