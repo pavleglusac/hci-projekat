@@ -25,6 +25,8 @@ namespace HCIProjekat.views.auth
         public Login()
         {
             InitializeComponent();
+            emailField.Focus();
+
         }
 
         private void handleLogin(object sender, RoutedEventArgs e)
