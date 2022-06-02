@@ -20,6 +20,8 @@ namespace HCIProjekat.views.manager
     /// </summary>
     public partial class ManagerNavigationLayout : Page
     {
+        pages.TrainAddition trainAddition;
+
         public ManagerNavigationLayout()
         {
             InitializeComponent();
@@ -46,6 +48,15 @@ namespace HCIProjekat.views.manager
         {
             ManagerFrame.Content = new pages.Report();
 
+        }
+
+        private void trainNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(trainAddition == null)
+            {
+                trainAddition = new pages.TrainAddition();
+            }
+            ManagerFrame.Content = trainAddition;
         }
     }
 }

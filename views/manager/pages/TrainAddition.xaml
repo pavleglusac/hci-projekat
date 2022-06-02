@@ -1,0 +1,72 @@
+﻿<Page x:Class="HCIProjekat.views.manager.pages.TrainAddition"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.manager.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TrainAddition"
+      x:Name="trainAdditionPage"
+      Focusable="True"
+>
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:TrainAddition.SeatAddCommand}" Executed="SeatAddCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.SeatRemoveCommand}" Executed="SeatRemoveCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowAddCommand}" Executed="RowAddCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowRemoveCommand}" Executed="RowRemoveCommandExecuted" />
+
+        <CommandBinding Command="{x:Static local:TrainAddition.RowUpCommand}" Executed="RowUpCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowDownCommand}" Executed="RowDownCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowLeftCommand}" Executed="RowLeftCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowRightCommand}" Executed="RowRightCommandExecuted" />
+
+        <CommandBinding Command="{x:Static local:TrainAddition.RowSwapUpCommand}" Executed="RowSwapUpCommandExecuted" />
+        <CommandBinding Command="{x:Static local:TrainAddition.RowSwapDownCommand}" Executed="RowSwapDownCommandExecuted" />
+
+    </Page.CommandBindings>
+
+
+    <Grid x:Name="grid" ShowGridLines="True" AllowDrop="True" >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="35*"></ColumnDefinition>
+            <ColumnDefinition Width="35*"></ColumnDefinition>
+            <ColumnDefinition Width="20*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="90*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer x:Name="scrollViewer" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Focusable="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="47*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="rowNumbersStack" Grid.Column="0" Orientation="Vertical"  VerticalAlignment="Top"/>
+                <StackPanel x:Name="leftRowStack" HorizontalAlignment="Left" Margin="10 0 0 0"  Orientation="Vertical" Grid.Column="1"/>
+                <StackPanel x:Name="rightRowStack" HorizontalAlignment="Left" Margin="20 0 0 0" Orientation="Vertical" Grid.Column="2"/>
+            </Grid>
+        </ScrollViewer>
+        <Grid x:Name="toolGrid" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <StackPanel x:Name="leftNumbersStack" Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center"/>
+        <StackPanel x:Name="rightNumbersStack" Grid.Column="2" Orientation="Horizontal"  VerticalAlignment="Center"/>
+
+
+    </Grid>
+
+</Page>
