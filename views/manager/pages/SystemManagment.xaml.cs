@@ -36,6 +36,23 @@ namespace HCIProjekat.views.manager.pages
             // Fires when the mouse wheel is used to scroll the map
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
+            MapWithEvents.MouseMove +=
+                new MouseEventHandler(MapWithEvents_MouseMove);
+            this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+        }
+
+
+        void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                if (SelectedPushpin != null)
+                {
+                    Database.removeStation(SelectedPushpin.Location);
+                    MapWithEvents.Children.Remove(SelectedPushpin);
+                    SelectedPushpin = null;
+                }
+            }
         }
         private void MapWithEvents_MouseMove(object sender, MouseEventArgs e)
         {
@@ -56,10 +73,6 @@ namespace HCIProjekat.views.manager.pages
                     e.Handled = true;
                 }
             }
-            else if (e.RightButton == MouseButtonState.Pressed)
-            {
-                SelectedPushpin.Background = new SolidColorBrush(Colors.Orange);
-            }
         }
 
 
@@ -71,10 +84,23 @@ namespace HCIProjekat.views.manager.pages
             _mouseToMarker = Point.Subtract(
               MapWithEvents.LocationToViewportPoint(SelectedPushpin.Location),
               e.GetPosition(MapWithEvents));
-            SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
             if (e.RightButton == MouseButtonState.Pressed)
             {
-                SelectedPushpin.Background = new SolidColorBrush(Colors.Orange);
+                System.Diagnostics.Debug.WriteLine("----");
+                if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Green)).ToString()))
+                {
+                    MapWithEvents.Children.Remove(SelectedPushpin);
+                    System.Diagnostics.Debug.WriteLine("obrisi");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("promeni bojuuuuuuuuuuuuuuuuu");
+                    SelectedPushpin.Background = new SolidColorBrush(Colors.Orange);
+                }
+            }
+            else
+            {
+                SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
             }
         }
         void pin_MouseUp(object sender, MouseButtonEventArgs e)
@@ -87,6 +113,10 @@ namespace HCIProjekat.views.manager.pages
         {
             // Disables the default mouse double-click action.
             e.Handled = true;
+            if (e.LeftButton != MouseButtonState.Pressed)
+            {
+                return;
+            }
 
             // Determin the location to place the pushpin at on the map.
 
@@ -103,13 +133,6 @@ namespace HCIProjekat.views.manager.pages
             pin.Background = new SolidColorBrush(Colors.Green);
             // Adds the pushpin to the map.
             MapWithEvents.Children.Add(pin);
-        }
-
-
-
-        void ShowEvent(string eventName)
-        {
-            System.Diagnostics.Debug.WriteLine(eventName);
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

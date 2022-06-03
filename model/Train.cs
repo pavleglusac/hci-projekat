@@ -28,5 +28,30 @@ namespace HCIProjekat.model
             this.name = name;
             this.timetable = timetable;
         }
+
+        internal void updateStations(List<Station> trainsStations)
+        {
+            stations.Clear();
+            foreach (Station station in trainsStations)
+            {
+                stations.Add(station);
+            }
+        }
+        internal void tryRemoveStation(Station station)
+        {
+            List<Station> stationsToRemove = new List<Station>();
+            foreach (Station s in stations)
+            {
+                if (s.location.Equals(station.location))
+                {
+                    stationsToRemove.Add(s);
+                    break;
+                }
+            }
+            if (stationsToRemove.Count > 0)
+            {
+                stations.Remove(stationsToRemove.First());
+            }
+        }
     }
 }

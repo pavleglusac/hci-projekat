@@ -48,5 +48,24 @@ namespace HCIProjekat.model
             return addStation(new Station(location));
 
         }
+
+        public static void removeStation(Location location)
+        {
+            List<Station> removeStation = new List<Station>();
+            foreach (Station station in stations)
+            {
+                if (station.location.Equals(location))
+                {
+                    removeStation.Add(station);
+                    break;
+                }
+            }
+            stations.Remove(removeStation.First());
+            foreach(Train t in train)
+            {
+                t.tryRemoveStation(removeStation.First());
+            }
+
+        }
     }
 }
