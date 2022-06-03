@@ -47,5 +47,12 @@ namespace HCIProjekat.views.manager
             ManagerFrame.Content = new pages.Report();
 
         }
+
+
+        private void updateNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.UpdateTrain();
+
+        }
     }
 }

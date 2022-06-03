@@ -20,12 +20,12 @@ namespace HCIProjekat.views.manager.pages
     /// <summary>
     /// Interaction logic for SystemManagment.xaml
     /// </summary>
-    public partial class SystemManagment : Page
+    public partial class UpdateTrain : Page
     {
         Vector _mouseToMarker;
         private bool _dragPin;
         public Pushpin SelectedPushpin{get; set;}
-        public SystemManagment()
+        public UpdateTrain()
         {
             InitializeComponent();
             //Set focus on map

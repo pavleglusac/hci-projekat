@@ -1,4 +1,5 @@
-﻿using HCIProjekat.views.auth;
+﻿using HCIProjekat.model;
+using HCIProjekat.views.auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace HCIProjekat
         public MainWindow()
         {
             InitializeComponent();
+            Database.loadData();
             MainFrame.Content = new Login();
         }
     }

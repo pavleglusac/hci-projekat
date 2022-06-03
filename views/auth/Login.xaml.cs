@@ -25,6 +25,7 @@ namespace HCIProjekat.views.auth
         public Login()
         {
             InitializeComponent();
+            ShowComponent(new ManagerNavigationLayout());
         }
 
         private void handleLogin(object sender, RoutedEventArgs e)
@@ -34,6 +35,7 @@ namespace HCIProjekat.views.auth
             string password = passwordField.Password;
             System.Diagnostics.Debug.WriteLine(email);
             System.Diagnostics.Debug.WriteLine(password);
+            ShowComponent(new ManagerNavigationLayout());
 
 
             //if successful -> transfer to navigation
@@ -43,7 +45,6 @@ namespace HCIProjekat.views.auth
             }
             if (email == "admin" && password == "test")
             {
-                ShowComponent(new ManagerNavigationLayout());
             }
 
         }
