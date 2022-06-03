@@ -50,9 +50,7 @@
                     </Border>
                 </ListViewItem>
                 <ListViewItem>
-                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220">
-                        <Button Click="Button2_Click">Load</Button>
-                    </Border>
+                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220"/>
                 </ListViewItem>
             </ListView>
         </StackPanel>
