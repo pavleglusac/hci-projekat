@@ -222,7 +222,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 if (_dragPin && SelectedPushpin != null)
                 {
-                    foreach(Station s in Database.stations)
+                    foreach(Station s in Database.Stations)
                     {
                         if (s.location.Equals(SelectedPushpin.Location))
                         {
@@ -323,7 +323,7 @@ namespace HCIProjekat.views.manager.pages
 
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             bool addPushpin = true;
-            foreach (Station station in Database.stations)
+            foreach (Station station in Database.Stations)
             {
                     foreach (Pushpin child in MapWithEvents.Children)
                     {
@@ -376,9 +376,9 @@ namespace HCIProjekat.views.manager.pages
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Dictionary<Station,int> trainsStations = new Dictionary<Station, int>();
             Train t = null;
-            foreach (Train train in Database.trains)
+            foreach (Train train in Database.Trains)
             {
-                if (train.name == Cmb.SelectedItem)
+                if (train.Name == Cmb.SelectedItem)
                 {
                     t = train;
                 }
@@ -389,7 +389,7 @@ namespace HCIProjekat.views.manager.pages
                 {
                     trainsStations.Add(Database.getOrAddStation(child.Location), Int32.Parse(child.Content.ToString()));
                 }
-                foreach (Station s in Database.stations)
+                foreach (Station s in Database.Stations)
                 {
                     if (!child.Location.Equals(s.location) && child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
                     {
@@ -409,17 +409,17 @@ namespace HCIProjekat.views.manager.pages
 
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Train trainToAdd;
-            foreach (Train train in Database.trains)
+            foreach (Train train in Database.Trains)
             {
-                if (train.name == Cmb.SelectedItem)
+                if (train.Name == Cmb.SelectedItem)
                 {
                     removeAllPushpins();
-                    foreach (Station station in train.stations.Keys)
+                    foreach (Station station in train.Stations.Keys)
                     {
                         Pushpin pin = new Pushpin();
                         pin.Location = station.location;
                         pin.Background = new SolidColorBrush(Colors.Green);
-                        pin.Content = train.stations[station];
+                        pin.Content = train.Stations[station];
                         pushpinsToAdd.Add(pin);
                         pinNumber++;
                         pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);

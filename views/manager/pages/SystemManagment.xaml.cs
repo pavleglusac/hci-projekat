@@ -188,7 +188,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 if (_dragPin && SelectedPushpin != null)
                 {
-                    foreach(Station s in Database.stations)
+                    foreach(Station s in Database.Stations)
                     {
                         if (s.location.Equals(SelectedPushpin.Location))
                         {
@@ -289,7 +289,7 @@ namespace HCIProjekat.views.manager.pages
 
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             bool addPushpin = true;
-            foreach (Station station in Database.stations)
+            foreach (Station station in Database.Stations)
             {
                     foreach (Pushpin child in MapWithEvents.Children)
                     {
@@ -348,7 +348,7 @@ namespace HCIProjekat.views.manager.pages
                 {
                     trainsStations.Add(Database.getOrAddStation(child.Location),Int32.Parse(child.Content.ToString()));
                 }
-                foreach (Station s in Database.stations)
+                foreach (Station s in Database.Stations)
                 {
                     if (!child.Location.Equals(s.location) && child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
                     {
@@ -357,7 +357,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new Timetable());
-            Database.trains.Add(train);
+            Database.Trains.Add(train);
         }
 
 
