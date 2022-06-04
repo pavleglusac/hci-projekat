@@ -28,34 +28,48 @@
             <StackPanel Width="350" HorizontalAlignment="Center">
                 
                 <TextBlock Text="Login" FontSize="28" Margin="0 30 0 30"/>
-                
+
+                <!--materialDesign:HintAssist.HelperText="Unesite Vašu email adresu."-->
+                <!--<TextBox.Text>
+                    <Binding
+                              Path="emailValue"
+                              UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>-->
                 <TextBox
                         x:Name="emailField"
                         FontSize="16"
                         Margin="0 0 0 24"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                         materialDesign:HintAssist.Hint="Email"
-                        materialDesign:HintAssist.HelperText="Unesite Vašu email adresu.">
+                        materialDesign:HintAssist.HelperText="Unesite Vašu email adresu."
+                        KeyDown="handleLoginKeypress">
+
                     <TextBox.Text>
-                        <Binding
-                              Path="emailValue"
-                              UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:NonEmptyRule/>
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                
+
                 <PasswordBox
                         x:Name="passwordField"
                         FontSize="16"
                         materialDesign:HintAssist.Hint="Password"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:HintAssist.HelperText="Unesite Vašu lozinku." 
-                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
-                
-                
+                        KeyDown="handleLoginKeypress"
+                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                </PasswordBox>
+
+                <TextBlock Margin="0 50 0 2" HorizontalAlignment="Center" x:Name="loginError" 
+                           Visibility="Hidden" Foreground="DarkRed" FontSize="11">
+                </TextBlock>
                 <Button
-                    Margin="0 50 0 0"
-                    Click="handleLogin"
+                    Margin="0 0 0 0"
+                    Click="handleLoginButton"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="Prijavi se u aplikaciju"
                     Content="Prijavi se"
