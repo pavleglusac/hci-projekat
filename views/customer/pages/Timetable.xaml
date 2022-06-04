@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HCIProjekat.views.customer"
+      xmlns:converters="clr-namespace:HCIProjekat.converters"
       mc:Ignorable="d" 
       d:DesignHeight="640" d:DesignWidth="1280"
       Title="Timetable"
@@ -16,7 +17,12 @@
       Background="#EEE"
       FontFamily="{DynamicResource MaterialDesignFont}">
 
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
+            <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -65,8 +71,7 @@
                                     FontWeight="Medium"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Od"
-                                    ToolTip="Mesto polaska"
-                                    ItemsSource="{Binding Locations}"/>
+                                    ToolTip="Mesto polaska"/>
 
                                 <ComboBox
                                     Grid.Row="0" Grid.Column="1"
@@ -76,8 +81,7 @@
                                     x:Name="destinationComboBox"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Do"
-                                    ToolTip="Mesto odredišta"
-                                    ItemsSource="{Binding Locations}"/>
+                                    ToolTip="Mesto odredišta"/>
 
                                 <DatePicker
                                     Grid.Row="0" Grid.Column="2"
@@ -97,7 +101,8 @@
                                     ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
                                     Content="Potvrdi"
                                     Background="#2d2c94"
-                                    Foreground="White" />
+                                    Foreground="White"
+                                    Click="handleFilterClick"/>
                             </Grid>
 
 
@@ -110,8 +115,62 @@
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="1" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
-                    </Border>
+                    <DataGrid
+                        x:Name="departuresGrid"
+                        Grid.Column="1"
+                        CanUserAddRows="False"
+                        SelectionUnit="Cell"
+                        SelectionMode="Extended"
+                        AutoGenerateColumns="False"
+                        CanUserResizeRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Naziv"
+                                IsReadOnly="True"
+                                Binding="{Binding TrainName}"/>
+                            <DataGridTextColumn
+                                Width="3*"
+                                Header="Polazak"
+                                IsReadOnly="True"
+                                Binding="{Binding DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                            <DataGridTextColumn
+                                Width="3*"
+                                Header="Dolazak"
+                                IsReadOnly="True"
+                                Binding="{Binding ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Trajanje"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource TimeConcatConverter}">
+                                        <Binding Path="DepartureDateTime" />
+                                        <Binding Path="ArrivalDateTime" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn
+                                Width="*"
+                                Header="Cena"
+                                IsReadOnly="True"
+                                Binding="{Binding Price}"/>
+                            <DataGridTemplateColumn 
+                                Width="130"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            Click="buyTicketButtonClick"
+                                            Background="#2d2c94"
+                                            FontSize="12"
+                                            Height="28"
+                                            Content="Kupi kartu"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
                 
             </Grid>
