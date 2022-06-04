@@ -26,8 +26,17 @@ namespace HCIProjekat.views.manager
         {
             InitializeComponent();
             ManagerFrame.Content = new pages.SystemManagment();
+            model.Database.loadData();
+        
+        
         }
 
+        public ManagerNavigationLayout(model.Train train)
+        {
+            InitializeComponent();
+            ManagerFrame.Content = new pages.TrainAddition();
+            model.Database.loadData();
+        }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
@@ -52,11 +61,20 @@ namespace HCIProjekat.views.manager
 
         private void trainNavButton_Click(object sender, RoutedEventArgs e)
         {
+            model.Train train = model.Database.Trains[0];
             if(trainAddition == null)
             {
-                trainAddition = new pages.TrainAddition();
+                trainAddition = new pages.TrainAddition(train);
             }
+            
             ManagerFrame.Content = trainAddition;
+        }
+
+
+        private void updateNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.UpdateTrain();
+
         }
     }
 }

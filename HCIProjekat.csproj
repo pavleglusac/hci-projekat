@@ -11,6 +11,7 @@
     <None Remove="assets\icon.ico" />
     <None Remove="assets\logo3.png" />
     <None Remove="assets\seat.jpg" />
+    <None Remove="assets\trash.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,11 +20,28 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Maps.MapControl.WPF" Version="1.0.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="assets\logo3.png" />
     <Resource Include="assets\seat.jpg" />
+    <Resource Include="assets\trash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="views\manager\pages\UpdateTrain.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>
