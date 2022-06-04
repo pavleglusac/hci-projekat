@@ -1,4 +1,5 @@
 ﻿using HCIProjekat.views.auth;
+using HCIProjekat.views.manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,12 @@ namespace HCIProjekat
         {
             InitializeComponent();
             MainFrame.Content = new Login();
+        }
+
+        public MainWindow(model.Train train)
+        {
+            InitializeComponent();
+            MainFrame.Content = new ManagerNavigationLayout(train);
         }
     }
 }
