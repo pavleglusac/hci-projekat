@@ -40,8 +40,17 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Width="220">Enter train name:</Label>
-                        <TextBox x:Name="textBoxTrainName" Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220" TextChanged="TextBox_TextChanged">
-                    </TextBox>
+
+                        <Border BorderBrush="LightGray" Grid.Row="1" BorderThickness="0 0 0 1" Width="220">
+                            <ComboBox x:Name="Cmb"
+                          IsTextSearchEnabled="False"
+                          IsEditable="True"
+                          ItemsSource="{Binding DataSource}"
+                          Width="120"
+                          IsDropDownOpen="True"
+                          StaysOpenOnEdit="True"
+                          KeyUp="Cmb_KeyUp" />
+                        </Border> 
                     </Grid>
                 </ListViewItem>
                 <ListViewItem>
@@ -49,18 +58,9 @@
                         <Button Click="Button_Click">Update</Button>
                     </Border>
                 </ListViewItem>
-                <ListViewItem>
-                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220">
-                        <Button Click="Button2_Click">Load</Button>
-                    </Border>
-                </ListViewItem>
             </ListView>
         </StackPanel>
 
-
-        <Button Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}">
-      <materialDesign:PackIcon Kind="Close"/>
-    </Button>
 
         <m:Map x:Name="MapWithEvents" CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo" Mode="Road" Grid.Column="0" Grid.Row="1" ZoomLevel="12" Center="45.246813,19.853059">
      

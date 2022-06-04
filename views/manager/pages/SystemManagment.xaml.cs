@@ -357,7 +357,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new Timetable());
-            Database.train.Add(train);
+            Database.trains.Add(train);
         }
 
 

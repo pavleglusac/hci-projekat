@@ -23,11 +23,22 @@ namespace HCIProjekat.views.manager.pages
     /// </summary>
     public partial class UpdateTrain : Page
     {
+        class FilterViewModel
+        {
+            public IEnumerable<string> DataSource { get; set; }
+
+            public FilterViewModel()
+            {
+                DataSource = Database.getTrainNames();
+            }
+        }
+
         int pinNumber = 1;
         int numbersPressed = 0;
         int numberPressed = 0;
         Vector _mouseToMarker;
         private bool _dragPin;
+        public IEnumerable<string> DataSource { get; set; }
         public Pushpin SelectedPushpin{get; set; }
         CancellationTokenSource timeout { get; set; }
         public UpdateTrain()
@@ -42,6 +53,27 @@ namespace HCIProjekat.views.manager.pages
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
             MapWithEvents.KeyDown += new KeyEventHandler(preventDefault);
+            Cmb.DropDownClosed += new EventHandler(ComboBox_DropDownClosed);
+            FilterViewModel vm = new FilterViewModel();
+            this.DataContext = vm;
+        }
+
+
+        private void Cmb_KeyUp(object sender, KeyEventArgs e)
+        {
+            CollectionView itemsViewOriginal = (CollectionView)CollectionViewSource.GetDefaultView(Cmb.ItemsSource);
+
+            itemsViewOriginal.Filter = ((o) =>
+            {
+                if (String.IsNullOrEmpty(Cmb.Text)) return true;
+                else
+                {
+                    if (((string)o).Contains(Cmb.Text)) return true;
+                    else return false;
+                }
+            });
+
+            itemsViewOriginal.Refresh();
         }
 
         void preventDefault(object sender, KeyEventArgs e)
@@ -344,9 +376,9 @@ namespace HCIProjekat.views.manager.pages
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Dictionary<Station,int> trainsStations = new Dictionary<Station, int>();
             Train t = null;
-            foreach (Train train in Database.train)
+            foreach (Train train in Database.trains)
             {
-                if (train.name == textBoxTrainName.Text)
+                if (train.name == Cmb.SelectedItem)
                 {
                     t = train;
                 }
@@ -368,19 +400,18 @@ namespace HCIProjekat.views.manager.pages
             t.updateStations(trainsStations);
         }
 
-        private void Button2_Click(object sender,RoutedEventArgs e)
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
         {
             reloadStations();
         }
-
         private void reloadStations()
         {
 
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Train trainToAdd;
-            foreach (Train train in Database.train)
+            foreach (Train train in Database.trains)
             {
-                if (train.name == textBoxTrainName.Text)
+                if (train.name == Cmb.SelectedItem)
                 {
                     removeAllPushpins();
                     foreach (Station station in train.stations.Keys)

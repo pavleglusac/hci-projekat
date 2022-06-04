@@ -11,16 +11,39 @@ namespace HCIProjekat.model
     {
         public static List<Station> stations { get; set; }
         public static List<Timetable> timetable { get; set; }
-        public static List<Train> train { get; set; }
+        public static List<Train> trains { get; set; }
 
         public static void loadData()
         {
             stations = new List<Station>();
             timetable = new List<Timetable>();
-            train = new List<Train>();
+            trains = new List<Train>();
             stations.Add(new Station(new Location(45.246813, 19.853059)));
             stations.Add(new Station(new Location(46.246813, 19)));
             stations.Add(new Station(new Location(44.246813, 18)));
+        }
+
+        public static IEnumerable<string> getTrainNames()
+        {
+            List<string> trainNames = new List<string>();
+            foreach (Train train in trains)
+            {
+                trainNames.Add(train.name);
+            }
+            return trainNames;
+        }
+
+        public static bool trainNameExists(string trainName)
+        {
+            foreach (Train train in trains)
+            {
+                if(train.name == trainName)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
 
         public static Station addStation(Station station)
@@ -61,7 +84,7 @@ namespace HCIProjekat.model
                 }
             }
             stations.Remove(removeStation.First());
-            foreach(Train t in train)
+            foreach(Train t in trains)
             {
                 t.tryRemoveStation(removeStation.First());
             }
