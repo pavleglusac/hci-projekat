@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -54,7 +55,8 @@ namespace HCIProjekat.views.customer
 
         private void buyTicketButtonClick(object sender, RoutedEventArgs e)
         {
-
+            Departure departure = (Departure)((Button)e.Source).DataContext;
+            System.Diagnostics.Debug.WriteLine(departure.DepartureDateTime);
         }
     }
 }
