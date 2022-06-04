@@ -16,7 +16,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         x:Name="window">
-    
+
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" 
                 HorizontalAlignment="Stretch"

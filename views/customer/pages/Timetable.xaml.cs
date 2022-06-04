@@ -23,6 +23,25 @@ namespace HCIProjekat.views.customer
         public Timetable()
         {
             InitializeComponent();
+            DataContext = new TimetableContext();
+        }
+    }
+    public class TimetableContext
+    {
+        public List<string> Locations { get; set; }
+
+        public TimetableContext()
+        {
+            Locations = new List<string>()
+            {
+                "Novi Sad",
+                "Beograd",
+                "Zrenjanin",
+                "Subotica",
+                "Sombor",
+                "Kikinda",
+                "Pančevo"
+            };
         }
     }
 }

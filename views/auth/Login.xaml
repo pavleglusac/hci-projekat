@@ -26,16 +26,8 @@
         </Grid.Background>
         <Border CornerRadius="30" Width="450" Height="375" Background="White">
             <StackPanel Width="350" HorizontalAlignment="Center">
-                
-                <TextBlock Text="Login" FontSize="28" Margin="0 30 0 30"/>
 
-                <!--materialDesign:HintAssist.HelperText="Unesite Vašu email adresu."-->
-                <!--<TextBox.Text>
-                    <Binding
-                              Path="emailValue"
-                              UpdateSourceTrigger="PropertyChanged">
-                    </Binding>
-                </TextBox.Text>-->
+                <TextBlock Text="Login" FontSize="28" Margin="0 30 0 30"/>
                 <TextBox
                         x:Name="emailField"
                         FontSize="16"

@@ -8,7 +8,11 @@
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="CustomerNavigationLayout">
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid Height="60" Background="#2d2c94">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -47,15 +51,15 @@
                     Height="45"
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Left" Margin="0,8,0,8" Width="192" Click="reservationHistoryNavButton_Click" >
-                <AccessText Text="Istorija rezervacija" TextWrapping="Wrap" TextAlignment="Center"/>
+                    ToolTip="Istorija kupljenih karata"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                    Click="reservationHistoryNavButton_Click">
+                <AccessText Text="Moja putovanja" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
-            
+
             <!-- logout -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="5">
                 <Button x:Name="logoutButton"
-                    Width="110"
                     Height="45"
                     Grid.Row="0" Grid.Column="0"
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
@@ -66,6 +70,7 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Frame x:Name="CustomerFrame"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-    </StackPanel>
+        <Frame x:Name="CustomerFrame" Grid.Row="1"
+               VerticalContentAlignment="Stretch"/>
+    </Grid>
 </Page>
