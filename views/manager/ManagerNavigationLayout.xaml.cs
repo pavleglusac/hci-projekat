@@ -66,11 +66,7 @@ namespace HCIProjekat.views.manager
             {
                 trainAddition = new pages.TrainAddition(train);
             }
-            MainWindow mv = new MainWindow(train);
-            mv.Show();
-
-            MainWindow m1 = new MainWindow(train);
-            m1.Show();
+            
             ManagerFrame.Content = trainAddition;
         }
 

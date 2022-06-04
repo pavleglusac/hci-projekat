@@ -35,6 +35,21 @@ namespace HCIProjekat.model
             this.Timetable = timetable;
         }
 
+        public override string ToString()
+        {
+            string s = "LEFT\n";
+            foreach(Row row in LeftRows)
+            {
+                s += $"{row.RowType} -> {row.Seats.Count()}\n";
+            }
+            s += "RIGHT\n";
+            foreach (Row row in RightRows)
+            {
+                s += $"{row.RowType} -> {row.Seats.Count()}\n";
+            }
+            return s;
+        }
+
 
         internal void updateStations(Dictionary<Station, int> trainsStations)
         {

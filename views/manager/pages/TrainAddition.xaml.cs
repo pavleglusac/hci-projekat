@@ -232,8 +232,8 @@ namespace HCIProjekat.views.manager.pages
             newRow.RowBorder = RowBuilder.buildByType(row.RowType);
             borderParent[newRow.RowBorder] = newRow;
             newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
-            newRow.LeftRow = true;
             newRow.RowType = row.RowType;
+            newRow.LeftRow = left;
             newRow.Seats.AddRange(row.Seats.Select(
                 x => {
                     var seat = SeatBuilder.buildSeat();
@@ -289,6 +289,7 @@ namespace HCIProjekat.views.manager.pages
             history.AddTrain(train);
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
+            System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
         }
 
         private void SetNumberLabels()
@@ -355,13 +356,8 @@ namespace HCIProjekat.views.manager.pages
 
         private void ClearRows()
         {
-            foreach (var tempRow in rows)
-            {
-                if (tempRow.LeftRow)
-                    leftRowStack.Children.Remove(tempRow.RowBorder);
-                else
-                    rightRowStack.Children.Remove(tempRow.RowBorder);
-            }
+            leftRowStack.Children.Clear();
+            rightRowStack.Children.Clear();
         }
 
         private void RedrawRows()
@@ -395,6 +391,7 @@ namespace HCIProjekat.views.manager.pages
             ConvertTrainToUI(train);
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
+            System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
         }
 
         private void Redo_Click(object sender, RoutedEventArgs e)
@@ -404,6 +401,7 @@ namespace HCIProjekat.views.manager.pages
             ConvertTrainToUI(train);
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
+            System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
         }
 
         private void AdjustRowWidth(bool empty = false)
@@ -1236,7 +1234,6 @@ namespace HCIProjekat.views.manager.pages
                         seatParent.Add(emptySeat, newRow);
                         newRow.RowUI.Children.Add(emptySeat);
                         transformsRow[newRow.RowBorder] = new TranslateTransform();
-                        HistoryAction();
                         SetNumberLabels();
                         leftRowStack.Children.Remove(emptyRowSnapped);
                         rightRowStack.Children.Remove(emptyRowSnapped);
@@ -1250,13 +1247,14 @@ namespace HCIProjekat.views.manager.pages
                             rightRowStack.Children.Insert(insertRightPosition, newRow.RowBorder);
                             rows.Insert(rowIndexToIndex(false, insertRightPosition), newRow);
                         }
+                        HistoryAction();
 
                     }
                     else
                     {
                         if (borderParent.ContainsKey(element))
                         {
-                            if (putInLeft)
+                            if (newRow.LeftRow)
                             {
                                 leftRowStack.Children.Insert(insertLeftPosition, newRow.RowBorder);
                                 rows.Insert(rowIndexToIndex(true, insertLeftPosition), newRow);
