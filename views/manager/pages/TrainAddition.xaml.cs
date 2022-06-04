@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HCIProjekat.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,23 +61,10 @@ namespace HCIProjekat.views.manager.pages
 
         Border row, trow, brow;
 
-        public TrainAddition()
+        TrainHistory history = new TrainHistory();
+
+        void AddTools()
         {
-            InitializeComponent();
-            this.Focus();
-
-            RowAddCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
-            RowRemoveCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control));
-            SeatAddCommand.InputGestures.Add(new KeyGesture(Key.Right, ModifierKeys.Control));
-            SeatRemoveCommand.InputGestures.Add(new KeyGesture(Key.Left, ModifierKeys.Control));
-            RowUpCommand.InputGestures.Add(new KeyGesture(Key.Up));
-            RowDownCommand.InputGestures.Add(new KeyGesture(Key.Down));
-            RowLeftCommand.InputGestures.Add(new KeyGesture(Key.Left));
-            RowRightCommand.InputGestures.Add(new KeyGesture(Key.Right));
-
-            RowSwapUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt));
-            RowSwapDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt));
-
             row = RowBuilder.buildSingleRow();
             toolGrid.Children.Add(row);
             row.HorizontalAlignment = HorizontalAlignment.Center;
@@ -114,6 +102,29 @@ namespace HCIProjekat.views.manager.pages
             trash = SeatBuilder.buildTrash();
             toolGrid.Children.Add(trash);
             Grid.SetRow(trash, 4);
+        }
+
+        void AddShortcuts()
+        {
+            RowAddCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
+            RowRemoveCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control));
+            SeatAddCommand.InputGestures.Add(new KeyGesture(Key.Right, ModifierKeys.Control));
+            SeatRemoveCommand.InputGestures.Add(new KeyGesture(Key.Left, ModifierKeys.Control));
+            RowUpCommand.InputGestures.Add(new KeyGesture(Key.Up));
+            RowDownCommand.InputGestures.Add(new KeyGesture(Key.Down));
+            RowLeftCommand.InputGestures.Add(new KeyGesture(Key.Left));
+            RowRightCommand.InputGestures.Add(new KeyGesture(Key.Right));
+            RowSwapUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt));
+            RowSwapDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt));
+        }
+
+        public TrainAddition()
+        {
+            InitializeComponent();
+            this.Focus();
+
+            AddTools();
+            AddShortcuts();
 
             Row row0 = new Row();
             row0.RowBorder = RowBuilder.buildSingleRow();
@@ -186,6 +197,98 @@ namespace HCIProjekat.views.manager.pages
             }
             SetNumberLabels();
             AdjustRowWidth();
+        }
+
+        public TrainAddition(Train train)
+        {
+            InitializeComponent();
+            this.Focus();
+            AddTools();
+            AddShortcuts();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+            history.AddTrain(train);
+        }
+
+        void ConvertTrainToUI(Train train)
+        {
+            TrainNameInput.Text = train.Name;
+            foreach (model.Row row in train.LeftRows)
+            {
+                AddRow(row, true);
+            }
+            foreach (model.Row row in train.RightRows)
+            {
+                AddRow(row, false);
+            }
+            SetNumberLabels();
+            AdjustRowWidth();
+        }
+
+        void AddRow(model.Row row, Boolean left)
+        {
+            Row newRow = new Row();
+            newRow.RowBorder = RowBuilder.buildByType(row.RowType);
+            borderParent[newRow.RowBorder] = newRow;
+            newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
+            newRow.LeftRow = true;
+            newRow.RowType = row.RowType;
+            newRow.Seats.AddRange(row.Seats.Select(
+                x => {
+                    var seat = SeatBuilder.buildSeat();
+                    newRow.RowUI.Children.Add(seat);
+                    seat.MouseLeftButtonDown += root_MouseLeftButtonDown;
+                    seat.MouseLeftButtonUp += root_MouseLeftButtonUp;
+                    seat.MouseMove += root_MouseMove;
+                    seatParent.Add(seat, newRow);
+                    return seat;
+                }
+            ).ToList());
+            Rectangle emptySeat = SeatBuilder.buildEmptySeat();
+            emptySeat.Visibility = Visibility.Collapsed;
+            emptySeats.Add(emptySeat);
+            newRow.RowUI.Children.Add(emptySeat);
+            newRow.RowBorder.MouseDown += SelectRow;
+            rowEmptySeat[newRow] = emptySeat;
+            seatParent.Add(emptySeat, newRow);
+            newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
+            if (left)
+                leftRowStack.Children.Add(newRow.RowBorder);
+            else
+                rightRowStack.Children.Add(newRow.RowBorder);
+            rows.Add(newRow);
+        }
+
+        Train ConvertUIToTrain()
+        {
+            Train train = new Train();
+            train.Name = TrainNameInput.Text;
+            foreach(Row row in rows)
+            {
+                model.Row modelRow = new model.Row();
+                modelRow.RowType = row.RowType;
+                modelRow.Seats.AddRange(
+                    row.Seats.Select(x =>
+                    {
+                        model.Seat modelSeat = new model.Seat();
+                        return modelSeat;
+                    }).ToList()
+                );
+                if (row.LeftRow)
+                    train.LeftRows.Add(modelRow);
+                else
+                    train.RightRows.Add(modelRow);
+            }
+            return train;
+        }
+
+        void HistoryAction()
+        {
+            Train train = ConvertUIToTrain();
+            history.AddTrain(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
         }
 
         private void SetNumberLabels()
@@ -273,6 +376,36 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        private void ClearAll()
+        {
+            ClearRows();
+            emptySeats.Clear();
+            rowEmptySeat.Clear();
+            borderParent.Clear();
+            rows.Clear();
+            seats.Clear();
+            SelectedElement = null;
+            SelectedIndex = -1;
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            ClearAll();
+            Train train = history.Undo();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            ClearAll();
+            Train train = history.Redo();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+        }
+
         private void AdjustRowWidth(bool empty = false)
         {
             if (!empty)
@@ -329,6 +462,7 @@ namespace HCIProjekat.views.manager.pages
                 SetNumberLabels();
                 ClearRows();
                 RedrawRows();
+                HistoryAction();
             }
         }
 
@@ -364,6 +498,7 @@ namespace HCIProjekat.views.manager.pages
                 AdjustRowWidth();
                 ClearRows();
                 RedrawRows();
+                HistoryAction();
             }
         }
 
@@ -401,6 +536,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 SelectedElement = brd;
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
+                HistoryAction();
             }
         }
 
@@ -432,6 +568,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 SelectedElement = brd;
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
+                HistoryAction();
             }
         }
 
@@ -458,6 +595,7 @@ namespace HCIProjekat.views.manager.pages
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
                 SelectedIndex = rowIndexToIndex(false, ind);
                 scrollViewer.ScrollToVerticalOffset(ind * 60);
+                HistoryAction();
             }
         }
 
@@ -484,6 +622,7 @@ namespace HCIProjekat.views.manager.pages
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
                 SelectedIndex = rowIndexToIndex(true, ind);
                 scrollViewer.ScrollToVerticalOffset(ind * 60);
+                HistoryAction();
             }
         }
 
@@ -515,6 +654,7 @@ namespace HCIProjekat.views.manager.pages
                 Swap<Row>(rows, rowIndexToIndex(left, ind), rowIndexToIndex(left, ind - 1));
                 SelectedIndex = rowIndexToIndex(left, ind - 1);
                 scrollViewer.ScrollToVerticalOffset((ind - 1) * 60);
+                HistoryAction();
             }
         }
 
@@ -545,6 +685,7 @@ namespace HCIProjekat.views.manager.pages
                 Swap<Row>(rows, rowIndexToIndex(left, ind), rowIndexToIndex(left, ind + 1));
                 SelectedIndex = rowIndexToIndex(left, ind + 1);
                 scrollViewer.ScrollToVerticalOffset((ind + 1) * 60);
+                HistoryAction();
             }
         }
 
@@ -730,7 +871,7 @@ namespace HCIProjekat.views.manager.pages
                             SetNumberLabels();
                             emptySnapped = null;
                         }
-                        
+                        HistoryAction();
                     }
                     else
                     {
@@ -742,6 +883,7 @@ namespace HCIProjekat.views.manager.pages
                             seatParent[element].RowUI.Children.Add(element);
                             seatParent[element].RowUI.Children.Add(emptySnapped);
                             seatParent[element].Seats.Add(element);
+                            HistoryAction();
                         }
                     }
                     toolGrid.Children.Remove(newSeat);
@@ -757,6 +899,7 @@ namespace HCIProjekat.views.manager.pages
                 {
                     toolGrid.Children.Remove(element);
                     trash.Opacity = 1;
+                    HistoryAction();
                 }
                 AdjustRowWidth();
             }
@@ -1087,6 +1230,7 @@ namespace HCIProjekat.views.manager.pages
                         rightRowStack.Children.Insert(insertRightPosition, newRow.RowBorder);
                         rows.Insert(rowIndexToIndex(false, insertRightPosition), newRow);
                     }
+                    HistoryAction();
                     SetNumberLabels();
                 }
                 else
@@ -1107,6 +1251,7 @@ namespace HCIProjekat.views.manager.pages
                     Rectangle emptySeat = rowEmptySeat[borderParent[element]];
                     rows.Remove(borderParent[element]);
                     emptySeats.Remove(emptySeat);
+                    HistoryAction();
                 }
                 if (SelectedElement == element)
                     SelectedElement = null;
@@ -1250,6 +1395,8 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        
+
         private void RemoveEmptyRows()
         {
             foreach (Border row in emptyRows)
@@ -1263,13 +1410,6 @@ namespace HCIProjekat.views.manager.pages
         }
 
         // MODEL
-
-        enum RowEnum
-        {
-            ALL,
-            TOP,
-            BOTTOM
-        }
 
         class Row
         {
@@ -1350,6 +1490,7 @@ namespace HCIProjekat.views.manager.pages
                 rect.Width = W;
                 rect.Height = H;
                 rect.Cursor = Cursors.Hand;
+                rect.Margin = new Thickness(5, 5, 5, 5);
                 return rect;
             }
 
@@ -1361,6 +1502,7 @@ namespace HCIProjekat.views.manager.pages
                 rect.Width = W;
                 rect.Height = H;
                 rect.Cursor = Cursors.Hand;
+                rect.Margin = new Thickness(5, 5, 5, 5);
                 return rect;
             }
 
@@ -1458,6 +1600,15 @@ namespace HCIProjekat.views.manager.pages
                 return border;
             }
 
+            internal static Border buildByType(model.RowEnum rowType)
+            {
+                if (rowType == model.RowEnum.ALL)
+                    return buildSingleRow();
+                else if (rowType == model.RowEnum.TOP)
+                    return buildTopRow();
+                else
+                    return buildBottomRow();
+            }
         }
 
     }

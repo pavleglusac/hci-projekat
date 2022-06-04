@@ -26,6 +26,7 @@ namespace HCIProjekat.views.manager
         {
             InitializeComponent();
             ManagerFrame.Content = new pages.SystemManagment();
+            model.Database.loadData();
         }
 
 
@@ -54,7 +55,8 @@ namespace HCIProjekat.views.manager
         {
             if(trainAddition == null)
             {
-                trainAddition = new pages.TrainAddition();
+                model.Train train = model.Database.Trains[0];
+                trainAddition = new pages.TrainAddition(train);
             }
             ManagerFrame.Content = trainAddition;
         }

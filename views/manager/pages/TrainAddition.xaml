@@ -41,6 +41,7 @@
             </Grid.ColumnDefinitions>
             <TextBox
                 Grid.Column="1"
+                x:Name="TrainNameInput"
                 Style="{StaticResource MaterialDesignFilledTextBox}"
                 VerticalAlignment="Center"
                 AcceptsReturn="True"
@@ -58,7 +59,8 @@
                     Width="100"
                     Background="#2d2c94"
                     Margin="5 0 0 0"
-                    HorizontalAlignment="Left">
+                    x:Name="UndoButton"
+                    HorizontalAlignment="Left" Click="Undo_Click">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
                         <TextBlock Text="UNDO" VerticalAlignment="Center" />
@@ -72,7 +74,9 @@
                     Width="100"
                     Background="#2d2c94"
                     HorizontalAlignment="Left"
-                    Margin="5 0 0 0">
+                    x:Name="RedoButton"
+                    Margin="5 0 0 0"
+                    Click="Redo_Click">
                     <StackPanel Orientation="Horizontal" >
                         <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
                         <TextBlock Text="REDO" VerticalAlignment="Center" />
