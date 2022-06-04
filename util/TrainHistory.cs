@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HCIProjekat.model
+namespace HCIProjekat.util
 {
-    public class Timetable
+    internal class TrainHistory
     {
     }
 }

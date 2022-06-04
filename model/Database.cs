@@ -9,35 +9,74 @@ namespace HCIProjekat.model
 {
     internal class Database
     {
-        public static List<Station> stations { get; set; }
-        public static List<Timetable> timetable { get; set; }
-        public static List<Train> trains { get; set; }
+        public static List<Station> Stations { get; set; }
+        public static List<Timetable> Timetable { get; set; }
+        public static List<Train> Trains { get; set; }
 
         public static void loadData()
         {
-            stations = new List<Station>();
-            timetable = new List<Timetable>();
-            trains = new List<Train>();
-            stations.Add(new Station(new Location(45.246813, 19.853059)));
-            stations.Add(new Station(new Location(46.246813, 19)));
-            stations.Add(new Station(new Location(44.246813, 18)));
+            System.Diagnostics.Debug.WriteLine("pocetak ucitavanja");
+            Stations = new List<Station>();
+            Timetable = new List<Timetable>();
+            Trains = new List<Train>();
+            Stations.Add(new Station(new Location(45.246813, 19.853059)));
+            Stations.Add(new Station(new Location(46.246813, 19)));
+            Stations.Add(new Station(new Location(44.246813, 18)));
+
+            System.Diagnostics.Debug.WriteLine("ucitao stanice");
+            Train train1 = new Train();
+            train1.Name = "Soko";
+            AddRowsToTrain(train1, RowEnum.ALL, 2);
+            AddRowsToTrain(train1, RowEnum.TOP, 2);
+
+            Train train2 = new Train();
+            train2.Name = "Orao";
+            AddRowsToTrain(train2, RowEnum.ALL, 2);
+            AddRowsToTrain(train2, RowEnum.TOP, 2);
+
+            Train train3 = new Train();
+            train3.Name = "Jastreb";
+            AddRowsToTrain(train2, RowEnum.ALL, 2);
+            AddRowsToTrain(train2, RowEnum.TOP, 2);
+
+            Trains.Add(train1);
+            Trains.Add(train2);
+            Trains.Add(train3);
+
+            System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
+        }
+
+        public static void AddRowsToTrain(Train train, RowEnum type, int numOfRows)
+        {
+            for (int i = 0; i < numOfRows; i++)
+            {
+                Row row = new Row();
+                row.RowType = type;
+                for(int j = 0; j < 4; j++)
+                {
+                    Seat seat = new Seat();
+                    seat.Label = "";
+                    row.Seats.Add(seat);
+                }
+                train.LeftRows.Add(row);
+            }
         }
 
         public static IEnumerable<string> getTrainNames()
         {
             List<string> trainNames = new List<string>();
-            foreach (Train train in trains)
+            foreach (Train train in Trains)
             {
-                trainNames.Add(train.name);
+                trainNames.Add(train.Name);
             }
             return trainNames;
         }
 
         public static bool trainNameExists(string trainName)
         {
-            foreach (Train train in trains)
+            foreach (Train train in Trains)
             {
-                if(train.name == trainName)
+                if (train.Name == trainName)
                 {
                     return true;
                 }
@@ -48,8 +87,8 @@ namespace HCIProjekat.model
 
         public static Station addStation(Station station)
         {
-            stations.Add(station);
-            foreach (Station s in stations)
+            Stations.Add(station);
+            foreach (Station s in Stations)
             {
                 if (s.location.Equals(station.location))
                 {
@@ -61,7 +100,7 @@ namespace HCIProjekat.model
 
         public static Station getOrAddStation(Location location)
         {
-            foreach(Station station in stations)
+            foreach (Station station in Stations)
             {
                 if (station.location.Equals(location))
                 {
@@ -75,7 +114,7 @@ namespace HCIProjekat.model
         public static void removeStation(Location location)
         {
             List<Station> removeStation = new List<Station>();
-            foreach (Station station in stations)
+            foreach (Station station in Stations)
             {
                 if (station.location.Equals(location))
                 {
@@ -83,8 +122,8 @@ namespace HCIProjekat.model
                     break;
                 }
             }
-            stations.Remove(removeStation.First());
-            foreach(Train t in trains)
+            Stations.Remove(removeStation.First());
+            foreach (Train t in Trains)
             {
                 t.tryRemoveStation(removeStation.First());
             }

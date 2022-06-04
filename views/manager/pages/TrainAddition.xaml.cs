@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HCIProjekat.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace HCIProjekat.views.manager.pages
 
         Dictionary<Border, Row> borderParent = new Dictionary<Border, Row>();
 
-        Rectangle seat, newSeat;
+        Rectangle seat, newSeat, trash;
 
         Border newRow;
 
@@ -60,23 +61,10 @@ namespace HCIProjekat.views.manager.pages
 
         Border row, trow, brow;
 
-        public TrainAddition()
+        TrainHistory history = new TrainHistory();
+
+        void AddTools()
         {
-            InitializeComponent();
-            this.Focus();
-
-            RowAddCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
-            RowRemoveCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control));
-            SeatAddCommand.InputGestures.Add(new KeyGesture(Key.Right, ModifierKeys.Control));
-            SeatRemoveCommand.InputGestures.Add(new KeyGesture(Key.Left, ModifierKeys.Control));
-            RowUpCommand.InputGestures.Add(new KeyGesture(Key.Up));
-            RowDownCommand.InputGestures.Add(new KeyGesture(Key.Down));
-            RowLeftCommand.InputGestures.Add(new KeyGesture(Key.Left));
-            RowRightCommand.InputGestures.Add(new KeyGesture(Key.Right));
-
-            RowSwapUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt));
-            RowSwapDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt));
-
             row = RowBuilder.buildSingleRow();
             toolGrid.Children.Add(row);
             row.HorizontalAlignment = HorizontalAlignment.Center;
@@ -110,6 +98,33 @@ namespace HCIProjekat.views.manager.pages
             seat.MouseMove += root_MouseMove;
             seat.MouseLeftButtonUp += root_MouseLeftButtonUp;
 
+
+            trash = SeatBuilder.buildTrash();
+            toolGrid.Children.Add(trash);
+            Grid.SetRow(trash, 4);
+        }
+
+        void AddShortcuts()
+        {
+            RowAddCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
+            RowRemoveCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control));
+            SeatAddCommand.InputGestures.Add(new KeyGesture(Key.Right, ModifierKeys.Control));
+            SeatRemoveCommand.InputGestures.Add(new KeyGesture(Key.Left, ModifierKeys.Control));
+            RowUpCommand.InputGestures.Add(new KeyGesture(Key.Up));
+            RowDownCommand.InputGestures.Add(new KeyGesture(Key.Down));
+            RowLeftCommand.InputGestures.Add(new KeyGesture(Key.Left));
+            RowRightCommand.InputGestures.Add(new KeyGesture(Key.Right));
+            RowSwapUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt));
+            RowSwapDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt));
+        }
+
+        public TrainAddition()
+        {
+            InitializeComponent();
+            this.Focus();
+
+            AddTools();
+            AddShortcuts();
 
             Row row0 = new Row();
             row0.RowBorder = RowBuilder.buildSingleRow();
@@ -182,6 +197,98 @@ namespace HCIProjekat.views.manager.pages
             }
             SetNumberLabels();
             AdjustRowWidth();
+        }
+
+        public TrainAddition(Train train)
+        {
+            InitializeComponent();
+            this.Focus();
+            AddTools();
+            AddShortcuts();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+            history.AddTrain(train);
+        }
+
+        void ConvertTrainToUI(Train train)
+        {
+            TrainNameInput.Text = train.Name;
+            foreach (model.Row row in train.LeftRows)
+            {
+                AddRow(row, true);
+            }
+            foreach (model.Row row in train.RightRows)
+            {
+                AddRow(row, false);
+            }
+            SetNumberLabels();
+            AdjustRowWidth();
+        }
+
+        void AddRow(model.Row row, Boolean left)
+        {
+            Row newRow = new Row();
+            newRow.RowBorder = RowBuilder.buildByType(row.RowType);
+            borderParent[newRow.RowBorder] = newRow;
+            newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
+            newRow.LeftRow = true;
+            newRow.RowType = row.RowType;
+            newRow.Seats.AddRange(row.Seats.Select(
+                x => {
+                    var seat = SeatBuilder.buildSeat();
+                    newRow.RowUI.Children.Add(seat);
+                    seat.MouseLeftButtonDown += root_MouseLeftButtonDown;
+                    seat.MouseLeftButtonUp += root_MouseLeftButtonUp;
+                    seat.MouseMove += root_MouseMove;
+                    seatParent.Add(seat, newRow);
+                    return seat;
+                }
+            ).ToList());
+            Rectangle emptySeat = SeatBuilder.buildEmptySeat();
+            emptySeat.Visibility = Visibility.Collapsed;
+            emptySeats.Add(emptySeat);
+            newRow.RowUI.Children.Add(emptySeat);
+            newRow.RowBorder.MouseDown += SelectRow;
+            rowEmptySeat[newRow] = emptySeat;
+            seatParent.Add(emptySeat, newRow);
+            newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
+            if (left)
+                leftRowStack.Children.Add(newRow.RowBorder);
+            else
+                rightRowStack.Children.Add(newRow.RowBorder);
+            rows.Add(newRow);
+        }
+
+        Train ConvertUIToTrain()
+        {
+            Train train = new Train();
+            train.Name = TrainNameInput.Text;
+            foreach(Row row in rows)
+            {
+                model.Row modelRow = new model.Row();
+                modelRow.RowType = row.RowType;
+                modelRow.Seats.AddRange(
+                    row.Seats.Select(x =>
+                    {
+                        model.Seat modelSeat = new model.Seat();
+                        return modelSeat;
+                    }).ToList()
+                );
+                if (row.LeftRow)
+                    train.LeftRows.Add(modelRow);
+                else
+                    train.RightRows.Add(modelRow);
+            }
+            return train;
+        }
+
+        void HistoryAction()
+        {
+            Train train = ConvertUIToTrain();
+            history.AddTrain(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
         }
 
         private void SetNumberLabels()
@@ -269,6 +376,36 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        private void ClearAll()
+        {
+            ClearRows();
+            emptySeats.Clear();
+            rowEmptySeat.Clear();
+            borderParent.Clear();
+            rows.Clear();
+            seats.Clear();
+            SelectedElement = null;
+            SelectedIndex = -1;
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            ClearAll();
+            Train train = history.Undo();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            ClearAll();
+            Train train = history.Redo();
+            ConvertTrainToUI(train);
+            UndoButton.IsEnabled = history.CanUndo();
+            RedoButton.IsEnabled = history.CanRedo();
+        }
+
         private void AdjustRowWidth(bool empty = false)
         {
             if (!empty)
@@ -325,6 +462,7 @@ namespace HCIProjekat.views.manager.pages
                 SetNumberLabels();
                 ClearRows();
                 RedrawRows();
+                HistoryAction();
             }
         }
 
@@ -360,6 +498,7 @@ namespace HCIProjekat.views.manager.pages
                 AdjustRowWidth();
                 ClearRows();
                 RedrawRows();
+                HistoryAction();
             }
         }
 
@@ -397,6 +536,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 SelectedElement = brd;
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
+                HistoryAction();
             }
         }
 
@@ -428,6 +568,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 SelectedElement = brd;
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
+                HistoryAction();
             }
         }
 
@@ -454,6 +595,7 @@ namespace HCIProjekat.views.manager.pages
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
                 SelectedIndex = rowIndexToIndex(false, ind);
                 scrollViewer.ScrollToVerticalOffset(ind * 60);
+                HistoryAction();
             }
         }
 
@@ -480,6 +622,7 @@ namespace HCIProjekat.views.manager.pages
                 ((Border)SelectedElement).BorderBrush = highlightBrush;
                 SelectedIndex = rowIndexToIndex(true, ind);
                 scrollViewer.ScrollToVerticalOffset(ind * 60);
+                HistoryAction();
             }
         }
 
@@ -511,6 +654,7 @@ namespace HCIProjekat.views.manager.pages
                 Swap<Row>(rows, rowIndexToIndex(left, ind), rowIndexToIndex(left, ind - 1));
                 SelectedIndex = rowIndexToIndex(left, ind - 1);
                 scrollViewer.ScrollToVerticalOffset((ind - 1) * 60);
+                HistoryAction();
             }
         }
 
@@ -541,6 +685,7 @@ namespace HCIProjekat.views.manager.pages
                 Swap<Row>(rows, rowIndexToIndex(left, ind), rowIndexToIndex(left, ind + 1));
                 SelectedIndex = rowIndexToIndex(left, ind + 1);
                 scrollViewer.ScrollToVerticalOffset((ind + 1) * 60);
+                HistoryAction();
             }
         }
 
@@ -610,13 +755,6 @@ namespace HCIProjekat.views.manager.pages
                 return FindParent<T>(parentObject);
         }
 
-        //private void row_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //    {
-        //        //DragDrop.DoDragDrop((Border)sender, (Border)sender, DragDropEffects.Move);
-        //    }
-        //}
 
         private void SelectRow(object sender, MouseEventArgs e)
         {
@@ -651,14 +789,34 @@ namespace HCIProjekat.views.manager.pages
         bool isInDrag = false;
         private void root_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var element = sender as FrameworkElement;
+            var element = sender as Rectangle;
             anchorPoint = e.GetPosition(null);
             element.CaptureMouse();
+            if(!transforms.ContainsKey(element))
+            {
+                transforms.Add(element, new TranslateTransform());
+            }
+            if (seatParent.ContainsKey(element))
+            {
+                
+                Point tl = GetPointOfControl(element);
+                seatParent[element].RowUI.Children.Remove(element);
+                seatParent[element].Seats.Remove(element);
+                toolGrid.Children.Add(element);
+                Grid.SetRow(element, 3);
+                Point p = GetPointOfControl(seat);
+                transforms[element].X += tl.X - p.X;
+                transforms[element].Y += tl.Y - p.Y;
+                element.RenderTransform = transforms[element];
+            }
             isInDrag = true;
             e.Handled = true;
         }
 
-        private TranslateTransform transform = new TranslateTransform();
+        Dictionary<Rectangle, TranslateTransform> transforms = new Dictionary<Rectangle, TranslateTransform>();
+        Dictionary<Border, TranslateTransform> transformsRow = new Dictionary<Border, TranslateTransform>();
+
+
         private void root_MouseMove(object sender, MouseEventArgs e)
         {
             if (isInDrag)
@@ -670,6 +828,7 @@ namespace HCIProjekat.views.manager.pages
                     toolGrid.Children.Add(newSeat);
                     Grid.SetRow(newSeat, 3);
                 }
+                
                 HandleSeatDragOver(sender, e);
             }
         }
@@ -678,27 +837,69 @@ namespace HCIProjekat.views.manager.pages
         {
             if (isInDrag)
             {
-                var element = sender as FrameworkElement;
+                var element = sender as Rectangle;
                 element.ReleaseMouseCapture();
                 isInDrag = false;
                 e.Handled = true;
-                if (emptySnapped != null)
+                if(!inDelete)
                 {
-                    Rectangle newSeat = CopyRectangle(seat);
-                    seatParent[emptySnapped].RowUI.Children.Remove(emptySnapped);
-                    seatParent[emptySnapped].Seats.Add(newSeat);
-                    seatParent[emptySnapped].RowUI.Children.Add(newSeat);
-                    seatParent[emptySnapped].RowUI.Children.Add(emptySnapped);
-                    newSeat.Margin = new Thickness(5, 5, 5, 5);
-                    SetNumberLabels();
+                    if (emptySnapped != null)
+                    {
+                        if(seatParent.ContainsKey(element))
+                        {
+                            toolGrid.Children.Remove(element);
+                            seatParent[emptySnapped].Seats.Add(element);   
+                            seatParent[emptySnapped].RowUI.Children.Remove(emptySnapped);
+                            seatParent[emptySnapped].RowUI.Children.Add(element);
+                            seatParent[emptySnapped].RowUI.Children.Add(emptySnapped);
+                            seatParent[element] = seatParent[emptySnapped];
+                            SetNumberLabels();
+                            emptySnapped = null;
+                        }
+                        else
+                        {
+                            Rectangle newSeat = CopyRectangle(seat);
+                            seatParent[emptySnapped].RowUI.Children.Remove(emptySnapped);
+                            seatParent[emptySnapped].Seats.Add(newSeat);
+                            seatParent[emptySnapped].RowUI.Children.Add(newSeat);
+                            seatParent[emptySnapped].RowUI.Children.Add(emptySnapped);
+                            seatParent[newSeat] = seatParent[emptySnapped];
+                            newSeat.MouseLeftButtonDown += root_MouseLeftButtonDown;
+                            newSeat.MouseMove += root_MouseMove;
+                            newSeat.MouseLeftButtonUp += root_MouseLeftButtonUp;
+                            newSeat.Margin = new Thickness(5, 5, 5, 5);
+                            SetNumberLabels();
+                            emptySnapped = null;
+                        }
+                        HistoryAction();
+                    }
+                    else
+                    {
+                        if (seatParent.ContainsKey(element))
+                        {
+                            toolGrid.Children.Remove(element);
+                            var emptySnapped = rowEmptySeat[seatParent[element]];
+                            seatParent[emptySnapped].RowUI.Children.Remove(emptySnapped);
+                            seatParent[element].RowUI.Children.Add(element);
+                            seatParent[element].RowUI.Children.Add(emptySnapped);
+                            seatParent[element].Seats.Add(element);
+                            HistoryAction();
+                        }
+                    }
+                    toolGrid.Children.Remove(newSeat);
+                    transforms[element].X = 0;
+                    transforms[element].Y = 0;
+                    newSeat = null;
+                    foreach (Rectangle emptySeat in emptySeats)
+                    {
+                        emptySeat.Visibility = Visibility.Collapsed;
+                    }
                 }
-                toolGrid.Children.Remove(newSeat);
-                transform.X = 0;
-                transform.Y = 0;
-                newSeat = null;
-                foreach (Rectangle emptySeat in emptySeats)
+                else
                 {
-                    emptySeat.Visibility = Visibility.Collapsed;
+                    toolGrid.Children.Remove(element);
+                    trash.Opacity = 1;
+                    HistoryAction();
                 }
                 AdjustRowWidth();
             }
@@ -717,12 +918,14 @@ namespace HCIProjekat.views.manager.pages
         }
 
         bool snapped = false;
+        bool inDelete = false;
         Rectangle emptySnapped;
         private void HandleSeatDragOver(object sender, MouseEventArgs e)
         {
-            var element = sender as FrameworkElement;
+            var element = sender as Rectangle;
             currentPoint = e.GetPosition(null);
             bool was = false;
+            bool wasDeleted = false;
             foreach (Rectangle emptySeat in emptySeats)
             {
                 Row parent = seatParent[emptySeat];
@@ -731,12 +934,12 @@ namespace HCIProjekat.views.manager.pages
                 Rect rect = new Rect(new Point(tl.X - 5, tl.Y - 5), new Point(tl.X + 55, tl.Y + 55));
                 if (rect.Contains(currentPoint))
                 {
-                    Point p = GetPointOfControl(seat);
+                    Point p = GetPointOfControl(element);
                     if (!snapped)
                     {
-                        transform.X += tl.X - p.X;
-                        transform.Y += tl.Y - p.Y;
-                        seat.RenderTransform = transform;
+                        transforms[element].X += tl.X - p.X;
+                        transforms[element].Y += tl.Y - p.Y;
+                        element.RenderTransform = transforms[element];
                         anchorPoint = new Point(tl.X + SeatBuilder.W / 2, tl.Y + SeatBuilder.H  / 2);
                         snapped = true;
                         emptySnapped = emptySeat;
@@ -744,11 +947,26 @@ namespace HCIProjekat.views.manager.pages
                     was = true;
                 }
             }
+            {
+                Point tl = GetPointOfControl(trash);
+                Rect rect = new Rect(new Point(tl.X - 50, tl.Y - 50), new Point(tl.X + 80, tl.Y + 80));
+                if (rect.Contains(currentPoint))
+                {
+
+                    Point p = GetPointOfControl(element);
+                    if (!inDelete)
+                    {
+                        trash.Opacity = 0.5;
+                        inDelete = true;
+                    }
+                    wasDeleted = true;
+                }
+            }
             if (!snapped)
             {
-                transform.X += currentPoint.X - anchorPoint.X;
-                transform.Y += currentPoint.Y - anchorPoint.Y;
-                seat.RenderTransform = transform;
+                transforms[element].X += currentPoint.X - anchorPoint.X;
+                transforms[element].Y += currentPoint.Y - anchorPoint.Y;
+                element.RenderTransform = transforms[element];
                 anchorPoint = currentPoint;
             }
             else
@@ -757,19 +975,31 @@ namespace HCIProjekat.views.manager.pages
                 {
                     snapped = false;
                     emptySnapped = null;
-                    transform.X += currentPoint.X - anchorPoint.X;
-                    transform.Y += currentPoint.Y - anchorPoint.Y;
-                    seat.RenderTransform = transform;
+                    transforms[element].X += currentPoint.X - anchorPoint.X;
+                    transforms[element].Y += currentPoint.Y - anchorPoint.Y;
+                    element.RenderTransform = transforms[element];
                     anchorPoint = currentPoint;
                 }
+            }
+            if(inDelete && !wasDeleted)
+            {
+                inDelete = false;
+                trash.Opacity = 1;
             }
             AdjustRowWidth(true);
         }
 
         private Point GetPointOfControl(UIElement rootVisual)
         {
-            Point relativePoint = rootVisual.TransformToAncestor(Window.GetWindow(this)).Transform(new Point(0, 0));
-            return relativePoint;
+            try 
+            { 
+                Point relativePoint = rootVisual.TransformToAncestor(Window.GetWindow(this)).Transform(new Point(0, 0));
+                return relativePoint;
+            }
+            catch(Exception ex)
+            {
+                return new Point(0, 0);
+            }
         }
 
         // MOVE ROW
@@ -777,8 +1007,31 @@ namespace HCIProjekat.views.manager.pages
         Border emptyRowSnapped;
         private void row_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            transformRow = new TranslateTransform();
-            var element = sender as FrameworkElement;
+            var element = sender as Border;
+            
+            if (!transformsRow.ContainsKey(element))
+            {
+                transformsRow.Add(element, new TranslateTransform());
+            }
+            if (borderParent.ContainsKey(element))
+            {
+                if (borderParent[element].Seats.Count() != 0) return;
+                SelectRow(sender, e);
+                Point tl = GetPointOfControl(element);
+                rightRowStack.Children.Remove(element);
+                leftRowStack.Children.Remove(element);
+                toolGrid.Children.Add(element);
+                Grid.SetRow(element, 0);
+                Point p = GetPointOfControl(row);
+                transformsRow[element].X = tl.X - p.X;
+                transformsRow[element].Y = tl.Y - p.Y;
+                element.RenderTransform = transformsRow[element];
+                element.Width = RowBuilder.W;
+                element.Height = RowBuilder.H;
+                (element.Child as StackPanel).Width = RowBuilder.W;
+                (element.Child as StackPanel).Height = RowBuilder.H;
+                rows.Remove(borderParent[element]);
+            }
             anchorPoint = e.GetPosition(null);
             element.CaptureMouse();
             isInDrag = true;
@@ -789,8 +1042,29 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowTop_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            transformRow = new TranslateTransform();
-            var element = sender as FrameworkElement;
+            var element = sender as Border;
+            SelectRow(sender, e);
+            if (!transformsRow.ContainsKey(element))
+            {
+                transformsRow.Add(element, new TranslateTransform());
+            }
+            if (borderParent.ContainsKey(element))
+            {
+                if (borderParent[element].Seats.Count() != 0) return;
+                Point tl = GetPointOfControl(element);
+                rightRowStack.Children.Remove(element);
+                leftRowStack.Children.Remove(element);
+                toolGrid.Children.Add(element);
+                Grid.SetRow(element, 0);
+                Point p = GetPointOfControl(element);
+                transformsRow[element].X = tl.X - p.X;
+                transformsRow[element].Y = tl.Y - p.Y;
+                element.RenderTransform = transformsRow[element];
+                element.Width = RowBuilder.W;
+                element.Height = RowBuilder.H;
+                (element.Child as StackPanel).Width = RowBuilder.W;
+                (element.Child as StackPanel).Height = RowBuilder.H;
+            }
             anchorPoint = e.GetPosition(null);
             element.CaptureMouse();
             isInDrag = true;
@@ -801,8 +1075,28 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowBottom_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            transformRow = new TranslateTransform();
-            var element = sender as FrameworkElement;
+            var element = sender as Border;
+            if (!transformsRow.ContainsKey(element))
+            {
+                transformsRow.Add(element, new TranslateTransform());
+            }
+            if (borderParent.ContainsKey(element))
+            {
+                if (borderParent[element].Seats.Count() != 0) return;
+                Point tl = GetPointOfControl(element);
+                rightRowStack.Children.Remove(element);
+                leftRowStack.Children.Remove(element);
+                toolGrid.Children.Add(element);
+                Grid.SetRow(element, 0);
+                Point p = GetPointOfControl(element);
+                transformsRow[element].X = tl.X - p.X;
+                transformsRow[element].Y = tl.Y - p.Y;
+                element.RenderTransform = transformsRow[element];
+                element.Width = RowBuilder.W;
+                element.Height = RowBuilder.H;
+                (element.Child as StackPanel).Width = RowBuilder.W;
+                (element.Child as StackPanel).Height = RowBuilder.H;
+            }
             anchorPoint = e.GetPosition(null);
             element.CaptureMouse();
             isInDrag = true;
@@ -811,7 +1105,6 @@ namespace HCIProjekat.views.manager.pages
             AddEmptyRows(RowBuilder.buildBottomRow);
         }
 
-        private TranslateTransform transformRow = new TranslateTransform();
         private void row_MouseMove(object sender, MouseEventArgs e)
         {
             if (isInDrag)
@@ -821,6 +1114,9 @@ namespace HCIProjekat.views.manager.pages
                     newRow = RowBuilder.buildSingleRow();
                     newRow.HorizontalAlignment = HorizontalAlignment.Center;
                     toolGrid.Children.Add(newRow);
+                    newRow.MouseMove += row_MouseMove;
+                    newRow.MouseLeftButtonDown += row_MouseLeftButtonDown;
+                    newRow.MouseLeftButtonUp += row_MouseLeftButtonUp;
                     Grid.SetRow(newRow, 0);
                 }
                 HandleRowDragOver(sender, e, row);
@@ -836,6 +1132,9 @@ namespace HCIProjekat.views.manager.pages
                     newRow = RowBuilder.buildTopRow();
                     newRow.HorizontalAlignment = HorizontalAlignment.Center;
                     toolGrid.Children.Add(newRow);
+                    newRow.MouseMove += rowTop_MouseMove;
+                    newRow.MouseLeftButtonDown += rowTop_MouseLeftButtonDown;
+                    newRow.MouseLeftButtonUp += rowTop_MouseLeftButtonUp;
                     Grid.SetRow(newRow, 1);
                 }
                 HandleRowDragOver(sender, e, trow);
@@ -850,6 +1149,9 @@ namespace HCIProjekat.views.manager.pages
                 {
                     newRow = RowBuilder.buildBottomRow();
                     newRow.HorizontalAlignment = HorizontalAlignment.Center;
+                    newRow.MouseMove += rowBottom_MouseMove;
+                    newRow.MouseLeftButtonDown += rowBottom_MouseLeftButtonDown;
+                    newRow.MouseLeftButtonUp += rowBottom_MouseLeftButtonUp;
                     toolGrid.Children.Add(newRow);
                     Grid.SetRow(newRow, 2);
                 }
@@ -861,13 +1163,12 @@ namespace HCIProjekat.views.manager.pages
         {
             if (isInDrag)
             {
-                var element = sender as FrameworkElement;
+                var element = sender as Border;
                 element.ReleaseMouseCapture();
                 isInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
-                RowDropLogic(RowBuilder.buildSingleRow);
-
+                RowDropLogic(RowBuilder.buildSingleRow, RowEnum.ALL, element);
             }
         }
 
@@ -875,12 +1176,13 @@ namespace HCIProjekat.views.manager.pages
         {
             if (isInDrag)
             {
-                var element = sender as FrameworkElement;
+                var element = sender as Border;
                 element.ReleaseMouseCapture();
                 isInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
-                RowDropLogic(RowBuilder.buildTopRow);
+                RowDropLogic(RowBuilder.buildTopRow, RowEnum.TOP, element);
+
 
             }
         }
@@ -889,61 +1191,141 @@ namespace HCIProjekat.views.manager.pages
         {
             if (isInDrag)
             {
-                var element = sender as FrameworkElement;
+                var element = sender as Border;
                 element.ReleaseMouseCapture();
                 isInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
-                RowDropLogic(RowBuilder.buildBottomRow);
+                RowDropLogic(RowBuilder.buildBottomRow, RowEnum.BOTTOM, element);
 
             }
         }
 
-        private void RowDropLogic(Func<Border> buildFunc)
+        private void RowDropLogic(Func<Border> buildFunc, RowEnum rowType, Border element)
         {
-            if (emptyRowSnapped != null)
+            if(!inDelete)
             {
-                Row newRow = new Row();
-                newRow.LeftRow = putInLeft;
-                newRow.RowBorder = buildFunc();
-                newRow.RowBorder.MouseDown += SelectRow;
-                newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
-                newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
-                newRow.RowType = RowEnum.ALL;
-                Rectangle emptySeat = SeatBuilder.buildEmptySeat();
-                emptySeat.Visibility = Visibility.Collapsed;
-                rowEmptySeat.Add(newRow, emptySeat);
-                emptySeats.Add(emptySeat);
-                borderParent.Add(newRow.RowBorder, newRow);
-                seatParent.Add(emptySeat, newRow);
-                newRow.RowUI.Children.Add(emptySeat);
-                if (putInLeft)
                 {
-                    leftRowStack.Children.Insert(insertLeftPosition, newRow.RowBorder);
-                    rows.Insert(rowIndexToIndex(true, insertLeftPosition), newRow);
+                    Row newRow = new Row();
+                    if (borderParent.ContainsKey(element))
+                    {
+                        newRow = borderParent[element];
+                        toolGrid.Children.Remove(element);
+                    }
+
+                    if (emptyRowSnapped != null)
+                    {
+                        newRow.LeftRow = putInLeft;
+                        newRow.RowBorder = buildFunc();
+                        newRow.RowBorder.MouseDown += SelectRow;
+                        newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
+                        newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
+                        newRow.RowType = RowEnum.ALL;
+                        if (borderParent.ContainsKey(element))
+                        {
+                            Rectangle emptySeatF = rowEmptySeat[borderParent[element]];
+                            rowEmptySeat.Remove(newRow);
+                            emptySeats.Remove(emptySeatF);
+                        }
+                        Rectangle emptySeat = SeatBuilder.buildEmptySeat();
+                        emptySeat.Visibility = Visibility.Collapsed;
+                        rowEmptySeat.Add(newRow, emptySeat);
+                        emptySeats.Add(emptySeat);
+                        SetRowEvents(newRow, rowType);
+                        borderParent.Add(newRow.RowBorder, newRow);
+                        seatParent.Add(emptySeat, newRow);
+                        newRow.RowUI.Children.Add(emptySeat);
+                        transformsRow[newRow.RowBorder] = new TranslateTransform();
+                        HistoryAction();
+                        SetNumberLabels();
+                        leftRowStack.Children.Remove(emptyRowSnapped);
+                        rightRowStack.Children.Remove(emptyRowSnapped);
+                        if (putInLeft)
+                        {
+                            leftRowStack.Children.Insert(insertLeftPosition, newRow.RowBorder);
+                            rows.Insert(rowIndexToIndex(true, insertLeftPosition), newRow);
+                        }
+                        else
+                        {
+                            rightRowStack.Children.Insert(insertRightPosition, newRow.RowBorder);
+                            rows.Insert(rowIndexToIndex(false, insertRightPosition), newRow);
+                        }
+
+                    }
+                    else
+                    {
+                        if (borderParent.ContainsKey(element))
+                        {
+                            if (putInLeft)
+                            {
+                                leftRowStack.Children.Insert(insertLeftPosition, newRow.RowBorder);
+                                rows.Insert(rowIndexToIndex(true, insertLeftPosition), newRow);
+                            }
+                            else
+                            {
+                                rightRowStack.Children.Insert(insertRightPosition, newRow.RowBorder);
+                                rows.Insert(rowIndexToIndex(false, insertRightPosition), newRow);
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    rightRowStack.Children.Insert(insertRightPosition, newRow.RowBorder);
-                    rows.Insert(rowIndexToIndex(false, insertRightPosition), newRow);
-                }
-                SetNumberLabels();
+                toolGrid.Children.Remove(newRow);
+                transformsRow[element].X = 0;
+                transformsRow[element].Y = 0;
+                newRow = null;
+                SelectedIndex = SelectIndexFromSelectElement();
+                AdjustRowWidth();
+                RemoveEmptyRows();
             }
-            toolGrid.Children.Remove(newRow);
-            transformRow.X = 0;
-            transformRow.Y = 0;
-            newRow = null;
-            SelectedIndex = SelectIndexFromSelectElement();
-            AdjustRowWidth();
+            else
+            {
+                if(borderParent.ContainsKey(element))
+                {
+                    Rectangle emptySeat = rowEmptySeat[borderParent[element]];
+                    emptySeats.Remove(emptySeat);
+                    rows.Remove(borderParent[element]);
+                    HistoryAction();
+                }
+                if (SelectedElement == element)
+                    SelectedElement = null;
+                
+                toolGrid.Children.Remove(element);
+                trash.Opacity = 1;
+            }
+        }
+
+        private void SetRowEvents(Row newRow, RowEnum rowType)
+        {
+            if(rowType == RowEnum.ALL)
+            {
+                newRow.RowBorder.MouseLeftButtonDown += row_MouseLeftButtonDown;
+                newRow.RowBorder.MouseMove += row_MouseMove;
+                newRow.RowBorder.MouseLeftButtonUp += row_MouseLeftButtonUp;
+            }
+            else if (rowType == RowEnum.TOP)
+            {
+                newRow.RowBorder.MouseLeftButtonDown += rowTop_MouseLeftButtonDown;
+                newRow.RowBorder.MouseMove += rowTop_MouseMove;
+                newRow.RowBorder.MouseLeftButtonUp += rowTop_MouseLeftButtonUp;
+            }
+            else
+            {
+                newRow.RowBorder.MouseLeftButtonDown += rowBottom_MouseLeftButtonDown;
+                newRow.RowBorder.MouseMove += rowBottom_MouseMove;
+                newRow.RowBorder.MouseLeftButtonUp += rowBottom_MouseLeftButtonUp;
+            }
         }
 
         bool putInLeft = false;
         private void HandleRowDragOver(object sender, MouseEventArgs e, Border rowDragged)
         {
-            var element = sender as FrameworkElement;
+            var element = sender as Border;
             currentPoint = e.GetPosition(null);
             bool was = false;
             int i = 0;
+            bool wasDeleted = false;
+            if(borderParent.ContainsKey(element))
+                putInLeft = borderParent[element].LeftRow;
             foreach (Border emptyRow in emptyRows)
             {
                 Point tl = GetPointOfControl(emptyRow);
@@ -952,12 +1334,12 @@ namespace HCIProjekat.views.manager.pages
 
                 if (rect.Contains(currentPoint))
                 {
-                    Point p = GetPointOfControl(rowDragged);
+                    Point p = GetPointOfControl(element);
                     if (!snapped)
                     {
-                        transformRow.X += tl.X - p.X;
-                        transformRow.Y += tl.Y - p.Y;
-                        rowDragged.RenderTransform = transformRow;
+                        transformsRow[element].X += tl.X - p.X;
+                        transformsRow[element].Y += tl.Y - p.Y;
+                        element.RenderTransform = transformsRow[element];
                         anchorPoint = new Point(tl.X + RowBuilder.W / 2, tl.Y + RowBuilder.H / 2);
                         snapped = true;
                         emptyRowSnapped = emptyRow;
@@ -968,11 +1350,26 @@ namespace HCIProjekat.views.manager.pages
                 }
                 i++;
             }
+            {
+                Point tl = GetPointOfControl(trash);
+                Rect rect = new Rect(new Point(tl.X - 50, tl.Y - 50), new Point(tl.X + 80, tl.Y + 80));
+                if (rect.Contains(currentPoint))
+                {
+
+                    Point p = GetPointOfControl(element);
+                    if (!inDelete)
+                    {
+                        trash.Opacity = 0.5;
+                        inDelete = true;
+                    }
+                    wasDeleted = true;
+                }
+            }
             if (!snapped)
             {
-                transformRow.X += currentPoint.X - anchorPoint.X;
-                transformRow.Y += currentPoint.Y - anchorPoint.Y;
-                rowDragged.RenderTransform = transformRow;
+                transformsRow[element].X += currentPoint.X - anchorPoint.X;
+                transformsRow[element].Y += currentPoint.Y - anchorPoint.Y;
+                element.RenderTransform = transformsRow[element];
                 anchorPoint = currentPoint;
             }
             else
@@ -981,11 +1378,16 @@ namespace HCIProjekat.views.manager.pages
                 {
                     snapped = false;
                     emptyRowSnapped = null;
-                    transformRow.X += currentPoint.X - anchorPoint.X;
-                    transformRow.Y += currentPoint.Y - anchorPoint.Y;
-                    rowDragged.RenderTransform = transformRow;
+                    transformsRow[element].X += currentPoint.X - anchorPoint.X;
+                    transformsRow[element].Y += currentPoint.Y - anchorPoint.Y;
+                    element.RenderTransform = transformsRow[element];
                     anchorPoint = currentPoint;
                 }
+            }
+            if (inDelete && !wasDeleted)
+            {
+                inDelete = false;
+                trash.Opacity = 1;
             }
         }
 
@@ -1026,6 +1428,8 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        
+
         private void RemoveEmptyRows()
         {
             foreach (Border row in emptyRows)
@@ -1039,13 +1443,6 @@ namespace HCIProjekat.views.manager.pages
         }
 
         // MODEL
-
-        enum RowEnum
-        {
-            ALL,
-            TOP,
-            BOTTOM
-        }
 
         class Row
         {
@@ -1116,15 +1513,17 @@ namespace HCIProjekat.views.manager.pages
                 Opacity = 0.3
             };
 
-
+            
             public static Rectangle buildSeat()
             {
                 Rectangle rect = new Rectangle();
+                
                 rect.Fill = new SolidColorBrush(Colors.Chocolate);
                 rect.Fill = ImageBrush;
                 rect.Width = W;
                 rect.Height = H;
                 rect.Cursor = Cursors.Hand;
+                rect.Margin = new Thickness(5, 5, 5, 5);
                 return rect;
             }
 
@@ -1136,6 +1535,22 @@ namespace HCIProjekat.views.manager.pages
                 rect.Width = W;
                 rect.Height = H;
                 rect.Cursor = Cursors.Hand;
+                rect.Margin = new Thickness(5, 5, 5, 5);
+                return rect;
+            }
+
+            public static Rectangle buildTrash()
+            {
+                ImageBrush TrashImageBrush = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/trash.png"))
+                };
+                Rectangle rect = new Rectangle();
+                // rect.Fill = new SolidColorBrush(Colors.Chocolate);
+                rect.Fill = TrashImageBrush;
+                rect.Width = W;
+                rect.Height = H;
+                rect.Cursor = Cursors.Hand;
                 return rect;
             }
         }
@@ -1144,7 +1559,7 @@ namespace HCIProjekat.views.manager.pages
         {
             public static int W = 150;
             public static int H = 60;
-            public static SolidColorBrush RowBrush = new SolidColorBrush(Colors.AliceBlue);
+            public static SolidColorBrush RowBrush = new((Color)ColorConverter.ConvertFromString("#d5d5ea"));
 
             public static Border buildSingleRow()
             {
@@ -1218,8 +1633,16 @@ namespace HCIProjekat.views.manager.pages
                 return border;
             }
 
+            internal static Border buildByType(model.RowEnum rowType)
+            {
+                if (rowType == model.RowEnum.ALL)
+                    return buildSingleRow();
+                else if (rowType == model.RowEnum.TOP)
+                    return buildTopRow();
+                else
+                    return buildBottomRow();
+            }
         }
-
 
     }
 }

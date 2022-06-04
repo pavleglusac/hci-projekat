@@ -1,3 +1,5 @@
+﻿using HCIProjekat.views.auth;
+using HCIProjekat.views.manager;
 ﻿using HCIProjekat.model;
 using HCIProjekat.views.auth;
 using System;
@@ -29,6 +31,12 @@ namespace HCIProjekat
             InitializeComponent();
             Database.loadData();
             MainFrame.Content = new Login();
+        }
+
+        public MainWindow(model.Train train)
+        {
+            InitializeComponent();
+            MainFrame.Content = new ManagerNavigationLayout(train);
         }
     }
 }
