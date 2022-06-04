@@ -38,6 +38,7 @@ namespace HCIProjekat.views.auth
             string password = passwordField.Password;
             System.Diagnostics.Debug.WriteLine(email);
             System.Diagnostics.Debug.WriteLine(password);
+            ShowComponent(new ManagerNavigationLayout());
 
             ((TextBox)emailField).Text = ((TextBox)emailField).Text;
 
@@ -48,7 +49,6 @@ namespace HCIProjekat.views.auth
             }
             else if (email == "admin" && password == "test")
             {
-                ShowComponent(new ManagerNavigationLayout());
             }
             else
             {

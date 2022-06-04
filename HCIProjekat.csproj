@@ -19,11 +19,25 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Maps.MapControl.WPF" Version="1.0.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="assets\logo3.png" />
     <Resource Include="assets\seat.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="views\manager\pages\UpdateTrain.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

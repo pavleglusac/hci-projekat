@@ -21,16 +21,27 @@ namespace HCIProjekat.views.manager.pages
     /// <summary>
     /// Interaction logic for SystemManagment.xaml
     /// </summary>
-    public partial class SystemManagment : Page
+    public partial class UpdateTrain : Page
     {
+        class FilterViewModel
+        {
+            public IEnumerable<string> DataSource { get; set; }
+
+            public FilterViewModel()
+            {
+                DataSource = Database.getTrainNames();
+            }
+        }
+
         int pinNumber = 1;
         int numbersPressed = 0;
         int numberPressed = 0;
         Vector _mouseToMarker;
         private bool _dragPin;
-        public Pushpin SelectedPushpin{get; set;}
+        public IEnumerable<string> DataSource { get; set; }
+        public Pushpin SelectedPushpin{get; set; }
         CancellationTokenSource timeout { get; set; }
-        public SystemManagment()
+        public UpdateTrain()
         {
             InitializeComponent();
             //Set focus on map
@@ -42,6 +53,27 @@ namespace HCIProjekat.views.manager.pages
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
             MapWithEvents.KeyDown += new KeyEventHandler(preventDefault);
+            Cmb.DropDownClosed += new EventHandler(ComboBox_DropDownClosed);
+            FilterViewModel vm = new FilterViewModel();
+            this.DataContext = vm;
+        }
+
+
+        private void Cmb_KeyUp(object sender, KeyEventArgs e)
+        {
+            CollectionView itemsViewOriginal = (CollectionView)CollectionViewSource.GetDefaultView(Cmb.ItemsSource);
+
+            itemsViewOriginal.Filter = ((o) =>
+            {
+                if (String.IsNullOrEmpty(Cmb.Text)) return true;
+                else
+                {
+                    if (((string)o).Contains(Cmb.Text)) return true;
+                    else return false;
+                }
+            });
+
+            itemsViewOriginal.Refresh();
         }
 
         void preventDefault(object sender, KeyEventArgs e)
@@ -107,7 +139,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
-            { 
+            {
                 numberPressed *= (numbersPressed == 0) ? 0 : Convert.ToInt32(Math.Pow(10, numbersPressed));
                 numberPressed += (e.Key.ToString()[e.Key.ToString().Length - 1] - 48);
                 numbersPressed++;
@@ -147,6 +179,7 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+
         public CancellationTokenSource SetTimeout(Action action, int millis)
         {
 
@@ -163,8 +196,8 @@ namespace HCIProjekat.views.manager.pages
 
         public void ClearTimeout(CancellationTokenSource cts)
         {
-            if(cts!= null)
-            cts.Cancel();
+            if (cts != null)
+                cts.Cancel();
         }
 
         void updatePushpinsNumber(int deletedNumber)
@@ -182,6 +215,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
         }
+
         private void MapWithEvents_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -219,7 +253,7 @@ namespace HCIProjekat.views.manager.pages
                 if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Green)).ToString()))
                 {
                     MapWithEvents.Children.Remove(SelectedPushpin);
-                    if(!Int32.TryParse(SelectedPushpin.Content.ToString(),out _))
+                    if (!Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
                     {
                         return;
                     }
@@ -304,7 +338,6 @@ namespace HCIProjekat.views.manager.pages
                         Pushpin pin = new Pushpin();
                         pin.Location = station.location;
                         pin.Background = new SolidColorBrush(Colors.Orange);
-                        pin.Content = "";
                         pushpinsToAdd.Add(pin);
                         pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
                         pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
@@ -342,11 +375,19 @@ namespace HCIProjekat.views.manager.pages
         {
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Dictionary<Station,int> trainsStations = new Dictionary<Station, int>();
+            Train t = null;
+            foreach (Train train in Database.trains)
+            {
+                if (train.name == Cmb.SelectedItem)
+                {
+                    t = train;
+                }
+            }
             foreach (Pushpin child in MapWithEvents.Children)
             {
                 if(child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
                 {
-                    trainsStations.Add(Database.getOrAddStation(child.Location),Int32.Parse(child.Content.ToString()));
+                    trainsStations.Add(Database.getOrAddStation(child.Location), Int32.Parse(child.Content.ToString()));
                 }
                 foreach (Station s in Database.stations)
                 {
@@ -356,10 +397,59 @@ namespace HCIProjekat.views.manager.pages
                     }
                 }
             }
-            Train train = new Train(textBoxTrainName.Text, trainsStations, new Timetable());
-            Database.trains.Add(train);
+            t.updateStations(trainsStations);
         }
 
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            reloadStations();
+        }
+        private void reloadStations()
+        {
+
+            List<Pushpin> pushpinsToAdd = new List<Pushpin>();
+            Train trainToAdd;
+            foreach (Train train in Database.trains)
+            {
+                if (train.name == Cmb.SelectedItem)
+                {
+                    removeAllPushpins();
+                    foreach (Station station in train.stations.Keys)
+                    {
+                        Pushpin pin = new Pushpin();
+                        pin.Location = station.location;
+                        pin.Background = new SolidColorBrush(Colors.Green);
+                        pin.Content = train.stations[station];
+                        pushpinsToAdd.Add(pin);
+                        pinNumber++;
+                        pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
+                        pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
+                    }
+                    break;
+                }
+            }
+            foreach (Pushpin pushpin in pushpinsToAdd)
+            {
+                MapWithEvents.Children.Add(pushpin);
+                pushpin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
+                pushpin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
+            }
+        }
+
+        private void removeAllPushpins()
+        {
+
+            List<Pushpin> pushpinsToRemove = new List<Pushpin>();
+            foreach (Pushpin child in MapWithEvents.Children)
+            {
+                pushpinsToRemove.Add(child);
+            }
+            foreach (Pushpin pushpin in pushpinsToRemove)
+            {
+                MapWithEvents.Children.Remove(pushpin);
+            }
+            pinNumber = 0;
+        }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

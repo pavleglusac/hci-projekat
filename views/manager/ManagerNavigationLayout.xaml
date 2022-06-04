@@ -47,6 +47,15 @@
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="reportNavButton_Click" >
                 <AccessText Text="Izveštaji" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
+            <Button x:Name="updateTrainNavButton"
+                    Grid.Row="0" Grid.Column="3"
+                    Height="45"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    Foreground="White"
+                    ToolTip="MaterialDesignFlatLightButton"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="updateNavButton_Click" >
+                <AccessText Text="Update Voz" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button>
             <Button x:Name="trainNavButton"
                     Grid.Row="0" Grid.Column="3"
                     Height="45"

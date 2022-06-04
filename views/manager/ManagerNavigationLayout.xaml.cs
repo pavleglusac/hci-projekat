@@ -58,5 +58,12 @@ namespace HCIProjekat.views.manager
             }
             ManagerFrame.Content = trainAddition;
         }
+
+
+        private void updateNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.UpdateTrain();
+
+        }
     }
 }
