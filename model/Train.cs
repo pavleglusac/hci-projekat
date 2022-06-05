@@ -13,7 +13,8 @@ namespace HCIProjekat.model
         public List<Row> LeftRows { get; set; }
         public List<Row> RightRows { get; set; }
         public Dictionary<Station, int> Stations { get; set; }
-        public Timetable Timetable { get; set; }
+        public List<Departure> Timetable { get; set; }
+        public double PricePerMinute { get; set; }
 
         public Train()
         {
@@ -22,18 +23,24 @@ namespace HCIProjekat.model
             Stations = new Dictionary<Station,int>();
         }
 
-        public Train(string name, Dictionary<Station, int> stations, Timetable timetable)
+        public Train(string name, Dictionary<Station, int> stations, List<Departure> timetable, double pricePerMinute)
         {
             this.Name = name;
+            this.LeftRows = new List<Row>();
+            this.RightRows = new List<Row>();
             this.Stations = stations;
             this.Timetable = timetable;
+            this.PricePerMinute = pricePerMinute;
         }
 
 
-        public Train(string name, Timetable timetable)
+        public Train(string name, List<Departure> timetable, double pricePerMinute)
         {
             this.Name = name;
+            this.LeftRows = new List<Row>();
+            this.RightRows = new List<Row>();
             this.Timetable = timetable;
+            this.PricePerMinute = pricePerMinute;
         }
 
         public override string ToString()

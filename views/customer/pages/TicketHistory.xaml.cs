@@ -18,9 +18,9 @@ namespace HCIProjekat.views.customer
     /// <summary>
     /// Interaction logic for ReservationHistory.xaml
     /// </summary>
-    public partial class ReservationHistory : Page
+    public partial class TicketHistory : Page
     {
-        public ReservationHistory()
+        public TicketHistory()
         {
             InitializeComponent();
         }

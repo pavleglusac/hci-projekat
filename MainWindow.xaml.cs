@@ -1,7 +1,6 @@
 ﻿using HCIProjekat.views.auth;
 using HCIProjekat.views.manager;
 ﻿using HCIProjekat.model;
-using HCIProjekat.views.auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;

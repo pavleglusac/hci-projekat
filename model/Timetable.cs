@@ -8,5 +8,11 @@ namespace HCIProjekat.model
 {
     public class Timetable
     {
+        public List<Departure> Departures { get; set; }
+        
+        public Timetable()
+        {
+            Departures = new List<Departure>();
+        }
     }
 }

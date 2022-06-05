@@ -398,7 +398,7 @@ namespace HCIProjekat.views.manager.pages
                     }
                 }
             }
-            Train train = new Train(textBoxTrainName.Text, trainsStations, new Timetable());
+            Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
             Database.Trains.Add(train);
         }
 

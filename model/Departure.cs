@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace HCIProjekat.model
 {
-    internal class Departure
+    public class Departure
     {
-        public string TrainName { get; set; }
         public DateTime DepartureDateTime { get; set; }
         public DateTime ArrivalDateTime { get; set; }
-        public int HourDuration { get; set; }
-        public int MinuteDuration { get; set; }
-        public double Price { get; set; }
 
-        public Departure(string trainName, DateTime departureDateTime, DateTime arrivalDateTime, int hourDuration, int minuteDuration, double price)
+        public Departure(DateTime departureDateTime, DateTime arrivalDateTime)
         {
-            TrainName = trainName;
             DepartureDateTime = departureDateTime;
             ArrivalDateTime = arrivalDateTime;
-            HourDuration = hourDuration;
-            MinuteDuration = minuteDuration;
-            Price = price;
         }
 
         public string GetTripTime()
         {
-            return HourDuration.ToString() + ":" + MinuteDuration.ToString();
+            TimeSpan span = ArrivalDateTime.Subtract(DepartureDateTime);
+            return (span.Hours + 24 * span.Days).ToString() + ":" +
+                ((span.Minutes).ToString().Length == 1 ? "0" + (span.Minutes).ToString() : (span.Minutes).ToString()) + " Hrs";
+        }
+
+        public int GetTripTimeInMinutes()
+        {
+            TimeSpan span = ArrivalDateTime.Subtract(DepartureDateTime);
+            return span.Minutes + (span.Hours + 24 * span.Days) * 60;
         }
     }
 }

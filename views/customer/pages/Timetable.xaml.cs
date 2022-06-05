@@ -25,7 +25,7 @@ namespace HCIProjekat.views.customer
     public partial class Timetable : Page
     {
         List<string> Locations;
-        List<Departure> Departures = new List<Departure>();
+        List<TimetableEntry> DepartureEntries = new List<TimetableEntry>();
         public Timetable()
         {
             InitializeComponent();
@@ -44,19 +44,34 @@ namespace HCIProjekat.views.customer
 
         private void handleFilterClick(object sender, RoutedEventArgs e)
         {
-            Departures = new List<Departure>();
+            DepartureEntries = new List<TimetableEntry>();
+            List<Departure> Departures = new List<Departure>();
             for (int i = 0; i < 10; i++)
             {
-                Departures.Add(new Departure("Soko " + (i%3).ToString(), DateTime.Parse($"2022-06-01T0{i%5}:0{(i * 23) % 10}"), 
-                    DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}"), 2, 30, 800+(i*20)));
+                Departures.Add(new Departure(DateTime.Parse($"2022-06-01T0{i%5}:0{(i * 23) % 10}"), 
+                    DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}")));
             }
-            departuresGrid.ItemsSource = Departures;
+            Train train = new Train("Soko X", Departures, 10);
+            train.Timetable.ForEach(x => DepartureEntries.Add(new TimetableEntry(train, x)));
+            departuresGrid.ItemsSource = DepartureEntries;
         }
 
         private void buyTicketButtonClick(object sender, RoutedEventArgs e)
         {
-            Departure departure = (Departure)((Button)e.Source).DataContext;
-            System.Diagnostics.Debug.WriteLine(departure.DepartureDateTime);
+            TimetableEntry timetableEntry = (TimetableEntry)((Button)e.Source).DataContext;
+            System.Diagnostics.Debug.WriteLine(timetableEntry.Departure.DepartureDateTime);
+        }
+
+
+        private class TimetableEntry
+        {
+            public Train Train { get; set; }
+            public Departure Departure { get; set; }
+            public TimetableEntry(Train train, Departure departure)
+            {
+                Train = train;
+                Departure = departure;
+            }
         }
     }
 }

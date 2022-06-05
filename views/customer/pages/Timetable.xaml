@@ -21,6 +21,7 @@
         <ResourceDictionary>
             <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
             <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+            <converters:PriceConverter x:Key="PriceConverter" />
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
@@ -128,33 +129,39 @@
                                 Width="2*"
                                 Header="Naziv"
                                 IsReadOnly="True"
-                                Binding="{Binding TrainName}"/>
+                                Binding="{Binding Train.Name}"/>
                             <DataGridTextColumn
                                 Width="3*"
                                 Header="Polazak"
                                 IsReadOnly="True"
-                                Binding="{Binding DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
                             <DataGridTextColumn
                                 Width="3*"
                                 Header="Dolazak"
                                 IsReadOnly="True"
-                                Binding="{Binding ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
                             <DataGridTextColumn
                                 Width="2*"
                                 Header="Trajanje"
                                 IsReadOnly="True">
                                 <DataGridTextColumn.Binding>
                                     <MultiBinding Converter="{StaticResource TimeConcatConverter}">
-                                        <Binding Path="DepartureDateTime" />
-                                        <Binding Path="ArrivalDateTime" />
+                                        <Binding Path="Departure.DepartureDateTime" />
+                                        <Binding Path="Departure.ArrivalDateTime" />
                                     </MultiBinding>
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                             <DataGridTextColumn
                                 Width="*"
                                 Header="Cena"
-                                IsReadOnly="True"
-                                Binding="{Binding Price}"/>
+                                IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource PriceConverter}">
+                                        <Binding Path="Train" />
+                                        <Binding Path="Departure" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
                             <DataGridTemplateColumn 
                                 Width="130"
                                 IsReadOnly="True">

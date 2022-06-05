@@ -38,7 +38,7 @@ namespace HCIProjekat.views.customer
 
         private void reservationHistoryNavButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerFrame.Content = new ReservationHistory();
+            CustomerFrame.Content = new TicketHistory();
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
