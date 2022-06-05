@@ -196,9 +196,9 @@ namespace HCIProjekat.views.manager.pages
                       Point.Add(e.GetPosition(MapWithEvents), _mouseToMarker));
                         }
                     }
-                    SelectedPushpin.Location = MapWithEvents.ViewportPointToLocation(
-                      Point.Add(e.GetPosition(MapWithEvents), _mouseToMarker));
-                    e.Handled = true;
+                        SelectedPushpin.Location = MapWithEvents.ViewportPointToLocation(
+                          Point.Add(e.GetPosition(MapWithEvents), _mouseToMarker));
+                        e.Handled = true;
                 }
             }
             MapWithEvents.Focus();
@@ -208,44 +208,82 @@ namespace HCIProjekat.views.manager.pages
         void pin_MouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            SelectedPushpin = sender as Pushpin;
-            _dragPin = true;
-            _mouseToMarker = Point.Subtract(
-              MapWithEvents.LocationToViewportPoint(SelectedPushpin.Location),
-              e.GetPosition(MapWithEvents));
-            if (e.RightButton == MouseButtonState.Pressed)
+            Location oldPushpinLocation = null;
+            if(SelectedPushpin is not null)
             {
-                System.Diagnostics.Debug.WriteLine("----");
-                if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Green)).ToString()))
+                if (SelectedPushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Blue).ToString()))
                 {
-                    MapWithEvents.Children.Remove(SelectedPushpin);
-                    if(!Int32.TryParse(SelectedPushpin.Content.ToString(),out _))
+                    SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
+                }
+                oldPushpinLocation = SelectedPushpin.Location;
+            }
+            SelectedPushpin = sender as Pushpin;
+            List<String> trainNames = Database.getTrainsNamesWithStation(SelectedPushpin.Location);
+            if (trainNames.Count > 0 && (oldPushpinLocation is null || !oldPushpinLocation.Equals((sender as Pushpin).Location)))
+            {
+                if (MessageBox.Show("You are about to edit a station that will affect these trains:" + trainNames,
+                    "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    //_dragPin = true;
+                    if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
                     {
-                        return;
+                        SelectedPushpin.Content = pinNumber++;
                     }
-                    updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
-                    pinNumber--;
-                    System.Diagnostics.Debug.WriteLine("obrisi");
+                    if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Blue)).ToString()))
+                    {
+                        SelectedPushpin.Background = new SolidColorBrush(Colors.Blue);
+                    }
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("promeni bojuuuuuuuuuuuuuuuuu");
-                    SelectedPushpin.Background = new SolidColorBrush(Colors.Orange);
-                    if (!Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
-                    {
-                        return;
-                    }
-                    updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
-                    SelectedPushpin.Content = "";
-                    pinNumber--;
+                    SelectedPushpin = null;
                 }
             }
             else
             {
-                if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Green)).ToString()))
+                SelectedPushpin = sender as Pushpin;
+                _dragPin = true;
+                _mouseToMarker = Point.Subtract(
+                  MapWithEvents.LocationToViewportPoint(SelectedPushpin.Location),
+                  e.GetPosition(MapWithEvents));
+                if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
-                    SelectedPushpin.Content = pinNumber++;
+                    System.Diagnostics.Debug.WriteLine("----"+ SelectedPushpin.Background.ToString()+ "="+ new SolidColorBrush(Colors.Orange).ToString());
+                    if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
+                    {
+                        MapWithEvents.Children.Remove(SelectedPushpin);
+                        if (!Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
+                        {
+                            return;
+                        }
+                        updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
+                        pinNumber--;
+                        System.Diagnostics.Debug.WriteLine("obrisi");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("promeni bojuuuuuuuuuuuuuuuuu");
+                        SelectedPushpin.Background = new SolidColorBrush(Colors.Orange);
+                        if (!Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
+                        {
+                            return;
+                        }
+                        updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
+                        SelectedPushpin.Content = "";
+                        pinNumber--;
+                    }
+                }
+                else
+                {
+                    if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
+                    {
+                        SelectedPushpin.Content = pinNumber++;
+                    }
+                    if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Blue)).ToString()))
+                    {
+                        SelectedPushpin.Background = new SolidColorBrush(Colors.Blue);
+                    }
+
                 }
             }
         }
@@ -276,10 +314,14 @@ namespace HCIProjekat.views.manager.pages
             pin.Location = pinLocation;
             pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
             pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
-            pin.Background = new SolidColorBrush(Colors.Green);
+            pin.Background = new SolidColorBrush(Colors.Blue);
             pin.Content = pinNumber++;
             // Adds the pushpin to the map.
             MapWithEvents.Children.Add(pin);
+            if (SelectedPushpin != null)
+            {
+                SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
+            }
             SelectedPushpin = pin;
             Database.getOrAddStation(pin.Location);
         }
@@ -326,7 +368,7 @@ namespace HCIProjekat.views.manager.pages
             foreach (Pushpin child in MapWithEvents.Children)
             {
                 System.Diagnostics.Debug.WriteLine(child.Background.ToString() + "-"+ new SolidColorBrush(Colors.Green).ToString() + "="+ child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()));
-                if (!child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
+                if (child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                     {
                         pushpinsToRemove.Add(child);
                     }
@@ -344,13 +386,13 @@ namespace HCIProjekat.views.manager.pages
             Dictionary<Station,int> trainsStations = new Dictionary<Station, int>();
             foreach (Pushpin child in MapWithEvents.Children)
             {
-                if(child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
+                if(!child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                 {
                     trainsStations.Add(Database.getOrAddStation(child.Location),Int32.Parse(child.Content.ToString()));
                 }
                 foreach (Station s in Database.Stations)
                 {
-                    if (!child.Location.Equals(s.location) && child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()))
+                    if (!child.Location.Equals(s.location) && !child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                     {
                         pushpinsToAdd.Add(child);
                     }

@@ -19,6 +19,7 @@ namespace HCIProjekat.model
         {
             LeftRows = new List<Row>();
             RightRows = new List<Row>();
+            Stations = new Dictionary<Station,int>();
         }
 
         public Train(string name, Dictionary<Station, int> stations, Timetable timetable)

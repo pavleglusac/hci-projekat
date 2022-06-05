@@ -425,6 +425,7 @@ namespace HCIProjekat.views.manager.pages
                         pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
                         pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
                     }
+                    pinNumber++;
                     break;
                 }
             }

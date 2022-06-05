@@ -38,12 +38,35 @@ namespace HCIProjekat.model
             train3.Name = "Jastreb";
             AddRowsToTrain(train2, RowEnum.ALL, 2);
             AddRowsToTrain(train2, RowEnum.TOP, 2);
+            train1.Stations.Add(Stations[0],1);
+            train2.Stations.Add(Stations[0], 1);
+            train3.Stations.Add(Stations[0], 1);
+            train2.Stations.Add(Stations[2], 2);
+            train3.Stations.Add(Stations[1],2);
 
             Trains.Add(train1);
             Trains.Add(train2);
             Trains.Add(train3);
 
+
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
+        }
+
+        public static List<String> getTrainsNamesWithStation(Location location)
+        {
+            List<String> trainNames =  new List<String>();
+            foreach(var train in Trains)
+            {
+                foreach (var station in train.Stations)
+                {
+                    if (station.Key.location.Equals(location))
+                    {
+                        trainNames.Add(train.Name);
+                        break;
+                    }
+                }
+            }
+            return trainNames;
         }
 
         public static void AddRowsToTrain(Train train, RowEnum type, int numOfRows)
@@ -108,7 +131,6 @@ namespace HCIProjekat.model
                 }
             }
             return addStation(new Station(location));
-
         }
 
         public static void removeStation(Location location)
@@ -129,5 +151,6 @@ namespace HCIProjekat.model
             }
 
         }
+
     }
 }
