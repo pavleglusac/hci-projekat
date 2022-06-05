@@ -61,13 +61,14 @@ namespace HCIProjekat.views.manager
 
         private void trainNavButton_Click(object sender, RoutedEventArgs e)
         {
-            model.Train train = model.Database.Trains[0];
-            if(trainAddition == null)
-            {
-                trainAddition = new pages.TrainAddition(train);
-            }
-            
-            ManagerFrame.Content = trainAddition;
+            //model.Train train = model.Database.Trains[0];
+            //if(trainAddition == null)
+            //{
+            //    trainAddition = new pages.TrainAddition(train);
+            //}
+
+            //ManagerFrame.Content = trainAddition;
+            ManagerFrame.Content = new pages.Trains();
         }
 
 

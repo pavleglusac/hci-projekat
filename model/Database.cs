@@ -62,6 +62,11 @@ namespace HCIProjekat.model
             }
         }
 
+        public static List<Train> SearchTrainsByName(string name)
+        {
+            return Trains.Where(x => x.Name.ToLower().StartsWith(name.ToLower())).ToList();
+        }
+
         public static IEnumerable<string> getTrainNames()
         {
             List<string> trainNames = new List<string>();
