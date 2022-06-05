@@ -46,12 +46,18 @@ namespace HCIProjekat.views.customer
         {
             DepartureEntries = new List<TimetableEntry>();
             List<Departure> Departures = new List<Departure>();
+            Dictionary<Station, int> Stations = new Dictionary<Station, int>();
+            Stations.Add(new Station("Novi Sad"), 0);
+            Stations.Add(new Station("Zrenjanin"), 1);
+            Stations.Add(new Station("Beograd"), 2);
+            Stations.Add(new Station("Subotica"), 3);
+            Train train = new Train("Soko X", Stations, 10);
             for (int i = 0; i < 10; i++)
             {
                 Departures.Add(new Departure(DateTime.Parse($"2022-06-01T0{i%5}:0{(i * 23) % 10}"), 
-                    DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}")));
+                    DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}"), Stations.Keys.ToList()[i%3], Stations.Keys.ToList()[(i+1)% 3]));
             }
-            Train train = new Train("Soko X", Departures, 10);
+            train.Timetable = Departures;
             train.Timetable.ForEach(x => DepartureEntries.Add(new TimetableEntry(train, x)));
             departuresGrid.ItemsSource = DepartureEntries;
         }

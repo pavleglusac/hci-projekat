@@ -10,11 +10,15 @@ namespace HCIProjekat.model
     {
         public DateTime DepartureDateTime { get; set; }
         public DateTime ArrivalDateTime { get; set; }
+        public Station From { get; set; }
+        public Station To { get; set; }
 
-        public Departure(DateTime departureDateTime, DateTime arrivalDateTime)
+        public Departure(DateTime departureDateTime, DateTime arrivalDateTime, Station from, Station to)
         {
             DepartureDateTime = departureDateTime;
             ArrivalDateTime = arrivalDateTime;
+            From = from;
+            To = to;
         }
 
         public string GetTripTime()

@@ -32,7 +32,14 @@ namespace HCIProjekat.model
             this.Timetable = timetable;
             this.PricePerMinute = pricePerMinute;
         }
-
+        public Train(string name, Dictionary<Station, int> stations, double pricePerMinute)
+        {
+            this.Name = name;
+            this.LeftRows = new List<Row>();
+            this.RightRows = new List<Row>();
+            this.Timetable = new List<Departure>();
+            this.PricePerMinute = pricePerMinute;
+        }
 
         public Train(string name, List<Departure> timetable, double pricePerMinute)
         {
