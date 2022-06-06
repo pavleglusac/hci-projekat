@@ -29,16 +29,16 @@
 
             <Image HorizontalAlignment="Left" Grid.Column="0" Source="pack://application:,,,/assets/logo3.png" Width="80" Margin="20 0"/>
 
-            <!-- manager options -->
-            <Button x:Name="systemControlNavButton"
+            <Button x:Name="trainNavButton"
                     Grid.Row="0" Grid.Column="1"
                     Height="45"
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="systemControlNavButton_Click" >
-                <AccessText Text="Upravljanje sistemom" TextWrapping="Wrap" TextAlignment="Center"/>
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="trainNavButton_Click"  >
+                <AccessText Text="Vozovi" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
+            <!-- manager options -->
             <Button x:Name="reportNavButton"
                     Grid.Row="0" Grid.Column="2"
                     Height="45"
@@ -47,24 +47,6 @@
                     ToolTip="MaterialDesignFlatLightButton"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="reportNavButton_Click" >
                 <AccessText Text="Izveštaji" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="updateTrainNavButton"
-                    Grid.Row="0" Grid.Column="3"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="updateNavButton_Click" >
-                <AccessText Text="Update Voz" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="trainNavButton"
-                    Grid.Row="0" Grid.Column="4"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="trainNavButton_Click"  >
-                <AccessText Text="Vozovi" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
 
             <!-- logout -->
