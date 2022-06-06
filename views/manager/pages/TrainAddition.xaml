@@ -93,7 +93,7 @@
                     Background="#2d2c94"
                     Margin="5 0 0 0"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Click="Save_Click">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"/>
                         <TextBlock Text=" Save" VerticalAlignment="Center" />
@@ -116,9 +116,9 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="grid" ShowGridLines="True" AllowDrop="True" Grid.Row="1"  Margin="0 8 0 0">
+        <Grid x:Name="grid" AllowDrop="True" Grid.Row="1" Margin="0 8 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
                 <ColumnDefinition Width="35*"></ColumnDefinition>
                 <ColumnDefinition Width="35*"></ColumnDefinition>
                 <ColumnDefinition Width="20*"></ColumnDefinition>
@@ -128,16 +128,23 @@
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer x:Name="scrollViewer" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Focusable="False">
-                <Grid>
+            <ScrollViewer x:Name="scrollViewer" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Focusable="False" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                <Grid ShowGridLines="True" x:Name="seatsGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="47*"/>
-                        <ColumnDefinition Width="47*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="35*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="rowNumbersStack" Grid.Column="0" Orientation="Vertical"  VerticalAlignment="Top"/>
-                    <StackPanel x:Name="leftRowStack" HorizontalAlignment="Left" Margin="10 0 0 0"  Orientation="Vertical" Grid.Column="1"/>
-                    <StackPanel x:Name="rightRowStack" HorizontalAlignment="Left" Margin="20 0 0 0" Orientation="Vertical" Grid.Column="2"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="20" Height="5*"></RowDefinition>
+                        <RowDefinition MinHeight="400" Height="50*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="leftNumbersStack" Grid.Column="1" Grid.Row="0" Orientation="Horizontal"  VerticalAlignment="Center"/>
+                    <StackPanel x:Name="rightNumbersStack" Grid.Column="2" Grid.Row="0" Orientation="Horizontal"  VerticalAlignment="Center"/>
+
+                    <StackPanel x:Name="rowNumbersStack" Width="Auto" Grid.Column="0" Grid.Row="1" Orientation="Vertical"  VerticalAlignment="Top"/>
+                    <StackPanel x:Name="leftRowStack" Width="Auto" HorizontalAlignment="Left" Margin="10 0 0 0"  Orientation="Vertical" Grid.Column="1" Grid.Row="1"/>
+                    <StackPanel x:Name="rightRowStack" Width="Auto" HorizontalAlignment="Left" Margin="20 0 0 0" Orientation="Vertical" Grid.Column="2" Grid.Row="1"/>
                 </Grid>
             </ScrollViewer>
             <Grid x:Name="toolGrid" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1">
@@ -152,10 +159,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
             </Grid>
-            <StackPanel x:Name="leftNumbersStack" Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center"/>
-            <StackPanel x:Name="rightNumbersStack" Grid.Column="2" Orientation="Horizontal"  VerticalAlignment="Center"/>
+
         </Grid>
     </Grid>
-
 
 </Page>

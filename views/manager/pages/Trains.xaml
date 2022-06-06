@@ -4,11 +4,203 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HCIProjekat.views.manager.pages"
+      xmlns:converters="clr-namespace:HCIProjekat.converters"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Trains">
+      d:DesignHeight="640" d:DesignWidth="1280"
+      Title="Timetable"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"        
+      Background="#EEE"
+      FontFamily="{DynamicResource MaterialDesignFont}">
 
-    <Grid>
-        
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:Trains.OpenSeats}" Executed="OpenSeatsExecuted" />
+    </Page.CommandBindings>
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
+            <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+    
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" Focusable="False" >
+            <materialDesign:DialogHost 
+            x:Name="TrainsDialogHost"
+            Grid.Row="1" DialogTheme="Inherit"
+            IsOpen="{Binding IsDialogOpen}"
+            CloseOnClickAway="True"
+            OverlayBackground="AliceBlue"
+            Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            DialogClosing="Refresh"
+            >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="0 50 0 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                        <StackPanel Grid.Column="1">
+                            <!-- BLUE TITLE STRIP -->
+                            <Border CornerRadius="10,10,0,0" Background="#2d2c94">
+                                <StackPanel ClipToBounds="True" Height="50">
+                                    <TextBlock
+                                        Margin="20 18 0 0"
+                                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                        Foreground="White"
+                                        Text="Pretraga" />
+                                </StackPanel>
+                            </Border>
+
+                            <Grid Margin="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <ComboBox 
+                                          x:Name="TrainSearchInput"
+                                          materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.HintOpacity=".26"
+                                          IsEditable="True" FontSize="24" Grid.ColumnSpan="2">
+
+                                </ComboBox>
+
+                                <Button
+                                    Grid.Row="1" Grid.Column="2"
+                                    Margin="15 20 7 7"
+                                    Height="50"
+                                    FontSize="18"
+                                    materialDesign:ButtonAssist.CornerRadius="5"
+                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                    Content="Potvrdi"
+                                    Background="#2d2c94"
+                                    Foreground="White"
+                                    Click="handleFilterClick"/>
+                                <Button
+                                    Grid.Row="1" Grid.Column="3"
+                                    Margin="7 20 7 7"
+                                    Height="50"
+                                    FontSize="18"
+                                    materialDesign:ButtonAssist.CornerRadius="5"
+                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                    Content="Dodaj voz"
+                                    Background="#2d2c94"
+                                    Foreground="White"
+                                    Click="handleFilterClick"/>
+                            </Grid>
+
+
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            
+                <Grid Grid.Row="1" Margin="0 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid
+                        x:Name="trainsGrid"
+                        Grid.Column="1"
+                        CanUserAddRows="False"
+                        SelectionUnit="Cell"
+                        SelectionMode="Extended"
+                        AutoGenerateColumns="False"
+                        CanUserResizeRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="4*"
+                                Header="Naziv"
+                                IsReadOnly="True"
+                                Binding="{Binding Name}"
+                                FontSize="20"/>
+
+                            <DataGridTemplateColumn 
+                                Width="180"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Alarm" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                <TextBlock Text="Redovi vožnje"></TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+
+
+                            <DataGridTemplateColumn 
+                                Width="180"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                        Background="#2d2c94"
+                                        FontSize="14"
+                                        Height="28"
+                                        Command="{x:Static local:Trains.OpenSeats}"
+                                        CommandParameter="{Binding Name}"
+                                        IsEnabled="True">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="SofaSingleOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                <TextBlock Text="Sedšta" ></TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn 
+                                Width="180"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Train" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                <TextBlock Text="Stanice"></TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </Grid>
+            </materialDesign:DialogHost>
+        </ScrollViewer>
     </Grid>
 </Page>

@@ -1426,7 +1426,12 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
-        
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            HistoryAction();
+            Train ct = history.CurrentTrain();
+            Database.UpdateTrain(history.History[0], ct);
+        }
 
         private void RemoveEmptyRows()
         {

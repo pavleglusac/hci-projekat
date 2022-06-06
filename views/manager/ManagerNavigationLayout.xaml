@@ -64,7 +64,7 @@
                     Foreground="White"
                     ToolTip="MaterialDesignFlatLightButton"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="trainNavButton_Click"  >
-                <AccessText Text="Voz" TextWrapping="Wrap" TextAlignment="Center"/>
+                <AccessText Text="Vozovi" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
 
             <!-- logout -->

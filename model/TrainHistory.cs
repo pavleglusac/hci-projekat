@@ -52,5 +52,11 @@ namespace HCIProjekat.model
         {
             return Index < History.Count() - 1;
         }
+
+        public Train CurrentTrain()
+        {
+            if (Index == -1) return null;
+            return History[Index];
+        }
     }
 }

@@ -85,6 +85,16 @@ namespace HCIProjekat.model
             }
         }
 
+        public static List<Train> SearchTrainsByName(string name)
+        {
+            return Trains.Where(x => x.Name.ToLower().StartsWith(name.ToLower())).ToList();
+        }
+
+        public static Train GetTrainByName(string name)
+        {
+            return Trains.Where(x => x.Name == name).First();
+        }
+
         public static IEnumerable<string> getTrainNames()
         {
             List<string> trainNames = new List<string>();
@@ -152,5 +162,32 @@ namespace HCIProjekat.model
 
         }
 
+        public static void UpdateTrain(Train train, Train ct)
+        {
+            Train oldTrain = Trains.Where(x => x.Name == train.Name).First();
+            if (oldTrain == null) return;
+            CopyTrain(oldTrain, ct);
+        }
+
+        public static void CopyTrain(Train train, Train copy)
+        {
+            train.Name = copy.Name;
+            train.LeftRows = copy.LeftRows;
+            train.RightRows = copy.RightRows;
+            train.Stations = copy.Stations;
+            train.Timetable = copy.Timetable;
+        }
+
+        public static List<Train> GetUpdatedTrains(List<Train> oldTrains)
+        {
+            List<Train> newList = new List<Train>();
+            oldTrains.ForEach(
+                x =>
+                {
+                    newList.Add(Trains.Where(y => Object.ReferenceEquals(x, y)).First());
+                }
+            );
+            return newList;
+        }
     }
 }
