@@ -43,7 +43,8 @@ namespace HCIProjekat.views.customer
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-                ShowComponent(new auth.Login());
+            model.Database.ClearCurrentUser();
+            ShowComponent(new auth.Login());
         }
 
 

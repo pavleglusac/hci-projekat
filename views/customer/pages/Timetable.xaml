@@ -67,6 +67,7 @@
                                 <ComboBox
                                     Grid.Row="0" Grid.Column="0"
                                     Margin="5"
+                                    Padding="10 13"
                                     x:Name="startComboBox"
                                     FontSize="18"
                                     FontWeight="Medium"
@@ -77,6 +78,7 @@
                                 <ComboBox
                                     Grid.Row="0" Grid.Column="1"
                                     Margin="5"
+                                    Padding="10 13"
                                     FontSize="18"
                                     FontWeight="Medium"
                                     x:Name="destinationComboBox"
@@ -87,6 +89,7 @@
                                 <DatePicker
                                     Grid.Row="0" Grid.Column="2"
                                     Margin="5"
+                                    Padding="10 13"
                                     FontSize="18"
                                     FontWeight="Medium"
                                     materialDesign:HintAssist.Hint="Datum"
@@ -95,7 +98,7 @@
                                 <Button
                                     Grid.Row="1" Grid.Column="2"
                                     Margin="7 20 7 7"
-                                    Height="50"
+                                    Height="46"
                                     FontSize="18"
                                     materialDesign:ButtonAssist.CornerRadius="5"
                                     Style="{StaticResource MaterialDesignFlatDarkBgButton}"

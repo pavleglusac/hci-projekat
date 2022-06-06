@@ -12,6 +12,8 @@ namespace HCIProjekat.model
         public static List<Station> Stations { get; set; }
         public static List<Timetable> Timetable { get; set; }
         public static List<Train> Trains { get; set; }
+        public static List<User> Users { get; set; }
+        public static User? CurrentUser { get; set; }
 
         public static void loadData()
         {
@@ -19,6 +21,7 @@ namespace HCIProjekat.model
             Stations = new List<Station>();
             Timetable = new List<Timetable>();
             Trains = new List<Train>();
+            Users = new List<User>();
             Stations.Add(new Station(new Location(45.246813, 19.853059)));
             Stations.Add(new Station(new Location(46.246813, 19)));
             Stations.Add(new Station(new Location(44.246813, 18)));
@@ -51,6 +54,10 @@ namespace HCIProjekat.model
             Trains.Add(train2);
             Trains.Add(train3);
 
+            User customer1 = new("Marko", "Markovic", "taste", "test", UserType.CUSTOMER);
+            User manager1 = new("Danica", "Daničić", "adhd", "test", UserType.MANAGER);
+            Users.Add(customer1);
+            Users.Add(manager1);
 
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
         }
@@ -165,7 +172,7 @@ namespace HCIProjekat.model
 
         }
 
-        internal static Seat GetSeatFromTrain(Train train, string seatLabel)
+        internal static Seat? GetSeatFromTrain(Train train, string seatLabel)
         {
             foreach(Row row in train.LeftRows.Concat(train.RightRows))
             {
@@ -202,6 +209,20 @@ namespace HCIProjekat.model
                 }
             );
             return newList;
+        }
+        public static User? GetUser(string username, string password)
+        {
+            return Users.FirstOrDefault(x => x.Username == username && x.Password == password);
+        }
+
+        public static void SetCurrentUser(User user)
+        {
+            CurrentUser = user;
+        }
+
+        public static void ClearCurrentUser()
+        {
+            CurrentUser = null;
         }
     }
 }
