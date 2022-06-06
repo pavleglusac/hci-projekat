@@ -24,6 +24,7 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
 
@@ -66,9 +67,18 @@
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="trainNavButton_Click"  >
                 <AccessText Text="Vozovi" TextWrapping="Wrap" TextAlignment="Center"/>
             </Button>
+            <Button x:Name="rideNavButton"
+                    Grid.Row="0" Grid.Column="5"
+                    Height="45"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    Foreground="White"
+                    ToolTip="MaterialDesignFlatLightButton"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Click="rideNavButton_Click"  >
+                <AccessText Text="Istorija vožnji" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button>
 
             <!-- logout -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="5">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="6">
                 <Button x:Name="logoutButton"
                     Width="110"
                     Height="45"
