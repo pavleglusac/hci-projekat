@@ -19,46 +19,31 @@ using System.Windows.Shapes;
 namespace HCIProjekat.views.manager.pages
 {
     /// <summary>
-    /// Interaction logic for SystemManagment.xaml
+    /// Interaction logic for AddTrain.xaml
     /// </summary>
-    public partial class UpdateTrain : Page
+    public partial class AddTrain : Page
     {
-        class FilterViewModel
-        {
-            public IEnumerable<string> DataSource { get; set; }
-
-            public FilterViewModel()
-            {
-                DataSource = Database.getTrainNames();
-            }
-        }
-
         int pinNumber = 1;
         int numbersPressed = 0;
         int numberPressed = 0;
-        string currentTrain;
         Vector _mouseToMarker;
         private bool _dragPin;
-        public IEnumerable<string> DataSource { get; set; }
-        public Pushpin SelectedPushpin{get; set; }
+        public Pushpin SelectedPushpin { get; set; }
         CancellationTokenSource timeout { get; set; }
-        public UpdateTrain(Train train)
+        public AddTrain()
         {
             InitializeComponent();
             //Set focus on map
             MapWithEvents.Focus();
-            currentTrain = train.Name;
+
             MapWithEvents.MouseDoubleClick +=
                 new MouseButtonEventHandler(MapWithEvents_MouseDoubleClick);
             // Fires when the mouse wheel is used to scroll the map
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
             MapWithEvents.KeyDown += new KeyEventHandler(preventDefault);
-           // Cmb.DropDownClosed += new EventHandler(ComboBox_DropDownClosed);
-            FilterViewModel vm = new FilterViewModel();
-            this.DataContext = vm;
-            reloadStations();
         }
+
         void preventDefault(object sender, KeyEventArgs e)
         {
 
@@ -162,7 +147,6 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
-
         public CancellationTokenSource SetTimeout(Action action, int millis)
         {
 
@@ -198,14 +182,13 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
         }
-
         private void MapWithEvents_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 if (_dragPin && SelectedPushpin != null)
                 {
-                    foreach(Station s in Database.Stations)
+                    foreach (Station s in Database.Stations)
                     {
                         if (s.location.Equals(SelectedPushpin.Location))
                         {
@@ -220,7 +203,6 @@ namespace HCIProjekat.views.manager.pages
             }
             MapWithEvents.Focus();
         }
-
 
 
         void pin_MouseDown(object sender, MouseButtonEventArgs e)
@@ -238,7 +220,7 @@ namespace HCIProjekat.views.manager.pages
             SelectedPushpin = sender as Pushpin;
             List<String> trainNames = Database.getTrainsNamesWithStation(SelectedPushpin.Location);
             String showString = " ";
-            foreach (String trainName in trainNames)
+            foreach(String trainName in trainNames)
             {
                 showString += trainName + ", ";
             }
@@ -271,6 +253,7 @@ namespace HCIProjekat.views.manager.pages
                   e.GetPosition(MapWithEvents));
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
+                    System.Diagnostics.Debug.WriteLine("----" + SelectedPushpin.Background.ToString() + "=" + new SolidColorBrush(Colors.Orange).ToString());
                     if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
                     {
                         MapWithEvents.Children.Remove(SelectedPushpin);
@@ -355,25 +338,25 @@ namespace HCIProjekat.views.manager.pages
             bool addPushpin = true;
             foreach (Station station in Database.Stations)
             {
-                    foreach (Pushpin child in MapWithEvents.Children)
+                foreach (Pushpin child in MapWithEvents.Children)
+                {
+                    if (child.Location.Equals(station.location))
                     {
-                        if (child.Location.Equals(station.location))
-                        {
-                            addPushpin = false;
-                        }
+                        addPushpin = false;
+                    }
 
-                    }
-                    if (addPushpin)
-                    {
-                        Pushpin pin = new Pushpin();
-                        pin.Location = station.location;
-                        pin.Background = new SolidColorBrush(Colors.Orange);
-                        pin.Content = "";
-                        pushpinsToAdd.Add(pin);
-                        pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
-                        pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
-                    }
-                    addPushpin = true;
+                }
+                if (addPushpin)
+                {
+                    Pushpin pin = new Pushpin();
+                    pin.Location = station.location;
+                    pin.Background = new SolidColorBrush(Colors.Orange);
+                    pin.Content = "";
+                    pushpinsToAdd.Add(pin);
+                    pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
+                    pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
+                }
+                addPushpin = true;
             }
 
             foreach (Pushpin pushpin in pushpinsToAdd)
@@ -389,10 +372,11 @@ namespace HCIProjekat.views.manager.pages
             List<Pushpin> pushpinsToRemove = new List<Pushpin>();
             foreach (Pushpin child in MapWithEvents.Children)
             {
+                System.Diagnostics.Debug.WriteLine(child.Background.ToString() + "-" + new SolidColorBrush(Colors.Green).ToString() + "=" + child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()));
                 if (child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
-                    {
-                        pushpinsToRemove.Add(child);
-                    }
+                {
+                    pushpinsToRemove.Add(child);
+                }
 
             }
             foreach (Pushpin pushpin in pushpinsToRemove)
@@ -404,19 +388,10 @@ namespace HCIProjekat.views.manager.pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
-            Dictionary<Station,int> trainsStations = new Dictionary<Station, int>();
-            Train t = null;
-            System.Diagnostics.Debug.WriteLine(currentTrain);
-            foreach (Train train in Database.Trains)
-            {
-                if (train.Name == currentTrain)
-                {
-                    t = train;
-                }
-            }
+            Dictionary<Station, int> trainsStations = new Dictionary<Station, int>();
             foreach (Pushpin child in MapWithEvents.Children)
             {
-                if(!child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                if (!child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                 {
                     trainsStations.Add(Database.getOrAddStation(child.Location), Int32.Parse(child.Content.ToString()));
                 }
@@ -428,61 +403,10 @@ namespace HCIProjekat.views.manager.pages
                     }
                 }
             }
-            t.updateStations(trainsStations);
+            Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
+            Database.Trains.Add(train);
         }
 
-        private void ComboBox_DropDownClosed(object sender, EventArgs e)
-        {
-            //currentTrain = Cmb.SelectedItem.ToString();
-            reloadStations();
-        }
-        private void reloadStations()
-        {
-
-            List<Pushpin> pushpinsToAdd = new List<Pushpin>();
-            Train trainToAdd;
-            foreach (Train train in Database.Trains)
-            {
-                if (train.Name == currentTrain)
-                {
-                    removeAllPushpins();
-                    foreach (Station station in train.Stations.Keys)
-                    {
-                        Pushpin pin = new Pushpin();
-                        pin.Location = station.location;
-                        pin.Background = new SolidColorBrush(Colors.Green);
-                        pin.Content = train.Stations[station];
-                        pushpinsToAdd.Add(pin);
-                        pinNumber++;
-                        pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
-                        pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
-                    }
-                    pinNumber++;
-                    break;
-                }
-            }
-            foreach (Pushpin pushpin in pushpinsToAdd)
-            {
-                MapWithEvents.Children.Add(pushpin);
-                pushpin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
-                pushpin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
-            }
-        }
-
-        private void removeAllPushpins()
-        {
-
-            List<Pushpin> pushpinsToRemove = new List<Pushpin>();
-            foreach (Pushpin child in MapWithEvents.Children)
-            {
-                pushpinsToRemove.Add(child);
-            }
-            foreach (Pushpin pushpin in pushpinsToRemove)
-            {
-                MapWithEvents.Children.Remove(pushpin);
-            }
-            pinNumber = 0;
-        }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

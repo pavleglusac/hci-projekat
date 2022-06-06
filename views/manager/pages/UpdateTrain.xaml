@@ -15,17 +15,17 @@
     </Grid.ColumnDefinitions>
 
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10" Background="White">
-            <Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" Background="White" x:Name="ttt">
+            <!---<Grid>
                 <TextBox Background="White" Padding="10 0 25 0"/>
                 <materialDesign:PackIcon Kind="MapMarker" VerticalAlignment="Center" Margin="2"/>
                 <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}">
                     <materialDesign:PackIcon Kind="Search"/>
                 </Button>
-            </Grid>
+            </Grid>-->
             <ListView>
-                <ListViewItem>
-                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220">
+                <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                    <Border  BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="{Binding ActualWidth, ElementName=ttt}">
                         <Grid Height="50">
                             <StackPanel Height="50">
                                 <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked">Toggle all stations</CheckBox>
@@ -33,28 +33,28 @@
                         </Grid>
                     </Border>
                 </ListViewItem>
+                <!--
                 <ListViewItem>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Width="220">Enter train name:</Label>
+                        <Label Grid.Row="0">Enter train name:</Label>
 
-                        <Border BorderBrush="LightGray" Grid.Row="1" BorderThickness="0 0 0 1" Width="220">
+                        <Border BorderBrush="LightGray" Grid.Row="1" BorderThickness="0 0 0 1">
                             <ComboBox x:Name="Cmb"
                           IsTextSearchEnabled="False"
                           IsEditable="True"
                           ItemsSource="{Binding DataSource}"
-                          Width="120"
                           IsDropDownOpen="True"
                           StaysOpenOnEdit="True"
                           KeyUp="Cmb_KeyUp" />
                         </Border> 
                     </Grid>
-                </ListViewItem>
-                <ListViewItem>
-                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="220">
+                </ListViewItem>-->
+                <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1">
                         <Button Click="Button_Click">Update</Button>
                     </Border>
                 </ListViewItem>

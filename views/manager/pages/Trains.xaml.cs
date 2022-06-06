@@ -23,6 +23,10 @@ namespace HCIProjekat.views.manager.pages
 
         public static RoutedCommand OpenSeats = new RoutedCommand();
 
+        public static RoutedCommand OpenUpdate = new RoutedCommand();
+
+        public static RoutedCommand OpenCreate = new RoutedCommand();
+
         public Frame DialogContent = new Frame();
 
         public bool IsDialogOpen = true;
@@ -56,6 +60,28 @@ namespace HCIProjekat.views.manager.pages
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
             DialogContent.Content = new TrainAddition(train);
+            DialogContent.Height = 640;
+            DialogContent.Width = 800;
+            IsDialogOpen = true;
+            TrainsDialogHost.DialogContent = DialogContent;
+            TrainsDialogHost.CloseOnClickAway = true;
+            TrainsDialogHost.ShowDialog(DialogContent);
+        }
+        public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Train train = Database.GetTrainByName((string)e.Parameter);
+            DialogContent.Content = new UpdateTrain(train);
+            DialogContent.Height = 640;
+            DialogContent.Width = 800;
+            IsDialogOpen = true;
+            TrainsDialogHost.DialogContent = DialogContent;
+            TrainsDialogHost.CloseOnClickAway = true;
+            TrainsDialogHost.ShowDialog(DialogContent);
+        }
+
+        public void OpenCreateExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            DialogContent.Content = new AddTrain();
             DialogContent.Height = 640;
             DialogContent.Width = 800;
             IsDialogOpen = true;

@@ -25,7 +25,7 @@ namespace HCIProjekat.views.manager
         public ManagerNavigationLayout()
         {
             InitializeComponent();
-            ManagerFrame.Content = new pages.SystemManagment();
+            ManagerFrame.Content = new pages.Trains();
             model.Database.loadData();
         
         
@@ -74,7 +74,7 @@ namespace HCIProjekat.views.manager
 
         private void updateNavButton_Click(object sender, RoutedEventArgs e)
         {
-            ManagerFrame.Content = new pages.UpdateTrain();
+            //ManagerFrame.Content = new pages.UpdateTrain();
 
         }
     }
