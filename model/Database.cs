@@ -28,21 +28,24 @@ namespace HCIProjekat.model
             train1.Name = "Soko";
             AddRowsToTrain(train1, RowEnum.ALL, 2);
             AddRowsToTrain(train1, RowEnum.TOP, 2);
+            train1.SetSeatLabels();
 
             Train train2 = new Train();
             train2.Name = "Orao";
             AddRowsToTrain(train2, RowEnum.ALL, 2);
             AddRowsToTrain(train2, RowEnum.TOP, 2);
+            train2.SetSeatLabels();
 
             Train train3 = new Train();
             train3.Name = "Jastreb";
-            AddRowsToTrain(train2, RowEnum.ALL, 2);
-            AddRowsToTrain(train2, RowEnum.TOP, 2);
+            AddRowsToTrain(train3, RowEnum.ALL, 2);
+            AddRowsToTrain(train3, RowEnum.TOP, 2);
             train1.Stations.Add(Stations[0],1);
             train2.Stations.Add(Stations[0], 1);
             train3.Stations.Add(Stations[0], 1);
             train2.Stations.Add(Stations[2], 2);
             train3.Stations.Add(Stations[1],2);
+            train3.SetSeatLabels();
 
             Trains.Add(train1);
             Trains.Add(train2);
@@ -160,6 +163,17 @@ namespace HCIProjekat.model
                 t.tryRemoveStation(removeStation.First());
             }
 
+        }
+
+        internal static Seat GetSeatFromTrain(Train train, string seatLabel)
+        {
+            foreach(Row row in train.LeftRows.Concat(train.RightRows))
+            {
+                IEnumerable<Seat> seats = row.Seats.Where(x => x.Label == seatLabel);
+                if (seats.Count() == 0) continue;
+                return seats.First();
+            }
+            return null;
         }
 
         public static void UpdateTrain(Train train, Train ct)

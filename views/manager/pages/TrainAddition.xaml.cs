@@ -286,6 +286,7 @@ namespace HCIProjekat.views.manager.pages
         void HistoryAction()
         {
             Train train = ConvertUIToTrain();
+            train.SetSeatLabels();
             history.AddTrain(train);
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();

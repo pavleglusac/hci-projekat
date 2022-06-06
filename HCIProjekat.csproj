@@ -32,12 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="views\manager\pages\SeatChooser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="views\manager\pages\SeatChooser.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="views\manager\pages\UpdateTrain.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
