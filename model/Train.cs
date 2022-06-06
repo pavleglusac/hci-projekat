@@ -111,6 +111,50 @@ namespace HCIProjekat.model
             }
             return -1;
         }
+
+        public void SetSeatLabels()
+        {
+            
+            int lefts = 0;
+            int rights = 0;
+            int maxLeft = 0;
+            int seatOrder;
+            foreach (var row in LeftRows)
+            {
+                seatOrder = 0;
+                foreach (var rowSeat in row.Seats)
+                {
+                    rowSeat.Label = $"{(char)('A' + lefts)}-{++seatOrder}-L";
+                }
+                lefts++;
+                maxLeft = Math.Max(maxLeft, seatOrder);
+            }
+
+            foreach (var row in RightRows)
+            {
+                seatOrder = 0;
+                foreach (var rowSeat in row.Seats)
+                {
+                    rowSeat.Label = $"{(char)('A' + maxLeft + rights)}-{++seatOrder}-R";
+                }
+                rights++;
+            }
+        }
+
+        public void PrintSeatLabels()
+        {
+            foreach (var row in LeftRows)
+            {
+                foreach (var seat in row.Seats)
+                    System.Diagnostics.Debug.WriteLine($"{seat.Label} ");
+            }
+            System.Diagnostics.Debug.WriteLine("-------------------");
+            foreach (var row in RightRows)
+            {
+                foreach (var seat in row.Seats)
+                    System.Diagnostics.Debug.WriteLine($"{seat.Label} ");
+            }
+        }
     }
 
     public enum RowEnum
