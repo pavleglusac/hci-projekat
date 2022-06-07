@@ -33,6 +33,11 @@ namespace HCIProjekat.model
         public void AddTrain(Train train)
         {
             System.Diagnostics.Debug.WriteLine($"before {History.Count} {Index}");
+            if(train.Equals(CurrentTrain()))
+            {
+                return;
+            }    
+
             if(Index < History.Count() - 1)
             {
                 History.RemoveRange(Index + 1, History.Count() - 1 - Index);

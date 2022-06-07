@@ -60,7 +60,7 @@ namespace HCIProjekat.views.manager.pages
         public void OpenSeatsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
-            MainWindow mw = new MainWindow(new TrainAddition(train));
+            MainWindow mw = new MainWindow(new SeatCreator(train));
             mw.Show();
         }
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)

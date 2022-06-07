@@ -20,7 +20,7 @@ namespace HCIProjekat.views.manager
     /// </summary>
     public partial class ManagerNavigationLayout : Page
     {
-        pages.TrainAddition trainAddition;
+        pages.SeatCreator seatCreator;
 
         public ManagerNavigationLayout()
         {
@@ -31,7 +31,7 @@ namespace HCIProjekat.views.manager
         public ManagerNavigationLayout(model.Train train)
         {
             InitializeComponent();
-            ManagerFrame.Content = new pages.TrainAddition();
+            ManagerFrame.Content = new pages.SeatCreator();
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)

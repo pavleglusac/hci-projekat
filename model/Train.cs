@@ -155,6 +155,29 @@ namespace HCIProjekat.model
                     System.Diagnostics.Debug.WriteLine($"{seat.Label} ");
             }
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            Train other;
+            try { other = (Train)obj; } catch(Exception ex) { return false; }
+            if (other.Name != Name) return false;
+            if (LeftRows.Count() != other.LeftRows.Count()) return false;
+            if (RightRows.Count() != other.RightRows.Count()) return false;
+            for(int i = 0; i < LeftRows.Count(); i++)
+            {
+                if (LeftRows[i].RowType != other.LeftRows[i].RowType) return false;
+                if (LeftRows[i].Seats.Count() != other.LeftRows[i].Seats.Count()) return false;
+            }
+
+            for (int i = 0; i < RightRows.Count(); i++)
+            {
+                if (RightRows[i].RowType != other.RightRows[i].RowType) return false;
+                if (RightRows[i].Seats.Count() != other.RightRows[i].Seats.Count()) return false;
+            }
+
+            return true;
+        }
     }
 
     public enum RowEnum
