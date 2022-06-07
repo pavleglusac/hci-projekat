@@ -71,7 +71,7 @@
                     ToolTip="MaterialDesignFloatingActionMiniDarkButton"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Height="40"
-                    Width="100"
+                    Width="110"
                     Background="#2d2c94"
                     HorizontalAlignment="Left"
                     x:Name="RedoButton"

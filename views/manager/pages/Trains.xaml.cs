@@ -60,13 +60,8 @@ namespace HCIProjekat.views.manager.pages
         public void OpenSeatsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
-            DialogContent.Content = new TrainAddition(train);
-            DialogContent.Height = 640;
-            DialogContent.Width = 800;
-            IsDialogOpen = true;
-            TrainsDialogHost.DialogContent = DialogContent;
-            TrainsDialogHost.CloseOnClickAway = true;
-            TrainsDialogHost.ShowDialog(DialogContent);
+            MainWindow mw = new MainWindow(new TrainAddition(train));
+            mw.Show();
         }
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -78,6 +73,7 @@ namespace HCIProjekat.views.manager.pages
             TrainsDialogHost.DialogContent = DialogContent;
             TrainsDialogHost.CloseOnClickAway = true;
             TrainsDialogHost.ShowDialog(DialogContent);
+            
         }
 
         public void OpenCreateExecuted(object sender, ExecutedRoutedEventArgs e)

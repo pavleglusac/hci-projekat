@@ -37,5 +37,11 @@ namespace HCIProjekat
             InitializeComponent();
             MainFrame.Content = new ManagerNavigationLayout(train);
         }
+
+        public MainWindow(Page page)
+        {
+            InitializeComponent();
+            MainFrame.Content = page;
+        }
     }
 }
