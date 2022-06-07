@@ -74,5 +74,11 @@ namespace HCIProjekat.views.manager
             //ManagerFrame.Content = new pages.UpdateTrain();
 
         }
+
+
+        private void rideNavButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerFrame.Content = new pages.RideHistory();
+        }
     }
 }

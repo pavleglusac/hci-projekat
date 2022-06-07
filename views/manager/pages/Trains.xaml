@@ -21,6 +21,7 @@
         <CommandBinding Command="{x:Static local:Trains.OpenSeats}" Executed="OpenSeatsExecuted" />
         <CommandBinding Command="{x:Static local:Trains.OpenUpdate}" Executed="OpenUpdateExecuted" />
         <CommandBinding Command="{x:Static local:Trains.OpenCreate}" Executed="OpenCreateExecuted" />
+        <CommandBinding Command="{x:Static local:Trains.OpenTimetables}" Executed="OpenTimetablesExecuted" />
     </Page.CommandBindings>
 
     <Page.Resources>
@@ -143,13 +144,16 @@
 
                             <DataGridTemplateColumn 
                                 Width="180"
-                                IsReadOnly="True">
+                                IsReadOnly="True"
+                                >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button 
                                             Background="#2d2c94"
                                             FontSize="14"
-                                            Height="28">
+                                            Height="28"
+                                            Command="{x:Static local:Trains.OpenTimetables}"
+                                            CommandParameter="{Binding Name}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="Alarm" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Redovi vožnje"></TextBlock>

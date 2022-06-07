@@ -22,6 +22,7 @@ namespace HCIProjekat.views.manager.pages
         public List<Train> TrainsData = new List<Train>();
 
         public static RoutedCommand OpenSeats = new RoutedCommand();
+        public static RoutedCommand OpenTimetables = new RoutedCommand();
 
         public static RoutedCommand OpenUpdate = new RoutedCommand();
 
@@ -95,6 +96,18 @@ namespace HCIProjekat.views.manager.pages
             TrainsData.ForEach(x => System.Diagnostics.Debug.WriteLine($"{x.Name} "));
             trainsGrid.Items.Refresh();
             AutoComplete();
+        }
+
+        public void OpenTimetablesExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Train train = Database.GetTrainByName((string)e.Parameter);
+            DialogContent.Content = new TimetableAddition(train);
+            DialogContent.Height = 640;
+            DialogContent.Width = 800;
+            IsDialogOpen = true;
+            TrainsDialogHost.DialogContent = DialogContent;
+            TrainsDialogHost.CloseOnClickAway = true;
+            TrainsDialogHost.ShowDialog(DialogContent);
         }
     }
 }
