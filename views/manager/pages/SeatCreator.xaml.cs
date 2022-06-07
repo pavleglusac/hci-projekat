@@ -215,6 +215,11 @@ namespace HCIProjekat.views.manager.pages
         {
             InitializeComponent();
             this.Focus();
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "seats");
+            }
             AddTools();
             AddShortcuts();
             ConvertTrainToUI(train);

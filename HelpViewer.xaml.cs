@@ -22,6 +22,7 @@ namespace HCIProjekat
         {
             InitializeComponent();
             string curDir = Directory.GetCurrentDirectory();
+            System.Diagnostics.Debug.WriteLine($"HELP KEY {key}");
             string path = String.Format("{0}/help/{1}.html", curDir, key);
             if (!File.Exists(path))
             {

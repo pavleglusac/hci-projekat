@@ -13,7 +13,7 @@ namespace HCIProjekat.model
         public List<Row> LeftRows { get; set; }
         public List<Row> RightRows { get; set; }
         public Dictionary<Station, int> Stations { get; set; }
-        public List<Departure> Timetable { get; set; }
+        public Timetable Timetable { get; set; }
         public double PricePerMinute { get; set; }
 
         public Train()
@@ -29,7 +29,7 @@ namespace HCIProjekat.model
             this.LeftRows = new List<Row>();
             this.RightRows = new List<Row>();
             this.Stations = stations;
-            this.Timetable = timetable;
+            this.Timetable = new Timetable { Departures = timetable };
             this.PricePerMinute = pricePerMinute;
         }
         public Train(string name, Dictionary<Station, int> stations, double pricePerMinute)
@@ -37,7 +37,7 @@ namespace HCIProjekat.model
             this.Name = name;
             this.LeftRows = new List<Row>();
             this.RightRows = new List<Row>();
-            this.Timetable = new List<Departure>();
+            this.Timetable = new Timetable { Departures = new List<Departure>() };
             this.PricePerMinute = pricePerMinute;
         }
 
@@ -46,7 +46,7 @@ namespace HCIProjekat.model
             this.Name = name;
             this.LeftRows = new List<Row>();
             this.RightRows = new List<Row>();
-            this.Timetable = timetable;
+            this.Timetable = new Timetable { Departures = timetable };
             this.PricePerMinute = pricePerMinute;
         }
 
@@ -63,6 +63,16 @@ namespace HCIProjekat.model
                 s += $"{row.RowType} -> {row.Seats.Count()}\n";
             }
             return s;
+        }
+
+        public Station GetFirstStation()
+        {
+            return Stations.Where(k => k.Value == 1).Select(k => k.Key).First();
+        }
+
+        public Station GetLastStation()
+        {
+            return Stations.Where(k => k.Value == Stations.Count).Select(k => k.Key).First();
         }
 
 

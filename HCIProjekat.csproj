@@ -14,9 +14,14 @@
     <None Remove="assets\trash.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
+    <None Remove="help\seats.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="help\seats.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Content>
     <Content Include="help\err.html">
       <SubType>Component</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
