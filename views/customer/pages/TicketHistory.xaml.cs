@@ -52,6 +52,15 @@ namespace HCIProjekat.views.customer
         private void CancelReservationButtonClick(object sender, RoutedEventArgs e)
         {
             Ticket reservation = (Ticket)((Button)e.Source).DataContext;
+            MessageBoxResult messageBoxResult =
+                MessageBox.Show("Da li ste sigurni da želite poništiti rezervaciju?",
+                "Poništavanje rezervacije", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (messageBoxResult == MessageBoxResult.Yes)
+                CancelReservation(reservation);
+        }
+        
+        private void CancelReservation(Ticket reservation)
+        {
             Database.DeleteReservation(reservation);
             GetTickets();
             ShowReservations();
