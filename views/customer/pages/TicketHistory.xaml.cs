@@ -33,11 +33,11 @@ namespace HCIProjekat.views.customer
 
         private void ShowReservations()
         {
+            reservationHistoryGrid.ItemsSource = Tickets.FindAll(x => x.Status == TicketStatus.RESERVED);
             if (Tickets.Any(x => x.Status == TicketStatus.RESERVED))
-            {
-                reservationHistoryGrid.ItemsSource = Tickets.FindAll(x => x.Status == TicketStatus.RESERVED);
                 reservationsComponent.Visibility = Visibility.Visible;
-            }
+            else
+                reservationsComponent.Visibility = Visibility.Collapsed;
         }
 
         private void GetTickets()
