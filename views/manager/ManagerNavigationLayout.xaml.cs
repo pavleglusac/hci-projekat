@@ -35,51 +35,9 @@ namespace HCIProjekat.views.manager
             ManagerFrame.Content = new SeatCreator();
         }
 
-        private void logoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            model.Database.ClearCurrentUser();
-            ShowComponent(new auth.Login());
-        }
-
         private void ShowComponent(object component)
         {
             NavigationService?.Navigate(component);
-        }
-
-        private void systemControlNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            ManagerFrame.Content = new SystemManagment();
-        }
-
-        private void reportNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            ManagerFrame.Content = new Report();
-
-        }
-
-        private void trainNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            //model.Train train = model.Database.Trains[0];
-            //if(trainAddition == null)
-            //{
-            //    trainAddition = new TrainAddition(train);
-            //}
-
-            //ManagerFrame.Content = trainAddition;
-            ManagerFrame.Content = new Trains();
-        }
-
-
-        private void updateNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            //ManagerFrame.Content = new UpdateTrain();
-
-        }
-
-
-        private void rideNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            ManagerFrame.Content = new RideHistory();
         }
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
         {
