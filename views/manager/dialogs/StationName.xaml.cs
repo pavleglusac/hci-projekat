@@ -26,25 +26,25 @@ namespace HCIProjekat.views.manager.dialogs
         public Location currentLocation;
         public Pushpin pushpin;
         public Frame thisFrame;
-        public DialogHost kruh;
+        public DialogHost hostDialog;
         public int pinNum;
         public Map map;
-        Func<int> MethodNamee;
-        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> MethodName)
+        Func<int> parentMethod;
+        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodd)
         {
             currentLocation = pin.Location;
+            parentMethod = parentMethodd;
             pushpin = pin;
-            kruh = dialog;
+            hostDialog = dialog;
             map = MapWithEvents;
-            MethodNamee = MethodName;
             InitializeComponent();
         }
-        public StationName(Pushpin pin, ref DialogHost bruh,string name)
+        public StationName(Pushpin pin, ref DialogHost dialog, string name)
         {
-            currentLocation = pin.Location;
-            pushpin = pin;
-            kruh = bruh;
             map = null;
+            pushpin = pin;
+            currentLocation = pin.Location;
+            hostDialog = dialog;
             InitializeComponent();
             textBoxTrainName.Text = name;
         }
@@ -55,16 +55,16 @@ namespace HCIProjekat.views.manager.dialogs
             Database.getOrAddStation(currentLocation);
             Database.setName(currentLocation, textBoxTrainName.Text);
             pushpin.ToolTip = Database.getOrAddStation(pushpin.Location).Name;
-            kruh.IsOpen = false;
             if (map != null)
             {
                 map.Children.Add(pushpin);
-                pushpin.Content = MethodNamee();
+                pushpin.Content = parentMethod();
             }
+            hostDialog.IsOpen = false;
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            kruh.IsOpen = false;
+            hostDialog.IsOpen = false;
 
         }
     }
