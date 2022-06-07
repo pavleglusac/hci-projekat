@@ -5,7 +5,7 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	  xmlns:local="clr-namespace:HCIProjekat.views.manager.pages"
 	  mc:Ignorable="d" 
-	  d:DesignHeight="450" d:DesignWidth="800"
+	  d:DesignHeight="640" d:DesignWidth="1000"
 	  Title="TimetableAddition"
 	  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -14,149 +14,214 @@
 	  TextOptions.TextFormattingMode="Ideal" 
 	  TextOptions.TextRenderingMode="Auto"        
 	  Background="#EEE"
+      xmlns:converters="clr-namespace:HCIProjekat.converters"
 	  FontFamily="{DynamicResource MaterialDesignFont}">
 
-	<Grid>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0*"/>
-				<ColumnDefinition Width="20*"/>
-				<ColumnDefinition Width="0*"/>
-			</Grid.ColumnDefinitions>
-			<Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
-				<StackPanel Grid.Column="1">
-					<!-- BLUE TITLE STRIP -->
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:TimetableAddition.RemoveDeparture}" Executed="RemoveDeparture_Executed" />
+    </Page.CommandBindings>
 
-					<StackPanel ClipToBounds="True" Height="50">
-						<TextBlock
-										Margin="20 18 0 0"
-										Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-										Foreground="White"
-										Text="Pretraga i filtriranje" />
-					</StackPanel>
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
+            <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+            <converters:PriceConverter x:Key="PriceConverter" />
+            <converters:DateTimeToTimeConverter x:Key="DateTimeToTimeConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
 
-					<Grid Margin="20">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
+    <Grid Background="White">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="90*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-						<TextBox
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    Height="40"
+                    Width="100"
+                    Background="#2d2c94"
+                    Margin="25 0 0 0"
+                    IsEnabled="False"
+                    x:Name="UndoButton"
+                    HorizontalAlignment="Left" Click="Undo_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
+                        <TextBlock Text="Nazad" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    IsEnabled="False"
+                    Height="40"
+                    Width="110"
+                    Background="#2d2c94"
+                    HorizontalAlignment="Left"
+                    x:Name="RedoButton"
+                    Margin="5 0 0 0"
+                    Click="Redo_Click">
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
+                        <TextBlock Text="Napred" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <Border Grid.Column="1" Grid.Row="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                <StackPanel Grid.Column="1">
+                    <!-- BLUE TITLE STRIP -->
+
+                    <Grid Margin="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="200"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox
 						  materialDesign:HintAssist.Hint="Polazak"
 						  materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
 						  materialDesign:HintAssist.FloatingScale="0.50"
 						  Text="Polazak"
-						  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+						  Style="{StaticResource MaterialDesignOutlinedTextBox}"
 						  FontSize="24"
 						  IsReadOnly="True"
-						  Margin="5 0 20 0"
+                            Grid.Column="1"
+                          x:Name="DepartureLocation"
 							/>
 
-						<TextBox
+                        <TextBox
 						  materialDesign:HintAssist.Hint="Dolazak"
 						  materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
 						  materialDesign:HintAssist.FloatingScale="0.50"
 						  Text="Dolazak"
-						  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+						  Style="{StaticResource MaterialDesignOutlinedTextBox}"
 						  FontSize="24"
 						  IsReadOnly="True"
-						  Grid.Column="0"
-						  Grid.Row="1"
-							Margin="5 30 20 0"
+						  Grid.Column="3"
+                          x:Name="ArrivalLocation"
 							/>
 
-                        <DatePicker
-									Grid.Row="0" Grid.Column="1"
-									Margin="5 0 20 0"
-									FontSize="18"
-									FontWeight="Medium"
-									materialDesign:HintAssist.Hint="Datum"
-									ToolTip="Datum polaska"
-									Style="{StaticResource MaterialDesignOutlinedDatePicker}">
-                            <DatePicker.SelectedDate>
-                                <Binding Path="StartDate" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <local:DateValidationRule ValidatesOnTargetUpdated="True"></local:DateValidationRule>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
+                        <materialDesign:PackIcon Kind="ArrowRight" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center" Height="30" Width="30"/>
 
                         <materialDesign:TimePicker
 						  materialDesign:HintAssist.Hint="Vreme"
 						  IsInvalidTextAllowed="True"
 						  Is24Hours="True"
 						  FontSize="18"
-						  VerticalAlignment="Center"
-						  Grid.Column="2"
-						  Name="TimeStart">
-							<materialDesign:TimePicker.Text>
-								<Binding Path="TimeStartInput" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
-									<Binding.ValidationRules>
-										<local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
-									</Binding.ValidationRules>
-								</Binding>
-							</materialDesign:TimePicker.Text>
-						</materialDesign:TimePicker>
+						  Name="TimeStart" Grid.Row="2" Grid.Column="1">
+                            <materialDesign:TimePicker.Text>
+                                <Binding Path="TimeStartInput" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </materialDesign:TimePicker.Text>
+                        </materialDesign:TimePicker>
 
-
-						<DatePicker
-									Grid.Row="1" Grid.Column="1"
-									Margin="5 30 20 0"
-									FontSize="18"
-									FontWeight="Medium"
-									materialDesign:HintAssist.Hint="Datum"
-									ToolTip="Datum polaska"
-									Style="{StaticResource MaterialDesignOutlinedDatePicker}">
-							<DatePicker.SelectedDate>
-                                <Binding Path="EndDate" UpdateSourceTrigger="PropertyChanged">
-									<Binding.ValidationRules>
-                                        <local:DateValidationRule ValidatesOnTargetUpdated="True"></local:DateValidationRule>
-									</Binding.ValidationRules>
-								</Binding>
-							</DatePicker.SelectedDate>
-						</DatePicker>
-
-						<materialDesign:TimePicker
+                        <materialDesign:TimePicker
 							materialDesign:HintAssist.Hint="Vreme"
-							Margin="0 30 0 0"
 							IsInvalidTextAllowed="True"
 							Is24Hours="True"
 							FontSize="18"
-							VerticalAlignment="Center"
-							Grid.Row="1"
-							Grid.Column="2">
-							<materialDesign:TimePicker.Text>
-								<Binding
+							Grid.Row="2"
+							Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                            <materialDesign:TimePicker.Text>
+                                <Binding
 									Path="TimeEndInput" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
-									<Binding.ValidationRules>
-										<local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
-									</Binding.ValidationRules>
-								</Binding>
-							</materialDesign:TimePicker.Text>
-						</materialDesign:TimePicker>
+                                    <Binding.ValidationRules>
+                                        <local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </materialDesign:TimePicker.Text>
+                        </materialDesign:TimePicker>
 
-						<Button
-									Grid.Row="2" Grid.Column="2"
-									Margin="7 20 7 7"
+                        <Button
+									Grid.Row="3" Grid.Column="3"
+									Margin="7 80 7 7"
 									Height="50"
 									FontSize="18"
 									materialDesign:ButtonAssist.CornerRadius="5"
 									Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-									ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
-									Content="Potvrdi"
+									ToolTip="Dodaj nov red vožnje"
+									Content="Dodaj"
 									Background="#2d2c94"
 									Foreground="White"
+                            Click="AddDeparture"
 									/>
-					</Grid>
-				</StackPanel>
-			</Border>
-		</Grid>
-	</Grid>
+
+                        <DataGrid
+                        x:Name="timetablesGrid"
+                        Margin="0 0 30 0"
+                        Grid.RowSpan="6"
+                        CanUserAddRows="False"
+                        SelectionUnit="Cell"
+                        SelectionMode="Extended"
+                        VerticalAlignment="Top"
+                        AutoGenerateColumns="False"
+                        CanUserResizeRows="False">
+                            <DataGrid.Columns>
+                                
+
+                                <DataGridTextColumn
+                                Width="2*"
+                                Header="Polazak"
+                                IsReadOnly="True"
+                                Binding="{Binding DepartureDateTime,
+                                        Converter={StaticResource DateTimeToTimeConverter}}"/>
+
+                                <DataGridTextColumn
+                                Width="2*"
+                                Header="Dolazak"
+                                IsReadOnly="True"
+                                Binding="{Binding ArrivalDateTime,
+                                        Converter={StaticResource DateTimeToTimeConverter}}"/>
+
+
+                                <DataGridTemplateColumn Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28"
+                                            IsEnabled="True"
+                                            Command="{x:Static local:TimetableAddition.RemoveDeparture}"
+                                            CommandParameter="{Binding DepartureDateTime}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="CloseOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                    <TextBlock Text="Ukloni"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                      </Grid>
+                </StackPanel>
+            </Border>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
 </Page>

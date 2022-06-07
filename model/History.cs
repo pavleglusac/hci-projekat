@@ -6,33 +6,33 @@ using System.Threading.Tasks;
 
 namespace HCIProjekat.model
 {
-    public class TrainHistory
+    public class HistoryManager<T>
     {
-        public List<Train> History { get; set; }
+        public List<T> History { get; set; }
         public int Index { get; set; }
 
-        public TrainHistory()
+        public HistoryManager()
         {
-            History = new List<Train>();
+            History = new List<T>();
             Index = -1;
         }
 
-        public Train Undo()
+        public T? Undo()
         {
-            if (History == null) return null;
-            if (History.Count == 0 || Index == 0) return null;
+            if (History == null) return default(T);
+            if (History.Count == 0 || Index == 0) return default;
             return History[--Index];
         }
 
-        public Train Redo()
+        public T? Redo()
         {
-            if(History.Count() == Index + 1) return null;
+            if(History.Count() == Index + 1) return default;
             return History[++Index];
         }
 
-        public void AddTrain(Train train)
+        public void AddEntry(T other)
         {
-            if(train.Equals(CurrentTrain()))
+            if(other.Equals(CurrentEntry()) && Index != -1)
             {
                 return;
             }    
@@ -42,7 +42,7 @@ namespace HCIProjekat.model
                 History.RemoveRange(Index + 1, History.Count() - 1 - Index);
             }
             Index++;
-            History.Add(train);
+            History.Add(other);
         }
 
         public Boolean CanUndo()
@@ -55,9 +55,9 @@ namespace HCIProjekat.model
             return Index < History.Count() - 1;
         }
 
-        public Train CurrentTrain()
+        public T? CurrentEntry()
         {
-            if (Index == -1) return null;
+            if (Index == -1) return default;
             return History[Index];
         }
     }

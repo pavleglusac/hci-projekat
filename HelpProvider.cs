@@ -19,8 +19,7 @@ namespace HCIProjekat
             obj.SetValue(HelpKeyProperty, value);
         }
 
-        public static readonly DependencyProperty HelpKeyProperty =
-            DependencyProperty.RegisterAttached("HelpKey", typeof(string), typeof(HelpProvider), new PropertyMetadata("index", HelpKey));
+        public static readonly DependencyProperty HelpKeyProperty = DependencyProperty.RegisterAttached("HelpKey", typeof(string), typeof(HelpProvider), new PropertyMetadata("index", HelpKey));
         private static void HelpKey(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //NOOP
