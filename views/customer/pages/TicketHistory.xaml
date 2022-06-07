@@ -34,7 +34,92 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid Margin="0 50 0 50">
+                <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Collapsed" x:Name="reservationsComponent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                        <StackPanel Grid.Column="1">
+                            <!-- BLUE TITLE STRIP -->
+                            <Border CornerRadius="10,10,0,0" Background="#2d2c94">
+                                <StackPanel ClipToBounds="True" Height="50">
+                                    <TextBlock
+                                        Margin="20 18 0 0"
+                                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                        Foreground="White"
+                                        Text="Aktivne rezervacije" />
+                                </StackPanel>
+                            </Border>
+
+                            <DataGrid Margin="20"
+                                x:Name="reservationHistoryGrid"
+                                Grid.Column="1"
+                                CanUserAddRows="False"
+                                SelectionUnit="Cell"
+                                SelectionMode="Extended"
+                                AutoGenerateColumns="False"
+                                CanUserResizeRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Header="Voz"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Train.Name}"/>
+                                    <DataGridTextColumn
+                                        Width="3*"
+                                        Header="Od"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Departure.From.Name}"
+                                        />
+                                    <DataGridTextColumn
+                                        Width="3*"
+                                        Header="Do"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Departure.To.Name}"
+                                        />
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Header="Polazak"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Header="Dolazak"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Header="Trajanje"
+                                        IsReadOnly="True">
+                                        <DataGridTextColumn.Binding>
+                                            <MultiBinding Converter="{StaticResource TimeConcatConverter}">
+                                                <Binding Path="Departure.DepartureDateTime" />
+                                                <Binding Path="Departure.ArrivalDateTime" />
+                                            </MultiBinding>
+                                        </DataGridTextColumn.Binding>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn
+                                        Width="*"
+                                        Header="Cena"
+                                        IsReadOnly="True">
+                                        <DataGridTextColumn.Binding>
+                                            <MultiBinding Converter="{StaticResource PriceConverter}">
+                                                <Binding Path="Train" />
+                                                <Binding Path="Departure" />
+                                            </MultiBinding>
+                                        </DataGridTextColumn.Binding>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                
+                <!-- bought tickets -->
+                <Grid Margin="0 50 0 50" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="15*"/>

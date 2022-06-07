@@ -1,4 +1,5 @@
-﻿using HCIProjekat.views.customer;
+﻿using HCIProjekat.model;
+using HCIProjekat.views.customer;
 using HCIProjekat.views.manager;
 using System;
 using System.Collections.Generic;
@@ -25,34 +26,35 @@ namespace HCIProjekat.views.auth
         public Login()
         {
             InitializeComponent();
-            emailField.Focus();
+            usernameField.Focus();
             DataContext = new LoginInfo("", "");
             loginError.Visibility = Visibility.Visible;
         }
 
-        private void login()
+        private void SignIn()
         {
             // login logic
             hideError();
-            string email = emailField.Text;
+            string username = usernameField.Text;
             string password = passwordField.Password;
-            System.Diagnostics.Debug.WriteLine(email);
+            System.Diagnostics.Debug.WriteLine(username);
             System.Diagnostics.Debug.WriteLine(password);
-            ShowComponent(new ManagerNavigationLayout());
 
-            ((TextBox)emailField).Text = ((TextBox)emailField).Text;
+            ((TextBox)usernameField).Text = ((TextBox)usernameField).Text;
 
             //if successful -> transfer to navigation
-            if (email == "test" && password == "test")
+            User? user = Database.GetUser(username, password);
+            if (user != null)
             {
-                ShowComponent(new CustomerNavigationLayout());
-            }
-            else if (email == "admin" && password == "test")
-            {
+                Database.SetCurrentUser(user);
+                if (user.Type == UserType.CUSTOMER)
+                    ShowComponent(new CustomerNavigationLayout());
+                else
+                    ShowComponent(new ManagerNavigationLayout());
             }
             else
             {
-                if (emailField.Text.Length > 0)
+                if (usernameField.Text.Length > 0)
                 {
                     loginError.Text = "Pogrešne informacije.";
                     loginError.Visibility = Visibility.Visible;
@@ -62,7 +64,7 @@ namespace HCIProjekat.views.auth
 
         private void handleLoginButton(object sender, RoutedEventArgs e)
         {
-            login();   
+            SignIn();   
         }
 
         private void handleLoginKeypress(object sender, KeyEventArgs e)
@@ -70,7 +72,7 @@ namespace HCIProjekat.views.auth
             hideError();
             if (e.Key == Key.Return)
             {
-                login();
+                SignIn();
             }
         }
         
@@ -92,11 +94,11 @@ namespace HCIProjekat.views.auth
     }
     public class LoginInfo
     {
-        public string Email { get; set; }
+        public string Username { get; set; }
         public string LoginError { get; set; }
-        public LoginInfo(string email, string error)
+        public LoginInfo(string username, string error)
         {
-            Email = email;
+            Username = username;
             LoginError = error;
         }
     }

@@ -10,18 +10,24 @@ namespace HCIProjekat.model
     public class Station
     {
         public String Name { get; set; }
-        public Location location { get; set; }
+        public Location Location { get; set; }
+
+        public Station(String name, Location location)
+        {
+            this.Name = name;
+            this.Location = location;
+        }
 
         public Station(Location location)
         {
-            this.Name = "Location";
-            this.location = location;
+            this.Name = "Unnamed Station";
+            this.Location = location;
         }
 
         public Station(String name)
         {
             Name = name;
-            this.location = new Location();
+            this.Location = new Location();
         }
     }
 }

@@ -25,21 +25,18 @@ namespace HCIProjekat.views.manager
         public ManagerNavigationLayout()
         {
             InitializeComponent();
-            ManagerFrame.Content = new pages.Trains();
-            model.Database.loadData();
-        
-        
+            ManagerFrame.Content = new pages.SystemManagment();
         }
 
         public ManagerNavigationLayout(model.Train train)
         {
             InitializeComponent();
             ManagerFrame.Content = new pages.TrainAddition();
-            model.Database.loadData();
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
+            model.Database.ClearCurrentUser();
             ShowComponent(new auth.Login());
         }
 

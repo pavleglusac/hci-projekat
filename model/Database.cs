@@ -12,6 +12,9 @@ namespace HCIProjekat.model
         public static List<Station> Stations { get; set; }
         public static List<Timetable> Timetable { get; set; }
         public static List<Train> Trains { get; set; }
+        public static List<User> Users { get; set; }
+        public static List<Ticket> Tickets { get; set; }
+        public static User? CurrentUser { get; set; }
 
         public static void loadData()
         {
@@ -19,40 +22,87 @@ namespace HCIProjekat.model
             Stations = new List<Station>();
             Timetable = new List<Timetable>();
             Trains = new List<Train>();
-            Stations.Add(new Station(new Location(45.246813, 19.853059)));
-            Stations.Add(new Station(new Location(46.246813, 19)));
-            Stations.Add(new Station(new Location(44.246813, 18)));
+            Users = new List<User>();
+            Tickets = new List<Ticket>();
+            Stations.Add(new Station("Novi Sad", new Location(45.246813, 19.853059)));
+            Stations.Add(new Station("Ečka", new Location(45.315630, 20.442566)));
+            Stations.Add(new Station("Borča", new Location(44.880790, 20.465300)));
 
             System.Diagnostics.Debug.WriteLine("ucitao stanice");
-            Train train1 = new Train();
+            Train train1 = new();
             train1.Name = "Soko";
             AddRowsToTrain(train1, RowEnum.ALL, 2);
             AddRowsToTrain(train1, RowEnum.TOP, 2);
             train1.SetSeatLabels();
+            train1.PricePerMinute = 10;
 
-            Train train2 = new Train();
+            Train train2 = new();
             train2.Name = "Orao";
             AddRowsToTrain(train2, RowEnum.ALL, 2);
             AddRowsToTrain(train2, RowEnum.TOP, 2);
             train2.SetSeatLabels();
+            train2.PricePerMinute = 11;
 
-            Train train3 = new Train();
+            Train train3 = new();
             train3.Name = "Jastreb";
             AddRowsToTrain(train3, RowEnum.ALL, 2);
             AddRowsToTrain(train3, RowEnum.TOP, 2);
             train1.Stations.Add(Stations[0],1);
+            train1.Stations.Add(Stations[1], 2);
             train2.Stations.Add(Stations[0], 1);
-            train3.Stations.Add(Stations[0], 1);
+            train2.Stations.Add(Stations[1], 1);
             train2.Stations.Add(Stations[2], 2);
+            train3.Stations.Add(Stations[0], 1);
             train3.Stations.Add(Stations[1],2);
             train3.SetSeatLabels();
+            train3.PricePerMinute = 12;
 
             Trains.Add(train1);
             Trains.Add(train2);
             Trains.Add(train3);
 
+            Random random = new();
+            Trains.ForEach(x =>
+            {
+                List<Departure> departures = new();
+                for (int i = 0; i < 30; i++)
+                {
+                    DateTime start = DateTime.Now.AddDays(random.Next(-4, 4)).AddHours(random.Next(0, 11)).AddMinutes(random.Next(0, 60));
+                    DateTime end = start.AddHours(random.Next(2, 6)).AddMinutes(random.Next(0, 60));
+                    departures.Add(new Departure(start, end,
+                        x.Stations.Keys.ToList()[i % x.Stations.Count], x.Stations.Keys.ToList()[(i + 1) % x.Stations.Count]));
+                }
+                x.Timetable = departures;
+            });
+
+
+            User customer1 = new("Marko", "Markovic", "test", "test", UserType.CUSTOMER);
+            User customer2 = new("Nikola", "Nikolic", "test2", "test", UserType.CUSTOMER);
+            User manager1 = new("Danica", "Daničić", "adhd", "test", UserType.MANAGER);
+            Users.Add(customer1);
+            Users.Add(customer2);
+            Users.Add(manager1);
+
+            System.Diagnostics.Debug.WriteLine("ucitao korisnike");
+
+            GenerateTestTickets();
 
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
+        }
+
+        private static void GenerateTestTickets()
+        {
+            Random random = new();
+            Trains.ForEach(x =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Tickets.Add(new Ticket(x, x.Timetable[i % x.Timetable.Count], Users[random.Next(0, 2)], new Seat(), TicketStatus.BOUGHT));
+                }
+
+                Tickets.Add(new Ticket(x, x.Timetable[random.Next(0, x.Timetable.Count)], Users[random.Next(0, 2)], new Seat(), TicketStatus.RESERVED));
+
+            });
         }
 
         public static List<String> getTrainsNamesWithStation(Location location)
@@ -62,7 +112,7 @@ namespace HCIProjekat.model
             {
                 foreach (var station in train.Stations)
                 {
-                    if (station.Key.location.Equals(location))
+                    if (station.Key.Location.Equals(location))
                     {
                         trainNames.Add(train.Name);
                         break;
@@ -142,7 +192,7 @@ namespace HCIProjekat.model
             Stations.Add(station);
             foreach (Station s in Stations)
             {
-                if (s.location.Equals(station.location))
+                if (s.Location.Equals(station.Location))
                 {
                     return s;
                 }
@@ -154,7 +204,7 @@ namespace HCIProjekat.model
         {
             foreach (Station station in Stations)
             {
-                if (station.location.Equals(location))
+                if (station.Location.Equals(location))
                 {
                     return station;
                 }
@@ -178,7 +228,7 @@ namespace HCIProjekat.model
             List<Station> removeStation = new List<Station>();
             foreach (Station station in Stations)
             {
-                if (station.location.Equals(location))
+                if (station.Location.Equals(location))
                 {
                     removeStation.Add(station);
                     break;
@@ -192,7 +242,7 @@ namespace HCIProjekat.model
 
         }
 
-        internal static Seat GetSeatFromTrain(Train train, string seatLabel)
+        internal static Seat? GetSeatFromTrain(Train train, string seatLabel)
         {
             foreach(Row row in train.LeftRows.Concat(train.RightRows))
             {
@@ -229,6 +279,26 @@ namespace HCIProjekat.model
                 }
             );
             return newList;
+        }
+
+        public static List<Ticket> GetCurrentUsersTickets()
+        {
+            return Tickets.FindAll(x => x.Owner == CurrentUser);
+        }
+
+        public static User? GetUser(string username, string password)
+        {
+            return Users.FirstOrDefault(x => x.Username == username && x.Password == password);
+        }
+
+        public static void SetCurrentUser(User user)
+        {
+            CurrentUser = user;
+        }
+
+        public static void ClearCurrentUser()
+        {
+            CurrentUser = null;
         }
     }
 }

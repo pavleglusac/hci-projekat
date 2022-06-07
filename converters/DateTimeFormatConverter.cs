@@ -12,7 +12,7 @@ namespace HCIProjekat.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((DateTime)value).ToString("MM/dd/yyyy HH:mm");
+            return ((DateTime)value).ToString("yyyy/MM/dd HH:mm");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

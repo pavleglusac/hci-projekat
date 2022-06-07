@@ -16,29 +16,22 @@
       Background="{DynamicResource MaterialDesignPaper}"
       FontFamily="{DynamicResource MaterialDesignFont}">
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#F0EB36" Offset="0.0"/>
-                <GradientStop Color="#73C269" Offset="0.5"/>
-                <GradientStop Color="#1E91A5" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Background="#A7C7E7">
         <Border CornerRadius="30" Width="450" Height="375" Background="White">
             <StackPanel Width="350" HorizontalAlignment="Center">
 
                 <TextBlock Text="Login" FontSize="28" Margin="0 30 0 30"/>
                 <TextBox
-                        x:Name="emailField"
+                        x:Name="usernameField"
                         FontSize="16"
                         Margin="0 0 0 24"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        materialDesign:HintAssist.Hint="Email"
-                        materialDesign:HintAssist.HelperText="Unesite Vašu email adresu."
+                        materialDesign:HintAssist.Hint="Korisničko ime"
+                        materialDesign:HintAssist.HelperText="Unesite Vaše korisničko ime."
                         KeyDown="handleLoginKeypress">
 
                     <TextBox.Text>
-                        <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
                                 <local:NonEmptyRule/>
                             </Binding.ValidationRules>
