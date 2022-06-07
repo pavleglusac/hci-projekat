@@ -168,7 +168,7 @@ namespace HCIProjekat.views.manager.pages
             }
             if (e.Key == Key.R)
             {
-                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, onModalClose);
+                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, SelectedPushpin.ToolTip.ToString());
                 DialogContent.Height = 250;
                 DialogContent.Width = 500;
                 System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
@@ -402,6 +402,7 @@ namespace HCIProjekat.views.manager.pages
                         pin.Background = new SolidColorBrush(Colors.Orange);
                         pin.Content = "";
                         pushpinsToAdd.Add(pin);
+                        pin.ToolTip = station.Name;
                         pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
                         pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
                     }

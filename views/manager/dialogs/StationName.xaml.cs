@@ -39,25 +39,28 @@ namespace HCIProjekat.views.manager.dialogs
             MethodNamee = MethodName;
             InitializeComponent();
         }
-        public StationName(Pushpin pin, ref DialogHost bruh, Func<int> MethodName)
+        public StationName(Pushpin pin, ref DialogHost bruh,string name)
         {
             currentLocation = pin.Location;
             pushpin = pin;
             kruh = bruh;
             map = null;
-            MethodNamee = MethodName;
             InitializeComponent();
+            textBoxTrainName.Text = name;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             Database.getOrAddStation(currentLocation);
             Database.setName(currentLocation, textBoxTrainName.Text);
             pushpin.ToolTip = Database.getOrAddStation(pushpin.Location).Name;
             kruh.IsOpen = false;
-            pushpin.Content = MethodNamee();
             if (map != null)
+            {
                 map.Children.Add(pushpin);
+                pushpin.Content = MethodNamee();
+            }
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
