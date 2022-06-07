@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Column="1"
                Grid.Row="1"
-               HorizontalAlignment="Center">Please enter station name:</Label>
+               HorizontalAlignment="Center">Unesite ime stanice:</Label>
         <TextBox x:Name="textBoxTrainName"
                  Grid.Column="1"
                  Grid.Row="2"
@@ -36,7 +36,7 @@
                 Width="100"
                 Grid.Column="2"
                 Grid.Row="3">
-            <Button Click="Button_Click_1">Cancel</Button>
+            <Button Click="Button_Click_1">Odustani</Button>
         </Border>
         <DockPanel Width="250"
                    Grid.Column="1"
@@ -44,7 +44,7 @@
             <Button Click="Button_Click"
                     Margin="10"
                     HorizontalAlignment="Right"
-                    Width="100">Add</Button>
+                    Width="100">Prihvati</Button>
         </DockPanel>
     </Grid>
 </Page>

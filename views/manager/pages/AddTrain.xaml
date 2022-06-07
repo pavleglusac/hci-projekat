@@ -44,7 +44,7 @@
                                 <Grid Height="50">
                                     <StackPanel Height="50">
                                         <CheckBox Checked="CheckBox_Checked"
-                                                  Unchecked="CheckBox_Unchecked">Toggle all stations</CheckBox>
+                                                  Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -55,7 +55,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0">Enter train name:</Label>
+                                <Label Grid.Row="0">Unesite ime voza:</Label>
                                 <TextBox x:Name="textBoxTrainName"
                                          Width="{Binding ActualWidth, ElementName=ttt}"
                                          HorizontalAlignment="Stretch"
@@ -69,7 +69,7 @@
                         <ListViewItem>
                             <Border BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1">
-                                <Button Click="Button_Click">Add</Button>
+                                <Button Click="Button_Click">Dodaj</Button>
                             </Border>
                         </ListViewItem>
                         <ListViewItem>

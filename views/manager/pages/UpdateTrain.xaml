@@ -40,7 +40,7 @@
                                 <Grid Height="50">
                                     <StackPanel Height="50">
                                         <CheckBox Checked="CheckBox_Checked"
-                                                  Unchecked="CheckBox_Unchecked">Toggle all stations</CheckBox>
+                                                  Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -48,7 +48,7 @@
                         <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
                             <Border BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1">
-                                <Button Click="Button_Click">Update</Button>
+                                <Button Click="Button_Click">Azuriraj</Button>
                             </Border>
                         </ListViewItem>
                     </ListView>
