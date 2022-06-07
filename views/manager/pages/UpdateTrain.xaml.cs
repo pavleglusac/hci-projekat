@@ -207,9 +207,9 @@ namespace HCIProjekat.views.manager.pages
                 {
                     foreach(Station s in Database.Stations)
                     {
-                        if (s.location.Equals(SelectedPushpin.Location))
+                        if (s.Location.Equals(SelectedPushpin.Location))
                         {
-                            s.location = MapWithEvents.ViewportPointToLocation(
+                            s.Location = MapWithEvents.ViewportPointToLocation(
                       Point.Add(e.GetPosition(MapWithEvents), _mouseToMarker));
                         }
                     }
@@ -357,7 +357,7 @@ namespace HCIProjekat.views.manager.pages
             {
                     foreach (Pushpin child in MapWithEvents.Children)
                     {
-                        if (child.Location.Equals(station.location))
+                        if (child.Location.Equals(station.Location))
                         {
                             addPushpin = false;
                         }
@@ -366,7 +366,7 @@ namespace HCIProjekat.views.manager.pages
                     if (addPushpin)
                     {
                         Pushpin pin = new Pushpin();
-                        pin.Location = station.location;
+                        pin.Location = station.Location;
                         pin.Background = new SolidColorBrush(Colors.Orange);
                         pin.Content = "";
                         pushpinsToAdd.Add(pin);
@@ -422,7 +422,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 foreach (Station s in Database.Stations)
                 {
-                    if (!child.Location.Equals(s.location) && !child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                    if (!child.Location.Equals(s.Location) && !child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                     {
                         pushpinsToAdd.Add(child);
                     }
@@ -449,7 +449,7 @@ namespace HCIProjekat.views.manager.pages
                     foreach (Station station in train.Stations.Keys)
                     {
                         Pushpin pin = new Pushpin();
-                        pin.Location = station.location;
+                        pin.Location = station.Location;
                         pin.Background = new SolidColorBrush(Colors.Green);
                         pin.Content = train.Stations[station];
                         pushpinsToAdd.Add(pin);

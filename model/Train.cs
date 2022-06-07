@@ -80,7 +80,7 @@ namespace HCIProjekat.model
             int idRemoved = -1, i = 0;
             foreach (Station s in Stations.Keys)
             {
-                if (s.location.Equals(station.location))
+                if (s.Location.Equals(station.Location))
                 {
                     stationsToRemove.Add(s);
                     idRemoved = i;
@@ -104,7 +104,7 @@ namespace HCIProjekat.model
         {
             foreach (Station s in Stations.Keys)
             {
-                if (s.location.Equals(location))
+                if (s.Location.Equals(location))
                 {
                     return Stations[s];
                 }
