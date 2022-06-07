@@ -22,6 +22,7 @@
             <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
             <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
             <converters:PriceConverter x:Key="PriceConverter" />
+            <converters:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
@@ -34,7 +35,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Collapsed" x:Name="reservationsComponent">
+                <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Visible" x:Name="reservationsComponent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="15*"/>
@@ -68,13 +69,13 @@
                                         IsReadOnly="True"
                                         Binding="{Binding Train.Name}"/>
                                     <DataGridTextColumn
-                                        Width="3*"
+                                        Width="2*"
                                         Header="Od"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.From.Name}"
                                         />
                                     <DataGridTextColumn
-                                        Width="3*"
+                                        Width="2*"
                                         Header="Do"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.To.Name}"
@@ -83,7 +84,8 @@
                                         Width="2*"
                                         Header="Polazak"
                                         IsReadOnly="True"
-                                        Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                        Binding="{Binding Departure.DepartureDateTime,
+                                        Converter={StaticResource DateTimeFormatConverter}}"/>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Dolazak"
@@ -111,6 +113,28 @@
                                             </MultiBinding>
                                         </DataGridTextColumn.Binding>
                                     </DataGridTextColumn>
+                                    <DataGridTemplateColumn 
+                                        Width="80"
+                                        Header="Poništi"
+                                        IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button
+                                                    Height="25"
+                                                    Width="40"
+                                                    Padding="0"
+                                                    Click="CancelReservationButtonClick"
+                                                    Background="#2d2c94"
+                                                    ToolTip="Poništi rezervaciju"
+                                                    HorizontalAlignment="Center"
+                                                    Visibility="{Binding Departure.DepartureDateTime,
+                                                    Converter={StaticResource DateTimeToVisibilityConverter}}">
+                                                    <materialDesign:PackIcon
+                                                        Kind="CloseThick"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -153,13 +177,13 @@
                                         IsReadOnly="True"
                                         Binding="{Binding Train.Name}"/>
                                     <DataGridTextColumn
-                                        Width="3*"
+                                        Width="2*"
                                         Header="Od"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.From.Name}"
                                         />
                                     <DataGridTextColumn
-                                        Width="3*"
+                                        Width="2*"
                                         Header="Do"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.To.Name}"

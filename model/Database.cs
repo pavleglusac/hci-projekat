@@ -281,6 +281,11 @@ namespace HCIProjekat.model
             return newList;
         }
 
+        public static void DeleteReservation(Ticket reservation)
+        {
+            Tickets.Remove(reservation);
+        }
+
         public static List<Ticket> GetCurrentUsersTickets()
         {
             return Tickets.FindAll(x => x.Owner == CurrentUser);

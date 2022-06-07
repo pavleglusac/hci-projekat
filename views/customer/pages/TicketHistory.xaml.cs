@@ -48,5 +48,13 @@ namespace HCIProjekat.views.customer
         {
             ticketHistoryGrid.ItemsSource = Tickets.FindAll(x => x.Status == TicketStatus.BOUGHT);
         }
+
+        private void CancelReservationButtonClick(object sender, RoutedEventArgs e)
+        {
+            Ticket reservation = (Ticket)((Button)e.Source).DataContext;
+            Database.DeleteReservation(reservation);
+            GetTickets();
+            ShowReservations();
+        }
     }
 }
