@@ -49,6 +49,12 @@ namespace HCIProjekat.views.manager.pages
         public static RoutedCommand RowSwapUpCommand = new RoutedCommand();
         public static RoutedCommand RowSwapDownCommand = new RoutedCommand();
 
+        public static RoutedCommand UndoCommand = new RoutedCommand();
+        public static RoutedCommand RedoCommand = new RoutedCommand();
+
+        public static RoutedCommand SaveCommand = new RoutedCommand();
+        public static RoutedCommand RemoveAllCommand = new RoutedCommand();
+
         object SelectedElement;
 
         SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Gray);
@@ -116,6 +122,12 @@ namespace HCIProjekat.views.manager.pages
             RowRightCommand.InputGestures.Add(new KeyGesture(Key.Right));
             RowSwapUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt));
             RowSwapDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt));
+
+            UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            RemoveAllCommand.InputGestures.Add(new KeyGesture(Key.Delete, ModifierKeys.Control));
         }
 
         public SeatCreator()
@@ -245,13 +257,16 @@ namespace HCIProjekat.views.manager.pages
                     return seat;
                 }
             ).ToList());
-            Rectangle emptySeat = SeatBuilder.buildEmptySeat();
-            emptySeat.Visibility = Visibility.Collapsed;
-            emptySeats.Add(emptySeat);
-            newRow.RowUI.Children.Add(emptySeat);
+            if(newRow.Seats.Count < 4)
+            {
+                Rectangle emptySeat = SeatBuilder.buildEmptySeat();
+                emptySeat.Visibility = Visibility.Collapsed;
+                emptySeats.Add(emptySeat);
+                newRow.RowUI.Children.Add(emptySeat);
+                rowEmptySeat[newRow] = emptySeat;
+                seatParent.Add(emptySeat, newRow);
+            }
             newRow.RowBorder.MouseDown += SelectRow;
-            rowEmptySeat[newRow] = emptySeat;
-            seatParent.Add(emptySeat, newRow);
             newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
             if (left)
                 leftRowStack.Children.Add(newRow.RowBorder);
@@ -387,22 +402,41 @@ namespace HCIProjekat.views.manager.pages
 
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
-            ClearAll();
-            Train train = history.Undo();
-            ConvertTrainToUI(train);
+            if(history.CanUndo())
+            {
+                Train train = history.Undo();
+                ClearAll();
+                ConvertTrainToUI(train);
+            }
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
-            System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
         }
 
         private void Redo_Click(object sender, RoutedEventArgs e)
         {
-            ClearAll();
-            Train train = history.Redo();
-            ConvertTrainToUI(train);
+            if(history.CanRedo())
+            {
+                Train train = history.Redo();
+                ClearAll();
+                ConvertTrainToUI(train);
+            }
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
-            System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Da li ste sigurni da želite da sačuvate voz?";
+            string caption = "Potvrda";
+
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            if (MessageBox.Show(message, caption, buttons, icon) == MessageBoxResult.Yes)
+            {
+                HistoryAction();
+                Train ct = history.CurrentTrain();
+                Database.UpdateTrain(history.History[0], ct);
+            }
         }
 
         private void DeleteAll_Click(object sender, RoutedEventArgs e)
@@ -421,19 +455,37 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Undo_Click(sender, e);
+        }
+
+        private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Redo_Click(sender, e);
+        }
+
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Save_Click(sender, e);
+        }
+
+        private void RemoveAllCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DeleteAll_Click(sender, e);
+        }
+
         private void AdjustRowWidth(bool empty = false)
         {
-            if (!empty)
+            
+            foreach (var row in rows)
             {
-                foreach (var row in rows)
+                if (!empty || row.Seats.Count >= 4)
                 {
                     row.RowUI.Width = Math.Max(row.Seats.Count * 60, 20);
                     row.RowBorder.Width = Math.Max(row.Seats.Count * 60 + 5, 20);
                 }
-            }
-            else
-            {
-                foreach (var row in rows)
+                else
                 {
                     row.RowUI.Width = Math.Max((row.Seats.Count + 1) * 60, 20);
                     row.RowBorder.Width = Math.Max((row.Seats.Count + 1) * 60 + 5, 20);
@@ -453,6 +505,14 @@ namespace HCIProjekat.views.manager.pages
             {
                 Border border = (Border)SelectedElement;
                 var parent = borderParent[border];
+                if(parent.LeftRow)
+                {
+                    if (leftRowStack.Children.Count >= 7) return;
+                }
+                else
+                {
+                    if (rightRowStack.Children.Count >= 7) return;
+                }
                 Row clone = parent.DeepCopy();
                 Rectangle emptySeat = SeatBuilder.buildEmptySeat();
                 emptySeat.Visibility = Visibility.Collapsed;
@@ -502,8 +562,9 @@ namespace HCIProjekat.views.manager.pages
             {
                 Border border = (Border)SelectedElement;
                 var parent = borderParent[border];
+                if (parent.Seats.Count >= 4) return;
                 var seat = SeatBuilder.buildSeat();
-                seat.Margin = new Thickness(0, 0, 5, 0);
+                seat.Margin = new Thickness(5, 5, 5, 5);
                 var emptySeat = rowEmptySeat[parent];
                 parent.RowUI.Children.Remove(emptySeat);
                 parent.Seats.Add(seat);
@@ -878,6 +939,7 @@ namespace HCIProjekat.views.manager.pages
                         }
                         else
                         {
+                            if(seatParent[emptySnapped].Seats.Count >= 4) return;
                             Rectangle newSeat = CopyRectangle(seat);
                             seatParent[emptySnapped].RowUI.Children.Remove(emptySnapped);
                             seatParent[emptySnapped].Seats.Add(newSeat);
@@ -959,6 +1021,7 @@ namespace HCIProjekat.views.manager.pages
             foreach (Rectangle emptySeat in emptySeats)
             {
                 Row parent = seatParent[emptySeat];
+                if (parent.Seats.Count >= 4) continue;
                 Point tl = GetPointOfControl(emptySeat);
                 emptySeat.Visibility = Visibility.Visible;
                 Rect rect = new Rect(new Point(tl.X - 5, tl.Y - 5), new Point(tl.X + 55, tl.Y + 55));
@@ -1335,7 +1398,7 @@ namespace HCIProjekat.views.manager.pages
                 emptyRow.Visibility = Visibility.Visible;
                 Rect rect = new Rect(new Point(tl.X - 5, tl.Y - 5), new Point(tl.X + RowBuilder.W, tl.Y + RowBuilder.H));
 
-                if (rect.Contains(currentPoint))
+                if (rect.Contains(currentPoint) && emptyRow.Width > 0)
                 {
                     Point p = GetPointOfControl(element);
                     if (!snapped)
@@ -1403,11 +1466,22 @@ namespace HCIProjekat.views.manager.pages
         {
             var emptyRow1 = buildFunc();
             emptyRow1.Opacity = 0.5;
+            if (leftRowStack.Children.Count >= 7)
+            {
+                emptyRow1.Width = 0;
+                emptyRow1.Height= 0;
+            }
             emptyRows.Add(emptyRow1);
 
             var emptyRow2 = buildFunc();
             emptyRow2.Opacity = 0.5;
+            if (rightRowStack.Children.Count >= 7)
+            {
+                emptyRow2.Width = 0;
+                emptyRow2.Height = 0;
+            }
             emptyRows.Add(emptyRow2);
+
 
             leftRowStack.Children.Insert(0, emptyRow1);
             rightRowStack.Children.Insert(0, emptyRow2);
@@ -1416,13 +1490,7 @@ namespace HCIProjekat.views.manager.pages
             insertRightPosition = 0;
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            HistoryAction();
-            Train ct = history.CurrentTrain();
-            Database.UpdateTrain(history.History[0], ct);
-        }
-
+        
         private void RemoveEmptyRows()
         {
             foreach (Border row in emptyRows)

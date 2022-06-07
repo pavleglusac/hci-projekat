@@ -12,6 +12,18 @@
     <None Remove="assets\logo3.png" />
     <None Remove="assets\seat.jpg" />
     <None Remove="assets\trash.png" />
+    <None Remove="help\err.html" />
+    <None Remove="help\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="help\err.html">
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

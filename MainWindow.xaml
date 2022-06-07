@@ -17,6 +17,10 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         x:Name="window">
 
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" 
                 HorizontalAlignment="Stretch"

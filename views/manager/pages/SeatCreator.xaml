@@ -25,6 +25,12 @@
         <CommandBinding Command="{x:Static local:SeatCreator.RowSwapUpCommand}" Executed="RowSwapUpCommandExecuted" />
         <CommandBinding Command="{x:Static local:SeatCreator.RowSwapDownCommand}" Executed="RowSwapDownCommandExecuted" />
 
+        <CommandBinding Command="{x:Static local:SeatCreator.UndoCommand}" Executed="UndoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:SeatCreator.RedoCommand}" Executed="RedoCommand_Executed" />
+
+        <CommandBinding Command="{x:Static local:SeatCreator.SaveCommand}" Executed="SaveCommand_Executed" />
+        <CommandBinding Command="{x:Static local:SeatCreator.RemoveAllCommand}" Executed="RemoveAllCommand_Executed" />
+
     </Page.CommandBindings>
 
     <Grid>
