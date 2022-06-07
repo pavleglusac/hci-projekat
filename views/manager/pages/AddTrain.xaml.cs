@@ -1,4 +1,6 @@
 ﻿using HCIProjekat.model;
+using HCIProjekat.views.manager.dialogs;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
@@ -30,14 +32,20 @@ namespace HCIProjekat.views.manager.pages
         private bool _dragPin;
         public Pushpin SelectedPushpin { get; set; }
         CancellationTokenSource timeout { get; set; }
-        public AddTrain()
+        public bool IsDialogOpen = true;
+        public Frame DialogContent = new Frame();
+        public DialogHost parentDialog;
+        public AddTrain(ref DialogHost dialog)
         {
             InitializeComponent();
             //Set focus on map
             MapWithEvents.Focus();
+            parentDialog = dialog;
 
             MapWithEvents.MouseDoubleClick +=
                 new MouseButtonEventHandler(MapWithEvents_MouseDoubleClick);
+            MapWithEvents.MouseDown +=
+                new MouseButtonEventHandler(MapWithEvents_MouseDown);
             // Fires when the mouse wheel is used to scroll the map
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
@@ -144,6 +152,17 @@ namespace HCIProjekat.views.manager.pages
                         numbersPressed = 0;
                     });
                 }, 200);
+            }
+            if(e.Key == Key.R)
+            {
+                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, onModalClose);
+                DialogContent.Height = 250;
+                DialogContent.Width = 500;
+                System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
+                IsDialogOpen = true;
+                TrainsDialogHost.DialogContent = DialogContent;
+                TrainsDialogHost.CloseOnClickAway = true;
+                TrainsDialogHost.ShowDialog(DialogContent);
             }
         }
 
@@ -296,8 +315,11 @@ namespace HCIProjekat.views.manager.pages
         {
             _dragPin = false;
         }
+        private void MapWithEvents_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        }
 
-
+            
         private void MapWithEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Disables the default mouse double-click action.
@@ -320,15 +342,30 @@ namespace HCIProjekat.views.manager.pages
             pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
             pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
             pin.Background = new SolidColorBrush(Colors.Blue);
-            pin.Content = pinNumber++;
             // Adds the pushpin to the map.
-            MapWithEvents.Children.Add(pin);
+            //MapWithEvents.Children.Add(pin);
             if (SelectedPushpin != null)
             {
                 SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
             }
             SelectedPushpin = pin;
-            Database.getOrAddStation(pin.Location);
+            Task.Delay(100).ContinueWith(t =>
+                Dispatcher.Invoke(() =>
+            {
+                DialogContent.Content = new StationName(ref pin,ref TrainsDialogHost, ref MapWithEvents, onModalClose);
+                DialogContent.Height = 250;
+                DialogContent.Width = 500;
+                IsDialogOpen = true;
+                TrainsDialogHost.DialogContent = DialogContent;
+                TrainsDialogHost.CloseOnClickAway = true;
+                TrainsDialogHost.ShowDialog(DialogContent);
+            }            
+            ));
+        }
+
+        public int onModalClose()
+        {
+            return pinNumber++;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -405,6 +442,7 @@ namespace HCIProjekat.views.manager.pages
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
             Database.Trains.Add(train);
+            parentDialog.IsOpen = false;
         }
 
 

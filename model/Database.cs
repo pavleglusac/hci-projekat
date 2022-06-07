@@ -107,12 +107,28 @@ namespace HCIProjekat.model
 
         public static List<String> getTrainsNamesWithStation(Location location)
         {
-            List<String> trainNames =  new List<String>();
-            foreach(var train in Trains)
+            List<String> trainNames = new List<String>();
+            foreach (var train in Trains)
             {
                 foreach (var station in train.Stations)
                 {
                     if (station.Key.Location.Equals(location))
+                    {
+                        trainNames.Add(train.Name);
+                        break;
+                    }
+                }
+            }
+            return trainNames;
+        }
+        public static List<String> getTrainsNamesWithStation(Location location,String name)
+        {
+            List<String> trainNames = new List<String>();
+            foreach (var train in Trains)
+            {
+                foreach (var station in train.Stations)
+                {
+                    if (station.Key.Location.Equals(location) && !train.Name.Equals(name))
                     {
                         trainNames.Add(train.Name);
                         break;
@@ -194,6 +210,17 @@ namespace HCIProjekat.model
                 }
             }
             return addStation(new Station(location));
+        }
+        public static void setName(Location location, String name)
+        {
+            foreach (Station station in Stations)
+            {
+                if (station.Location.Equals(location))
+                {
+                    station.Name = name;
+                    return;
+                }
+            }
         }
 
         public static void removeStation(Location location)

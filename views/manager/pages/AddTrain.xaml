@@ -8,52 +8,67 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="MainWindow" Background="#FF3A3A3A">
-    <Grid Margin="0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:DialogHost 
+            x:Name="TrainsDialogHost"
+            Grid.Row="1" DialogTheme="Inherit"
+            IsOpen="{Binding IsDialogOpen}"
+            CloseOnClickAway="True"
+            OverlayBackground="AliceBlue"
+            Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            >
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Background="White" x:Name="ttt">
-                <!--<Grid>
+                <StackPanel Grid.Row="1" Grid.Column="1" Background="White" x:Name="ttt">
+                    <!--<Grid>
                 <TextBox Background="White" Padding="10 0 25 0"/>
                 <materialDesign:PackIcon Kind="MapMarker" VerticalAlignment="Center" Margin="2"/>
             </Grid>-->
-                <ListView>
-                <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
-                    <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="{Binding ActualWidth, ElementName=ttt}">
-                            <Grid Height="50">
-                                <StackPanel Height="50">
-                                    <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked">Toggle all stations</CheckBox>
-                                </StackPanel>
+                    <ListView>
+                        <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                            <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" Width="{Binding ActualWidth, ElementName=ttt}">
+                                <Grid Height="50">
+                                    <StackPanel Height="50">
+                                        <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked">Toggle all stations</CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </ListViewItem>
+                        <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                            <Grid >
+                                <Grid.RowDefinitions >
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0">Enter train name:</Label>
+                                <TextBox x:Name="textBoxTrainName" Width="{Binding ActualWidth, ElementName=ttt}" HorizontalAlignment="Stretch" Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 0 0 1" TextChanged="TextBox_TextChanged">
+                                </TextBox>
                             </Grid>
-                        </Border>
-                    </ListViewItem>
-                <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
-                    <Grid >
-                            <Grid.RowDefinitions >
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0">Enter train name:</Label>
-                        <TextBox x:Name="textBoxTrainName" Width="{Binding ActualWidth, ElementName=ttt}" HorizontalAlignment="Stretch" Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 0 0 1" TextChanged="TextBox_TextChanged">
-                            </TextBox>
-                        </Grid>
-                    </ListViewItem>
-                    <ListViewItem>
-                        <Border BorderBrush="LightGray" BorderThickness="0 0 0 1">
-                            <Button Click="Button_Click">Add</Button>
-                        </Border>
-                    </ListViewItem>
-                    <ListViewItem>
-                        <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" />
-                    </ListViewItem>
-                </ListView>
-            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <Border BorderBrush="LightGray" BorderThickness="0 0 0 1">
+                                <Button Click="Button_Click">Add</Button>
+                            </Border>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" />
+                        </ListViewItem>
+                    </ListView>
+                </StackPanel>
 
-        <m:Map x:Name="MapWithEvents" CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo" Mode="Road" Grid.Column="0" Grid.Row="1" ZoomLevel="12" Center="45.246813,19.853059">
+                <m:Map x:Name="MapWithEvents" CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo" Mode="Road" Grid.Column="0" Grid.Row="1" ZoomLevel="12" Center="45.246813,19.853059">
 
-        </m:Map>
+                </m:Map>
+            </Grid>
+        </materialDesign:DialogHost>
     </Grid>
 </Page>
