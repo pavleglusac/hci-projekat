@@ -107,7 +107,8 @@
                     Width="130"
                     Background="#2d2c94"
                     Margin="5 0 5 0"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center"
+                    Click="DeleteAll_Click">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="DeleteAlert" Height="25" Width="25"/>
                         <TextBlock Text=" Ukloni sve" VerticalAlignment="Center" />

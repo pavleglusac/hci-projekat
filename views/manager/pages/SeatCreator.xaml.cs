@@ -405,6 +405,22 @@ namespace HCIProjekat.views.manager.pages
             System.Diagnostics.Debug.WriteLine($"{train.ToString()}");
         }
 
+        private void DeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Da li ste sigurni da želite da uklonite sva sedišta i sve redove?";
+            string caption = "Potvrda";
+            
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            if (MessageBox.Show(message, caption, buttons, icon) == MessageBoxResult.Yes)
+            {
+                HistoryAction();
+                ClearRows();
+                ClearAll();
+                HistoryAction();
+            }
+        }
+
         private void AdjustRowWidth(bool empty = false)
         {
             if (!empty)
@@ -761,6 +777,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 ((Border)SelectedElement).BorderBrush = regularBrush;
             }
+            if (sender == null) return;
             SelectedElement = sender;
             ((Border)SelectedElement).BorderBrush = highlightBrush;
             SelectedIndex = SelectIndexFromSelectElement();
@@ -786,6 +803,10 @@ namespace HCIProjekat.views.manager.pages
         Point anchorPoint;
         Point currentPoint;
         bool isInDrag = false;
+        bool isRowInDrag = false;
+        bool isBrowInDrag = false;
+        bool isTrowInDrag = false;
+        bool isSeatInDrag = false;
         private void root_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var element = sender as Rectangle;
@@ -808,7 +829,7 @@ namespace HCIProjekat.views.manager.pages
                 transforms[element].Y += tl.Y - p.Y;
                 element.RenderTransform = transforms[element];
             }
-            isInDrag = true;
+            isSeatInDrag = true;
             e.Handled = true;
         }
 
@@ -818,7 +839,7 @@ namespace HCIProjekat.views.manager.pages
 
         private void root_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isInDrag)
+            if (isSeatInDrag)
             {
 
                 if (newSeat == null)
@@ -834,11 +855,11 @@ namespace HCIProjekat.views.manager.pages
 
         private void root_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isInDrag)
+            if (isSeatInDrag)
             {
                 var element = sender as Rectangle;
                 element.ReleaseMouseCapture();
-                isInDrag = false;
+                isSeatInDrag = false;
                 e.Handled = true;
                 if (!inDelete)
                 {
@@ -901,8 +922,9 @@ namespace HCIProjekat.views.manager.pages
                     HistoryAction();
                 }
                 AdjustRowWidth();
-                HideEmptySeats();
             }
+            HideEmptySeats();
+            SetNumberLabels();
         }
 
         private void HideEmptySeats()
@@ -972,6 +994,7 @@ namespace HCIProjekat.views.manager.pages
             }
             if (!snapped)
             {
+                if (!transforms.ContainsKey(element)) return;
                 transforms[element].X += currentPoint.X - anchorPoint.X;
                 transforms[element].Y += currentPoint.Y - anchorPoint.Y;
                 element.RenderTransform = transforms[element];
@@ -981,6 +1004,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 if (!was)
                 {
+                    if (!transforms.ContainsKey(element)) return;
                     snapped = false;
                     emptySnapped = null;
                     transforms[element].X += currentPoint.X - anchorPoint.X;
@@ -1019,7 +1043,7 @@ namespace HCIProjekat.views.manager.pages
             if (!ButtonDownRowLogic(sender, e)) return;
             anchorPoint = e.GetPosition(null);
             element.CaptureMouse();
-            isInDrag = true;
+            isRowInDrag = true;
             e.Handled = true;
             RemoveEmptyRows();
             AddEmptyRows(RowBuilder.buildSingleRow);
@@ -1030,7 +1054,7 @@ namespace HCIProjekat.views.manager.pages
             var element = sender as Border;
             if (!ButtonDownRowLogic(sender, e)) return;
             element.CaptureMouse();
-            isInDrag = true;
+            isTrowInDrag = true;
             e.Handled = true;
             RemoveEmptyRows();
             AddEmptyRows(RowBuilder.buildTopRow);
@@ -1041,7 +1065,7 @@ namespace HCIProjekat.views.manager.pages
             var element = sender as Border;
             if (!ButtonDownRowLogic(sender, e)) return;
             element.CaptureMouse();
-            isInDrag = true;
+            isBrowInDrag = true;
             e.Handled = true;
             RemoveEmptyRows();
             AddEmptyRows(RowBuilder.buildBottomRow);
@@ -1079,7 +1103,7 @@ namespace HCIProjekat.views.manager.pages
 
         private void row_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isInDrag)
+            if (isRowInDrag)
             {
                 if (newRow == null)
                 {
@@ -1097,7 +1121,7 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowTop_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isInDrag)
+            if (isTrowInDrag)
             {
                 if (newRow == null)
                 {
@@ -1115,7 +1139,7 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowBottom_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isInDrag)
+            if (isBrowInDrag)
             {
                 if (newRow == null)
                 {
@@ -1133,11 +1157,11 @@ namespace HCIProjekat.views.manager.pages
 
         private void row_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isInDrag)
+            if (isRowInDrag)
             {
                 var element = sender as Border;
                 element.ReleaseMouseCapture();
-                isInDrag = false;
+                isRowInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
                 RowDropLogic(RowBuilder.buildSingleRow, RowEnum.ALL, element);
@@ -1146,11 +1170,11 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowTop_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isInDrag)
+            if (isTrowInDrag)
             {
                 var element = sender as Border;
                 element.ReleaseMouseCapture();
-                isInDrag = false;
+                isTrowInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
                 RowDropLogic(RowBuilder.buildTopRow, RowEnum.TOP, element);
@@ -1159,11 +1183,11 @@ namespace HCIProjekat.views.manager.pages
 
         private void rowBottom_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isInDrag)
+            if (isBrowInDrag)
             {
                 var element = sender as Border;
                 element.ReleaseMouseCapture();
-                isInDrag = false;
+                isBrowInDrag = false;
                 e.Handled = true;
                 RemoveEmptyRows();
                 RowDropLogic(RowBuilder.buildBottomRow, RowEnum.BOTTOM, element);
@@ -1186,7 +1210,6 @@ namespace HCIProjekat.views.manager.pages
 
                     if (emptyRowSnapped != null)
                     {
-                        newRow.LeftRow = putInLeft;
                         newRow.RowBorder = buildFunc();
                         newRow.RowBorder.MouseDown += SelectRow;
                         newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
@@ -1198,6 +1221,7 @@ namespace HCIProjekat.views.manager.pages
                             rowEmptySeat.Remove(newRow);
                             emptySeats.Remove(emptySeatF);
                         }
+                        newRow.LeftRow = putInLeft;
                         Rectangle emptySeat = SeatBuilder.buildEmptySeat();
                         emptySeat.Visibility = Visibility.Collapsed;
                         rowEmptySeat.Add(newRow, emptySeat);
@@ -1226,6 +1250,8 @@ namespace HCIProjekat.views.manager.pages
                     {
                         if (borderParent.ContainsKey(element))
                         {
+                            newRow.LeftRow = borderParent[element].LeftRow;
+
                             if (newRow.LeftRow)
                             {
                                 leftRowStack.Children.Insert(insertLeftPosition, newRow.RowBorder);
@@ -1246,7 +1272,6 @@ namespace HCIProjekat.views.manager.pages
                 newRow = null;
                 SelectedIndex = SelectIndexFromSelectElement();
                 AdjustRowWidth();
-                RemoveEmptyRows();
             }
             else
             {
@@ -1263,6 +1288,8 @@ namespace HCIProjekat.views.manager.pages
                 toolGrid.Children.Remove(element);
                 trash.Opacity = 1;
             }
+            SetNumberLabels();
+            RemoveEmptyRows();
         }
 
         private RowEnum GetTypeFromBorder(Border border)
@@ -1302,8 +1329,6 @@ namespace HCIProjekat.views.manager.pages
             bool was = false;
             int i = 0;
             bool wasDeleted = false;
-            //if(borderParent.ContainsKey(element))
-            //    putInLeft = borderParent[element].LeftRow;
             foreach (Border emptyRow in emptyRows)
             {
                 Point tl = GetPointOfControl(emptyRow);
@@ -1331,7 +1356,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 Point tl = GetPointOfControl(trash);
                 Rect rect = new Rect(new Point(tl.X - 50, tl.Y - 50), new Point(tl.X + 80, tl.Y + 80));
-                if (rect.Contains(currentPoint))
+                if (rect.Contains(currentPoint) && element != brow && element != row && element != trow)
                 {
 
                     Point p = GetPointOfControl(element);
@@ -1345,6 +1370,7 @@ namespace HCIProjekat.views.manager.pages
             }
             if (!snapped)
             {
+                if (!transformsRow.ContainsKey(element)) return;
                 transformsRow[element].X += currentPoint.X - anchorPoint.X;
                 transformsRow[element].Y += currentPoint.Y - anchorPoint.Y;
                 element.RenderTransform = transformsRow[element];
@@ -1354,6 +1380,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 if (!was)
                 {
+                    if (!transformsRow.ContainsKey(element)) return;
                     snapped = false;
                     emptyRowSnapped = null;
                     transformsRow[element].X += currentPoint.X - anchorPoint.X;
@@ -1374,15 +1401,17 @@ namespace HCIProjekat.views.manager.pages
         int insertRightPosition = 0;
         private void AddEmptyRows(Func<Border> buildFunc)
         {
-            int insertPosition = 0;
             var emptyRow1 = buildFunc();
             emptyRow1.Opacity = 0.5;
             emptyRows.Add(emptyRow1);
+
             var emptyRow2 = buildFunc();
             emptyRow2.Opacity = 0.5;
             emptyRows.Add(emptyRow2);
-            leftRowStack.Children.Insert(insertPosition, emptyRow1);
+
+            leftRowStack.Children.Insert(0, emptyRow1);
             rightRowStack.Children.Insert(0, emptyRow2);
+
             insertLeftPosition = 0;
             insertRightPosition = 0;
         }
@@ -1398,10 +1427,8 @@ namespace HCIProjekat.views.manager.pages
         {
             foreach (Border row in emptyRows)
             {
-                if (leftRowStack.Children.Contains(row))
-                    leftRowStack.Children.Remove(row);
-                if (rightRowStack.Children.Contains(row))
-                    rightRowStack.Children.Remove(row);
+                leftRowStack.Children.Remove(row);
+                rightRowStack.Children.Remove(row);
             }
             emptyRows.Clear();
         }
