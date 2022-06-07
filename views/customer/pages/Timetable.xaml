@@ -37,7 +37,7 @@
                 <Grid Margin="0 50 0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="9*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
@@ -108,15 +108,13 @@
                                     Foreground="White"
                                     Click="handleFilterClick"/>
                             </Grid>
-
-
                         </StackPanel>
                     </Border>
                 </Grid>
                 <Grid Grid.Row="1" Margin="0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="9*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid

@@ -26,31 +26,43 @@ namespace HCIProjekat.views.customer
             CustomerFrame.Content = new Timetable();
         }
 
-        private void timetableNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerFrame.Content = new Timetable();
-        }
-
-        private void linesNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerFrame.Content = new RouteMap();
-        }
-
-        private void reservationHistoryNavButton_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerFrame.Content = new TicketHistory();
-        }
-
-        private void logoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            model.Database.ClearCurrentUser();
-            ShowComponent(new auth.Login());
-        }
-
-
         private void ShowComponent(object component)
         {
             NavigationService?.Navigate(component);
+        }
+
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Visible;
+            ButtonOpenMenu.Visibility = Visibility.Collapsed;
+        }
+
+        private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Collapsed;
+            ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+            {
+                case "ItemTimetable":
+                    CustomerFrame.Content = new Timetable();
+                    break;
+                case "ItemRoutes":
+                    CustomerFrame.Content = new RouteMap();
+                    break;
+                case "ItemTicketHistory":
+                    CustomerFrame.Content = new TicketHistory();
+                    break;
+                case "ItemLogout":
+                    model.Database.ClearCurrentUser();
+                    ShowComponent(new auth.Login());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
