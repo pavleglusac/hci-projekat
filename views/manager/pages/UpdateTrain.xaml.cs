@@ -1,4 +1,6 @@
 ﻿using HCIProjekat.model;
+using HCIProjekat.views.manager.dialogs;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
@@ -39,13 +41,17 @@ namespace HCIProjekat.views.manager.pages
         string currentTrain;
         Vector _mouseToMarker;
         private bool _dragPin;
+        public DialogHost parentDialog;
+        public bool IsDialogOpen = true;
+        public Frame DialogContent = new Frame();
         public IEnumerable<string> DataSource { get; set; }
         public Pushpin SelectedPushpin{get; set; }
         CancellationTokenSource timeout { get; set; }
-        public UpdateTrain(Train train)
+        public UpdateTrain(Train train, ref DialogHost dialog)
         {
             InitializeComponent();
             //Set focus on map
+            parentDialog = dialog;
             MapWithEvents.Focus();
             currentTrain = train.Name;
             MapWithEvents.MouseDoubleClick +=
@@ -160,6 +166,17 @@ namespace HCIProjekat.views.manager.pages
                     });
                 }, 200);
             }
+            if (e.Key == Key.R)
+            {
+                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, onModalClose);
+                DialogContent.Height = 250;
+                DialogContent.Width = 500;
+                System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
+                IsDialogOpen = true;
+                TrainsDialogHost.DialogContent = DialogContent;
+                TrainsDialogHost.CloseOnClickAway = true;
+                TrainsDialogHost.ShowDialog(DialogContent);
+            }
         }
 
 
@@ -236,7 +253,7 @@ namespace HCIProjekat.views.manager.pages
                 oldPushpinLocation = SelectedPushpin.Location;
             }
             SelectedPushpin = sender as Pushpin;
-            List<String> trainNames = Database.getTrainsNamesWithStation(SelectedPushpin.Location);
+            List<String> trainNames = Database.getTrainsNamesWithStation(SelectedPushpin.Location,currentTrain);
             String showString = " ";
             foreach (String trainName in trainNames)
             {
@@ -337,15 +354,30 @@ namespace HCIProjekat.views.manager.pages
             pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
             pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
             pin.Background = new SolidColorBrush(Colors.Blue);
-            pin.Content = pinNumber++;
             // Adds the pushpin to the map.
-            MapWithEvents.Children.Add(pin);
+            //MapWithEvents.Children.Add(pin);
             if (SelectedPushpin != null)
             {
                 SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
             }
             SelectedPushpin = pin;
-            Database.getOrAddStation(pin.Location);
+            Task.Delay(100).ContinueWith(t =>
+                Dispatcher.Invoke(() =>
+                {
+                    DialogContent.Content = new StationName(ref pin, ref TrainsDialogHost, ref MapWithEvents, onModalClose);
+                    DialogContent.Height = 250;
+                    DialogContent.Width = 500;
+                    IsDialogOpen = true;
+                    TrainsDialogHost.DialogContent = DialogContent;
+                    TrainsDialogHost.CloseOnClickAway = true;
+                    TrainsDialogHost.ShowDialog(DialogContent);
+                }
+            ));
+        }
+
+        public int onModalClose()
+        {
+            return pinNumber++;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -429,6 +461,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             t.updateStations(trainsStations);
+            parentDialog.IsOpen = false;
         }
 
         private void ComboBox_DropDownClosed(object sender, EventArgs e)
@@ -454,6 +487,7 @@ namespace HCIProjekat.views.manager.pages
                         pin.Content = train.Stations[station];
                         pushpinsToAdd.Add(pin);
                         pinNumber++;
+                        pin.ToolTip = station.Name;
                         pin.MouseDown += new MouseButtonEventHandler(pin_MouseDown);
                         pin.MouseUp += new MouseButtonEventHandler(pin_MouseUp);
                     }

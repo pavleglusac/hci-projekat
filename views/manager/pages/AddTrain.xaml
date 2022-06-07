@@ -8,7 +8,21 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="MainWindow" Background="#FF3A3A3A">
-    <Grid Margin="0">
+
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" Focusable="False" >
+            <materialDesign:DialogHost 
+            x:Name="TrainsDialogHost"
+            Grid.Row="1" DialogTheme="Inherit"
+            IsOpen="{Binding IsDialogOpen}"
+            CloseOnClickAway="True"
+            OverlayBackground="AliceBlue"
+            Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            >
+                <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
@@ -55,5 +69,8 @@
         <m:Map x:Name="MapWithEvents" CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo" Mode="Road" Grid.Column="0" Grid.Row="1" ZoomLevel="12" Center="45.246813,19.853059">
 
         </m:Map>
+                </Grid>
+            </materialDesign:DialogHost>
+        </ScrollViewer>
     </Grid>
 </Page>
