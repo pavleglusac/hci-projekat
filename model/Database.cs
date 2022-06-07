@@ -50,7 +50,7 @@ namespace HCIProjekat.model
             train1.Stations.Add(Stations[0],1);
             train1.Stations.Add(Stations[1], 2);
             train2.Stations.Add(Stations[0], 1);
-            train2.Stations.Add(Stations[1], 1);
+            train2.Stations.Add(Stations[1], 3);
             train2.Stations.Add(Stations[2], 2);
             train3.Stations.Add(Stations[0], 1);
             train3.Stations.Add(Stations[1],2);
