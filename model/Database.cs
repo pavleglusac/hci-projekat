@@ -128,7 +128,7 @@ namespace HCIProjekat.model
             {
                 foreach (var station in train.Stations)
                 {
-                    if (station.Key.location.Equals(location) && !train.Name.Equals(name))
+                    if (station.Key.Location.Equals(location) && !train.Name.Equals(name))
                     {
                         trainNames.Add(train.Name);
                         break;
@@ -215,7 +215,7 @@ namespace HCIProjekat.model
         {
             foreach (Station station in Stations)
             {
-                if (station.location.Equals(location))
+                if (station.Location.Equals(location))
                 {
                     station.Name = name;
                     return;

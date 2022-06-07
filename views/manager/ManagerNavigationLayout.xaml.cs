@@ -25,7 +25,7 @@ namespace HCIProjekat.views.manager
         public ManagerNavigationLayout()
         {
             InitializeComponent();
-            ManagerFrame.Content = new pages.SystemManagment();
+            ManagerFrame.Content = new pages.Trains();
         }
 
         public ManagerNavigationLayout(model.Train train)
