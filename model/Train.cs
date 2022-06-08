@@ -52,6 +52,21 @@ namespace HCIProjekat.model
             this.PricePerMinute = pricePerMinute;
         }
 
+        internal List<Station> GetCriticalStations(Station from, Station to)
+        {
+            List<Station> CriticalStations = new List<Station>();
+            int fromOrder = Stations[from];
+            int toOrder = Stations[to];
+            foreach (Station station in this.Stations.Keys)
+            {
+                if(Stations[station] > fromOrder && Stations[station] < toOrder)
+                {
+                    CriticalStations.Add(station);
+                }
+            }
+            return CriticalStations;
+        }
+
         public override string ToString()
         {
             string s = "LEFT\n";

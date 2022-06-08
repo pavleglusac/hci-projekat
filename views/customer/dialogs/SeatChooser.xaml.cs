@@ -42,6 +42,7 @@ namespace HCIProjekat.views.customer.dialogs
         SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Gray);
         SolidColorBrush regularBrush = new SolidColorBrush(Colors.Black);
 
+        List<Seat> TakenSeats = new List<Seat>();
 
         List<model.Seat> chosenSeats = new List<Seat>();
 
@@ -63,7 +64,45 @@ namespace HCIProjekat.views.customer.dialogs
             this.DepartureDate = departureDate;
             InitializeComponent();
             this.Focus();
+            MarkTakenSeats();
             ConvertTrainToUI(train);
+        }
+
+        private void MarkTakenSeats()
+        {
+            
+            List<Station> CriticalStations = Train.GetCriticalStations(Departure.From, Departure.To);
+            Station first = Departure.From;
+            Station last = Departure.To;
+            List<Ticket> Tickets = Database.Tickets;
+            foreach (Ticket ticket in Tickets)
+            {
+                if(ticket.DepartureDate == DepartureDate && ticket.Train == Train)
+                {
+                    if (CriticalStations.Contains(ticket.Departure.To) || CriticalStations.Contains(ticket.Departure.From))
+                    {
+                        if (ticket.Departure.DepartureDateTime.IsBetween(Departure.DepartureDateTime, Departure.ArrivalDateTime) || ticket.Departure.ArrivalDateTime.IsBetween(Departure.DepartureDateTime, Departure.ArrivalDateTime))
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                    else if(ticket.Departure.To == last)
+                    {
+                        if (ticket.Departure.ArrivalDateTime == Departure.ArrivalDateTime)
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                    else if(ticket.Departure.From == first)
+                    {
+                        if (ticket.Departure.DepartureDateTime == Departure.DepartureDateTime)
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                }
+            }
+
         }
 
         private void BuyButton_Click(object sender, RoutedEventArgs e)
@@ -126,7 +165,15 @@ namespace HCIProjekat.views.customer.dialogs
                     var seat = SeatBuilder.buildSeat();
                     newRow.RowUI.Children.Add(seat);
                     // logika da li je slobodno
-                    seat.MouseLeftButtonDown += ChooseSeat;
+                    if(TakenSeats.Contains(x))
+                    {
+                        seat.Fill = new SolidColorBrush(Colors.Red);
+                        seat.Stroke = new SolidColorBrush(Colors.Red);
+                    }
+                    else
+                    {
+                        seat.MouseLeftButtonDown += ChooseSeat;
+                    }
                     seatParent.Add(seat, newRow);
                     return seat;
                 }
