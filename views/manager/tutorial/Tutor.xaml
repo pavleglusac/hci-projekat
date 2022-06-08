@@ -28,13 +28,14 @@
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" >
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Margin="0 50 0 20">
                     <Grid.ColumnDefinitions>
@@ -62,7 +63,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*" />
+                                    <RowDefinition Height="10*" />
                                     <RowDefinition Height="10*" />
                                 </Grid.RowDefinitions>
 
@@ -88,6 +90,28 @@
                                 <Button Grid.Row="2" Grid.Column="1" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Height="20" Width="20" Kind="PlayOutline" />
+                                        <TextBlock> Pokeni</TextBlock>
+                                    </StackPanel>
+                                </Button>
+
+
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="0"
+                                           FontSize="16"
+                                           Margin="10 10 0 10"
+                                           VerticalAlignment="Center">Upravljanje vozom</TextBlock>
+                                <Button Grid.Row="3"
+                                        Grid.Column="1"
+                                        FontSize="16"
+                                        Margin="10 10 0 10"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Background="#2d2c94"
+                                        Click="TrainTutorClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Height="20"
+                                                                 Width="20"
+                                                                 Kind="PlayOutline" />
                                         <TextBlock> Pokeni</TextBlock>
                                     </StackPanel>
                                 </Button>

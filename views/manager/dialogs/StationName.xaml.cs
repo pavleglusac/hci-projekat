@@ -28,6 +28,7 @@ namespace HCIProjekat.views.manager.dialogs
         public Frame thisFrame;
         public DialogHost hostDialog;
         public int pinNum;
+        public Boolean tutor;
         public Map map;
         Func<int> parentMethod;
         Func<int> parentMethod2;
@@ -39,6 +40,18 @@ namespace HCIProjekat.views.manager.dialogs
             pushpin = pin;
             hostDialog = dialog;
             map = MapWithEvents;
+            tutor = false;
+            InitializeComponent();
+        }
+        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent,Boolean tutor)
+        {
+            currentLocation = pin.Location;
+            parentMethod = parentMethodSent;
+            parentMethod2 = parentMethod2Sent;
+            pushpin = pin;
+            hostDialog = dialog;
+            map = MapWithEvents;
+            this.tutor = true;
             InitializeComponent();
         }
         public StationName(Pushpin pin, ref DialogHost dialog, string name)
@@ -47,20 +60,56 @@ namespace HCIProjekat.views.manager.dialogs
             pushpin = pin;
             currentLocation = pin.Location;
             hostDialog = dialog;
+            tutor = false;
             InitializeComponent();
             textBoxTrainName.Text = name;
         }
 
+
+        public StationName(Pushpin pin, ref DialogHost dialog, string name, Func<int> parentMethod2Sent)
+        {
+            map = null;
+            pushpin = pin;
+            currentLocation = pin.Location;
+            hostDialog = dialog;
+            InitializeComponent();
+            textBoxTrainName.Text = name;
+            tutor = false;
+            parentMethod2 = parentMethod2Sent;
+        }
+        public StationName(Pushpin pin, ref DialogHost dialog, string name, Func<int> parentMethod2Sent, Boolean tutor)
+        {
+            map = null;
+            pushpin = pin;
+            currentLocation = pin.Location;
+            hostDialog = dialog;
+            InitializeComponent();
+            textBoxTrainName.Text = name;
+            this.tutor = true;
+            parentMethod2 = parentMethod2Sent;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            Database.getOrAddStation(currentLocation);
-            Database.setName(currentLocation, textBoxTrainName.Text);
-            pushpin.ToolTip = Database.getOrAddStation(pushpin.Location).Name;
+            if (!tutor)
+            {
+                Database.getOrAddStation(currentLocation);
+                Database.setName(currentLocation, textBoxTrainName.Text);
+                pushpin.ToolTip = Database.getOrAddStation(pushpin.Location).Name;
+            }
+            else
+            {
+                TutorDatabase.getOrAddStation(currentLocation);
+                TutorDatabase.setName(currentLocation, textBoxTrainName.Text);
+                pushpin.ToolTip = TutorDatabase.getOrAddStation(pushpin.Location).Name;
+            }
             if (map != null)
             {
                 map.Children.Add(pushpin);
                 pushpin.Content = parentMethod();
+            }
+            if (parentMethod2 != null)
+            {
                 parentMethod2();
             }
             hostDialog.IsOpen = false;

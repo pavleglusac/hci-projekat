@@ -66,6 +66,9 @@
     <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="views\manager\tutorial\AddTrainTutorial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\manager\tutorial\Tutor.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -80,6 +83,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\manager\pages\UpdateTrain.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\AddTrainTutorial.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
