@@ -69,6 +69,8 @@ namespace HCIProjekat.views.manager.pages
 
         TrainHistory history = new TrainHistory();
 
+        Train train;
+
         void AddTools()
         {
             row = RowBuilder.buildSingleRow();
@@ -282,8 +284,10 @@ namespace HCIProjekat.views.manager.pages
 
         Train ConvertUIToTrain()
         {
-            Train train = new Train();
-            train.Name = TrainNameInput.Text;
+            Train newTrain = new Train();
+            newTrain.PricePerMinute = train.PricePerMinute;
+            newTrain.CreationDate = train.CreationDate;
+            newTrain.Name = TrainNameInput.Text;
             foreach (Row row in rows)
             {
                 model.Row modelRow = new model.Row();
@@ -296,11 +300,11 @@ namespace HCIProjekat.views.manager.pages
                     }).ToList()
                 );
                 if (row.LeftRow)
-                    train.LeftRows.Add(modelRow);
+                    newTrain.LeftRows.Add(modelRow);
                 else
-                    train.RightRows.Add(modelRow);
+                    newTrain.RightRows.Add(modelRow);
             }
-            return train;
+            return newTrain;
         }
 
         void HistoryAction()

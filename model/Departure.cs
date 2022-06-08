@@ -8,8 +8,8 @@ namespace HCIProjekat.model
 {
     public class Departure
     {
-        public DateTime DepartureDateTime { get; set; }
-        public DateTime ArrivalDateTime { get; set; }
+        public TimeOnly DepartureDateTime { get; set; }
+        public TimeOnly ArrivalDateTime { get; set; }
         public Station From { get; set; }
         public Station To { get; set; }
 
@@ -18,7 +18,7 @@ namespace HCIProjekat.model
 
         }
 
-        public Departure(DateTime departureDateTime, DateTime arrivalDateTime, Station from, Station to)
+        public Departure(TimeOnly departureDateTime, TimeOnly arrivalDateTime, Station from, Station to)
         {
             DepartureDateTime = departureDateTime;
             ArrivalDateTime = arrivalDateTime;
@@ -28,14 +28,14 @@ namespace HCIProjekat.model
 
         public string GetTripTime()
         {
-            TimeSpan span = ArrivalDateTime.Subtract(DepartureDateTime);
+            TimeSpan span = ArrivalDateTime - DepartureDateTime;
             return (span.Hours + 24 * span.Days).ToString() + ":" +
                 ((span.Minutes).ToString().Length == 1 ? "0" + (span.Minutes).ToString() : (span.Minutes).ToString()) + " Hrs";
         }
 
         public int GetTripTimeInMinutes()
         {
-            TimeSpan span = ArrivalDateTime.Subtract(DepartureDateTime);
+            TimeSpan span = ArrivalDateTime - DepartureDateTime;
             return span.Minutes + (span.Hours + 24 * span.Days) * 60;
         }
 

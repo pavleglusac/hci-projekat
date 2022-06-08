@@ -14,6 +14,7 @@ namespace HCIProjekat.model
         public List<Row> RightRows { get; set; }
         public Dictionary<Station, int> Stations { get; set; }
         public Timetable Timetable { get; set; }
+        public DateOnly CreationDate { get; set; }
         public double PricePerMinute { get; set; }
 
         public Train()
@@ -21,6 +22,7 @@ namespace HCIProjekat.model
             LeftRows = new List<Row>();
             RightRows = new List<Row>();
             Stations = new Dictionary<Station,int>();
+            CreationDate = DateOnly.FromDateTime(DateTime.Now);
         }
 
         public Train(string name, Dictionary<Station, int> stations, List<Departure> timetable, double pricePerMinute)

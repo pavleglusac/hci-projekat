@@ -23,6 +23,7 @@
             <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
             <converters:PriceConverter x:Key="PriceConverter" />
             <converters:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
+            <converters:TimeOnlyToTimeConverter x:Key="TimeOnlyToTimeConverter" />
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
@@ -78,19 +79,26 @@
                                         Width="2*"
                                         Header="Do"
                                         IsReadOnly="True"
-                                        Binding="{Binding Departure.To.Name}"
-                                        />
+                                        Binding="{Binding Departure.To.Name}"></DataGridTextColumn>
+                                        
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Header="Datum"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Departure.DepartureDate,
+                                        Converter={StaticResource DateTimeFormatConverter}}"/>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Polazak"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.DepartureDateTime,
-                                        Converter={StaticResource DateTimeFormatConverter}}"/>
+                                        Converter={StaticResource TimeOnlyToTimeConverter}}">
+                                    </DataGridTextColumn>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Dolazak"
                                         IsReadOnly="True"
-                                        Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                        Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Trajanje"
@@ -113,7 +121,7 @@
                                             </MultiBinding>
                                         </DataGridTextColumn.Binding>
                                     </DataGridTextColumn>
-                                    <DataGridTemplateColumn 
+                                    <!--<DataGridTemplateColumn 
                                         Width="80"
                                         Header="Poništi"
                                         IsReadOnly="True">
@@ -134,7 +142,7 @@
                                                 </Button>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                    </DataGridTemplateColumn>-->
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -190,14 +198,20 @@
                                         />
                                     <DataGridTextColumn
                                         Width="2*"
+                                        Header="Datum"
+                                        IsReadOnly="True"
+                                        Binding="{Binding DepartureDate,
+                                        Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <DataGridTextColumn
+                                        Width="2*"
                                         Header="Polazak"
                                         IsReadOnly="True"
-                                        Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                        Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Dolazak"
                                         IsReadOnly="True"
-                                        Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                        Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
                                     <DataGridTextColumn
                                         Width="2*"
                                         Header="Trajanje"

@@ -65,12 +65,12 @@ namespace HCIProjekat.model
             Trains.ForEach(x =>
             {
                 List<Departure> departures = new();
-                for (int i = 0; i < 30; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    DateTime start = DateTime.Now.AddDays(random.Next(-4, 4)).AddHours(random.Next(0, 11)).AddMinutes(random.Next(0, 60));
-                    DateTime end = start.AddHours(random.Next(2, 6)).AddMinutes(random.Next(0, 60));
-                    departures.Add(new Departure(start, end,
-                        x.Stations.Keys.ToList()[i % x.Stations.Count], x.Stations.Keys.ToList()[(i + 1) % x.Stations.Count]));
+                    TimeOnly start = TimeOnly.Parse("00:00:00").AddHours(i + 5).AddMinutes((i % 2) * 15);
+                    TimeOnly end = start.Add(TimeSpan.FromMinutes(30));
+                    Station first = x.GetFirstStation(); Station last = x.GetLastStation();
+                    departures.Add(new Departure(start, end, first, last));
                 }
                 x.Timetable = new Timetable();
                 x.Timetable.Departures = departures;
@@ -94,14 +94,27 @@ namespace HCIProjekat.model
         private static void GenerateTestTickets()
         {
             Random random = new();
+
+            var randomTest = new Random();
+
+
             Trains.ForEach(x =>
             {
+                DateTime startDate = x.CreationDate.ToDateTime(TimeOnly.Parse("00:00:00"));
+                TimeSpan timeSpan = DateTime.Now.Subtract(startDate);
+                TimeSpan newSpan = new TimeSpan(0, randomTest.Next(0, (int)timeSpan.TotalMinutes), 0);
+                DateTime newDate = startDate + newSpan;
+
+                TimeSpan timeSpanFuture = DateTime.Now.AddDays(2).Subtract(startDate);
+                TimeSpan newSpanFuture = new TimeSpan(0, randomTest.Next(0, (int)timeSpanFuture.TotalMinutes), 0);
+                DateTime newDateFuture = startDate + newSpan;
+
                 for (int i = 0; i < 10; i++)
                 {
-                    Tickets.Add(new Ticket(x, x.Timetable.Departures[i % x.Timetable.Departures.Count], Users[random.Next(0, 2)], new Seat(), TicketStatus.BOUGHT));
+                    Tickets.Add(new Ticket(x, x.Timetable.Departures[i % x.Timetable.Departures.Count], Users[random.Next(0, 2)], new Seat(), TicketStatus.BOUGHT, DateOnly.FromDateTime(newDate)));
                 }
 
-                Tickets.Add(new Ticket(x, x.Timetable.Departures[random.Next(0, x.Timetable.Departures.Count)], Users[random.Next(0, 2)], new Seat(), TicketStatus.RESERVED));
+                Tickets.Add(new Ticket(x, x.Timetable.Departures[random.Next(0, x.Timetable.Departures.Count)], Users[random.Next(0, 2)], new Seat(), TicketStatus.RESERVED, DateOnly.FromDateTime(newDateFuture)));
 
             });
         }
