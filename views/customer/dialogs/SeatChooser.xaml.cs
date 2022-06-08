@@ -24,6 +24,8 @@ namespace HCIProjekat.views.customer.dialogs
         Train Train;
         Departure Departure;
         DateOnly DepartureDate;
+        string departureStationName;
+        string destinationStationName;
 
         List<Rectangle> seats = new List<Rectangle>();
 
@@ -57,7 +59,7 @@ namespace HCIProjekat.views.customer.dialogs
             AdjustRowWidth();
         }
 
-        public SeatChooser(Train train, Departure departure, DateOnly departureDate)
+        public SeatChooser(Train train, Departure departure, DateOnly departureDate, string departureStationName, string destinationStationName)
         {
             this.Train = train;
             this.Departure = departure;

@@ -47,13 +47,17 @@ namespace HCIProjekat.model
             train3.Name = "Jastreb";
             AddRowsToTrain(train3, RowEnum.ALL, 2);
             AddRowsToTrain(train3, RowEnum.TOP, 2);
-            train1.Stations.Add(Stations[0],1);
+
+            train1.Stations.Add(Stations[0], 1);
             train1.Stations.Add(Stations[1], 2);
+
             train2.Stations.Add(Stations[0], 1);
-            train2.Stations.Add(Stations[1], 3);
             train2.Stations.Add(Stations[2], 2);
-            train3.Stations.Add(Stations[0], 1);
-            train3.Stations.Add(Stations[1],2);
+            train2.Stations.Add(Stations[1], 3);
+
+            train3.Stations.Add(Stations[1], 1);
+            train3.Stations.Add(Stations[2], 2);
+
             train3.SetSeatLabels();
             train3.PricePerMinute = 12;
 
@@ -62,6 +66,8 @@ namespace HCIProjekat.model
             Trains.Add(train3);
 
             Random random = new();
+
+            // let's call these the original departures
             Trains.ForEach(x =>
             {
                 List<Departure> departures = new();
@@ -75,6 +81,36 @@ namespace HCIProjekat.model
                 x.Timetable = new Timetable();
                 x.Timetable.Departures = departures;
             });
+
+            //Trains.ForEach(train =>
+            //{
+            //    List<Departure> departures = new();
+
+            //    for (int i = 0; i < 5; i++)
+            //    {
+            //        int totalStations = train.Stations.Count;
+            //        if (totalStations < 2) continue;
+            //        TimeOnly totalStart = TimeOnly.Parse("00:00:00").AddHours(i + 5).AddMinutes((i % 2) * 15);
+            //        TimeOnly totalEnd = totalStart.Add(TimeSpan.FromMinutes(random.Next(30, 90)));
+            //        TimeSpan span = totalEnd - totalStart;
+            //        int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
+            //        int spanBetweenStations = spanInMinutes / (totalStations - 1);
+
+            //        TimeOnly lastEnd = totalStart;
+            //        for (int j = 1; j < totalStations; j++)
+            //        {
+
+            //            Station from = train.GetStationByIndex(j);
+            //            Station to = train.GetStationByIndex(j + 1);
+
+            //            TimeOnly end = lastEnd.Add(TimeSpan.FromMinutes(spanBetweenStations));
+            //            departures.Add(new Departure(lastEnd, end, from, to));
+            //            lastEnd = end;
+            //        }
+            //    }
+            //    train.Timetable = new Timetable();
+            //    train.Timetable.Departures = departures;
+            //});
 
 
             User customer1 = new("Marko", "Markovic", "test", "test", UserType.CUSTOMER);
@@ -173,6 +209,15 @@ namespace HCIProjekat.model
             }
         }
 
+        internal static List<Train> FilterTrains(string departureStation, string destinationStation)
+        {
+            return Trains.FindAll(train =>
+                train.Stations.ContainsKey(getStationByName(departureStation)) &&
+                train.Stations.ContainsKey(getStationByName(destinationStation)) &&
+                train.Stations[getStationByName(departureStation)] < train.Stations[getStationByName(destinationStation)]
+            );
+        }
+
         public static List<Train> SearchTrainsByName(string name)
         {
             return Trains.Where(x => x.Name.ToLower().StartsWith(name.ToLower())).ToList();
@@ -229,6 +274,18 @@ namespace HCIProjekat.model
                 }
             }
             return addStation(new Station(location));
+        }
+
+        public static Station getStationByName(string name)
+        {
+            foreach (Station station in Stations)
+            {
+                if (station.Name == name)
+                {
+                    return station;
+                }
+            }
+            return null;
         }
         public static void setName(Location location, String name)
         {
