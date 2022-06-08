@@ -29,6 +29,7 @@ namespace HCIProjekat
         {
             InitializeComponent();
             Database.loadData();
+            TutorDatabase.loadData();
             MainFrame.Content = new Login();
         }
 

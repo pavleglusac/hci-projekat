@@ -33,5 +33,10 @@ namespace HCIProjekat.views.manager.tutorial
             MainWindow newWindow = new MainWindow(new SeatCreatorTutorial());
             newWindow.Show();
         }
+        private void TrainTutorClick(object sender, EventArgs e)
+        {
+            MainWindow newWindow = new MainWindow(new AddTrainTutorial());
+            newWindow.Show();
+        }
     }
 }
