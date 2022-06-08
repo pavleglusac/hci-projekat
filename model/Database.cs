@@ -97,11 +97,8 @@ namespace HCIProjekat.model
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    Tickets.Add(new Ticket(x, x.Timetable[i % x.Timetable.Count], Users[random.Next(0, 2)], new Seat(), TicketStatus.BOUGHT));
+                    Tickets.Add(new Ticket(x, x.Timetable[i % x.Timetable.Count], Users[random.Next(0, 2)], new Seat()));
                 }
-
-                Tickets.Add(new Ticket(x, x.Timetable[random.Next(0, x.Timetable.Count)], Users[random.Next(0, 2)], new Seat(), TicketStatus.RESERVED));
-
             });
         }
 
@@ -279,11 +276,6 @@ namespace HCIProjekat.model
                 }
             );
             return newList;
-        }
-
-        public static void DeleteReservation(Ticket reservation)
-        {
-            Tickets.Remove(reservation);
         }
 
         public static List<Ticket> GetCurrentUsersTickets()

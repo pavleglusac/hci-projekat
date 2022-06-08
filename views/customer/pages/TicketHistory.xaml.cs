@@ -27,17 +27,6 @@ namespace HCIProjekat.views.customer
             InitializeComponent();
             GetTickets();
             ShowTickets();
-            ShowReservations();
-        }
-
-
-        private void ShowReservations()
-        {
-            reservationHistoryGrid.ItemsSource = Tickets.FindAll(x => x.Status == TicketStatus.RESERVED);
-            if (Tickets.Any(x => x.Status == TicketStatus.RESERVED))
-                reservationsComponent.Visibility = Visibility.Visible;
-            else
-                reservationsComponent.Visibility = Visibility.Collapsed;
         }
 
         private void GetTickets()
@@ -46,24 +35,7 @@ namespace HCIProjekat.views.customer
         }
         private void ShowTickets()
         {
-            ticketHistoryGrid.ItemsSource = Tickets.FindAll(x => x.Status == TicketStatus.BOUGHT);
-        }
-
-        private void CancelReservationButtonClick(object sender, RoutedEventArgs e)
-        {
-            Ticket reservation = (Ticket)((Button)e.Source).DataContext;
-            MessageBoxResult messageBoxResult =
-                MessageBox.Show("Da li ste sigurni da želite poništiti rezervaciju?",
-                "Poništavanje rezervacije", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (messageBoxResult == MessageBoxResult.Yes)
-                CancelReservation(reservation);
-        }
-        
-        private void CancelReservation(Ticket reservation)
-        {
-            Database.DeleteReservation(reservation);
-            GetTickets();
-            ShowReservations();
+            ticketHistoryGrid.ItemsSource = Tickets;
         }
     }
 }
