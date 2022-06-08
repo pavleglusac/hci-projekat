@@ -544,19 +544,19 @@ namespace HCIProjekat.views.customer.dialogs
 
             public static ImageBrush ImageBrush = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.jpg"))
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.png"))
             };
 
             public static ImageBrush ImageBrushTaken = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/takenseat.jpg")),
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/takenseat.png")),
                 
             };
 
 
             public static ImageBrush LowOpacityImageBrush = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.jpg")),
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.png")),
                 Opacity = 0.3
             };
 

@@ -61,14 +61,28 @@
                         <StackPanel Grid.Column="1">
                             <!-- BLUE TITLE STRIP -->
                             <Border CornerRadius="10,10,0,0" Background="#2d2c94">
-                                <StackPanel ClipToBounds="True" Height="50">
-                                    <TextBlock
-                                        Margin="20 18 0 0"
-                                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-                                        Foreground="White"
-                                        Text="Pretraga" />
-                                </StackPanel>
-                            </Border>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*"></ColumnDefinition>
+                                            <ColumnDefinition Width="50*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Margin="20 18 0 0"
+                                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                            Foreground="White"
+                                            Text="Vozovi" />
+
+                                        <Button
+                                            HorizontalAlignment="Right"
+                                            Margin="0 0 30 0"
+                                            Grid.Column="1" Style="{StaticResource MaterialDesignIconForegroundButton}" ToolTip="MaterialDesignIconForegroundButton">
+                                            <materialDesign:PackIcon Foreground="White" Kind="Help" />
+                                        </Button>
+                                    </Grid>
+
+                                </Border>
 
                             <Grid Margin="20">
                                 <Grid.ColumnDefinitions>
@@ -83,7 +97,7 @@
 
                                 <ComboBox 
                                           x:Name="TrainSearchInput"
-                                          materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.HintOpacity=".26"
+                                          materialDesign:HintAssist.Hint="Ime voza" materialDesign:HintAssist.HintOpacity=".26"
                                           IsEditable="True" FontSize="24" Grid.ColumnSpan="2">
 
                                 </ComboBox>
@@ -114,6 +128,7 @@
                                     Background="#2d2c94"
                                     Foreground="White"
                                     Click="handleFilterClick"/>
+                                
                             </Grid>
 
 
@@ -207,7 +222,28 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                        </DataGrid.Columns>
+
+                                <DataGridTemplateColumn 
+                                Width="130"
+                                IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28"
+                                            Command="{x:Static local:Trains.OpenUpdate}"
+                                            CommandParameter="{Binding Name}"
+                                            IsEnabled="True">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="DeleteOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                    <TextBlock Text="Obriši"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
 
