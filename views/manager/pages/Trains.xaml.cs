@@ -100,5 +100,14 @@ namespace HCIProjekat.views.manager.pages
             MainWindow mw = new MainWindow(new TimetableAddition(train));
             mw.Show();
         }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "index");
+            }
+        }
     }
 }

@@ -64,6 +64,9 @@ namespace HCIProjekat.views.manager
                 case "ItemRideHistory":
                     ManagerFrame.Content = new RideHistory();
                     break;
+                case "ItemTutor":
+                    ManagerFrame.Content = new tutorial.Tutor();
+                    break;
                 case "ItemLogout":
                     model.Database.ClearCurrentUser();
                     ShowComponent(new auth.Login());

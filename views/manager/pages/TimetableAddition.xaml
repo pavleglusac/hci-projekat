@@ -15,7 +15,8 @@
 	  TextOptions.TextRenderingMode="Auto"        
 	  Background="#EEE"
       xmlns:converters="clr-namespace:HCIProjekat.converters"
-	  FontFamily="{DynamicResource MaterialDesignFont}">
+	  FontFamily="{DynamicResource MaterialDesignFont}"
+      GotFocus="SetHelpKey">
 
     <Page.CommandBindings>
         <CommandBinding Command="{x:Static local:TimetableAddition.RemoveDeparture}" Executed="RemoveDeparture_Executed" />
@@ -42,40 +43,80 @@
                 <RowDefinition Height="90*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
-                <Button
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    Height="40"
-                    Width="100"
-                    Background="#2d2c94"
-                    Margin="25 0 0 0"
-                    IsEnabled="False"
-                    x:Name="UndoButton"
-                    HorizontalAlignment="Left" Click="Undo_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
-                        <TextBlock Text="Nazad" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    IsEnabled="False"
-                    Height="40"
-                    Width="110"
-                    Background="#2d2c94"
-                    HorizontalAlignment="Left"
-                    x:Name="RedoButton"
-                    Margin="5 0 0 0"
-                    Click="Redo_Click">
-                    <StackPanel Orientation="Horizontal" >
-                        <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
-                        <TextBlock Text="Napred" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
 
+            <Grid Grid.Row="0" Grid.Column="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        Height="40"
+                        Width="100"
+                        Background="#2d2c94"
+                        Margin="25 0 0 0"
+                        IsEnabled="False"
+                        x:Name="UndoButton"
+                        HorizontalAlignment="Left" Click="Undo_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
+                            <TextBlock Text="Nazad" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="False"
+                        Height="40"
+                        Width="110"
+                        Background="#2d2c94"
+                        HorizontalAlignment="Left"
+                        x:Name="RedoButton"
+                        Margin="5 0 0 0"
+                        Click="Redo_Click">
+                        <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
+                            <TextBlock Text="Napred" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="True"
+                        Height="40"
+                        Width="110"
+                        Background="#2d2c94"
+                        Margin="5 0 5 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Click="Save_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"/>
+                            <TextBlock Text=" Sačuvaj" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="True"
+                        Height="40"
+                        Width="40"
+                        Background="#2d2c94"
+                        Margin="5 0 40 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Click="Help_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Help" Height="25" Width="25"></materialDesign:PackIcon>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
             <ScrollViewer Grid.Row="1" Grid.Column="1">
             <Border Grid.Column="1" Grid.Row="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
                 <StackPanel Grid.Column="1">
