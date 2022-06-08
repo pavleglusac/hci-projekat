@@ -25,169 +25,183 @@
             <converters:TimeOnlyToTimeConverter x:Key="TimeOnlyToTimeConverter" />
         </ResourceDictionary>
     </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" >
+        <materialDesign:DialogHost x:Name="BuyTicketDialogHost"
+                                   Grid.Row="1"
+                                   DialogTheme="Inherit"
+                                   IsOpen="{Binding IsDialogOpen}"
+                                   CloseOnClickAway="True"
+                                   OverlayBackground="AliceBlue"
+                                   Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Margin="0 50 0 20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
-                        <StackPanel Grid.Column="1">
-                            <!-- BLUE TITLE STRIP -->
-                            <Border CornerRadius="10,10,0,0" Background="#2d2c94">
-                                <StackPanel ClipToBounds="True" Height="50">
-                                    <TextBlock
-                                        Margin="20 18 0 0"
-                                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                <ScrollViewer Grid.Row="0" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0 50 0 20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                                <StackPanel Grid.Column="1">
+                                    <!-- BLUE TITLE STRIP -->
+                                    <Border CornerRadius="10,10,0,0" Background="#2d2c94">
+                                        <StackPanel ClipToBounds="True" Height="50">
+                                            <TextBlock
+                                            Margin="20 18 0 0"
+                                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                            Foreground="White"
+                                            Text="Pretraga i filtriranje" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Grid Margin="20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <ComboBox
+                                        Grid.Row="0" Grid.Column="0"
+                                        Margin="5"
+                                        Padding="10 13"
+                                        x:Name="startComboBox"
+                                        FontSize="18"
+                                        FontWeight="Medium"
+                                        Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                        materialDesign:HintAssist.Hint="Od"
+                                        ToolTip="Mesto polaska"/>
+
+                                        <ComboBox
+                                        Grid.Row="0" Grid.Column="1"
+                                        Margin="5"
+                                        Padding="10 13"
+                                        FontSize="18"
+                                        FontWeight="Medium"
+                                        x:Name="destinationComboBox"
+                                        Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                        materialDesign:HintAssist.Hint="Do"
+                                        ToolTip="Mesto odredišta"/>
+
+                                        <DatePicker
+                                        Grid.Row="0" Grid.Column="2"
+                                        Margin="5"
+                                        Padding="10 13"
+                                        FontSize="18"
+                                        FontWeight="Medium"
+                                        materialDesign:HintAssist.Hint="Datum"
+                                        ToolTip="Datum polaska"
+                                        Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                                        <Button
+                                        Grid.Row="1" Grid.Column="2"
+                                        Margin="7 20 7 7"
+                                        Height="46"
+                                        FontSize="18"
+                                        materialDesign:ButtonAssist.CornerRadius="5"
+                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                        ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                        Content="Potvrdi"
+                                        Background="#2d2c94"
                                         Foreground="White"
-                                        Text="Pretraga i filtriranje" />
+                                        Click="handleFilterClick"/>
+                                    </Grid>
                                 </StackPanel>
                             </Border>
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="0 20 0 40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid
+                            x:Name="departuresGrid"
+                            Grid.Column="1"
+                            CanUserAddRows="False"
+                            SelectionUnit="Cell"
+                            SelectionMode="Extended"
+                            AutoGenerateColumns="False"
+                            CanUserResizeRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Naziv"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Train.Name}"/>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Datum"
+                                    IsReadOnly="True"
+                                    Binding="{Binding DepartureDate, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Polazak"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Dolazak"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Trajanje"
+                                    IsReadOnly="True">
+                                        <DataGridTextColumn.Binding>
+                                            <MultiBinding Converter="{StaticResource TimeConcatConverter}">
+                                                <Binding Path="Departure.DepartureDateTime" />
+                                                <Binding Path="Departure.ArrivalDateTime" />
+                                            </MultiBinding>
+                                        </DataGridTextColumn.Binding>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Cena"
+                                    IsReadOnly="True">
+                                        <DataGridTextColumn.Binding>
+                                            <MultiBinding Converter="{StaticResource PriceConverter}">
+                                                <Binding Path="Train" />
+                                                <Binding Path="Departure" />
+                                            </MultiBinding>
+                                        </DataGridTextColumn.Binding>
+                                    </DataGridTextColumn>
+                                    <DataGridTemplateColumn 
+                                    Width="130"
+                                    IsReadOnly="True">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button 
+                                                Click="buyTicketButtonClick"
+                                                Background="#2d2c94"
+                                                FontSize="12"
+                                                Height="28"
+                                                Content="Kupi kartu"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
 
-                            <Grid Margin="20">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <ComboBox
-                                    Grid.Row="0" Grid.Column="0"
-                                    Margin="5"
-                                    Padding="10 13"
-                                    x:Name="startComboBox"
-                                    FontSize="18"
-                                    FontWeight="Medium"
-                                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                    materialDesign:HintAssist.Hint="Od"
-                                    ToolTip="Mesto polaska"/>
-
-                                <ComboBox
-                                    Grid.Row="0" Grid.Column="1"
-                                    Margin="5"
-                                    Padding="10 13"
-                                    FontSize="18"
-                                    FontWeight="Medium"
-                                    x:Name="destinationComboBox"
-                                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                    materialDesign:HintAssist.Hint="Do"
-                                    ToolTip="Mesto odredišta"/>
-
-                                <DatePicker
-                                    Grid.Row="0" Grid.Column="2"
-                                    Margin="5"
-                                    Padding="10 13"
-                                    FontSize="18"
-                                    FontWeight="Medium"
-                                    materialDesign:HintAssist.Hint="Datum"
-                                    ToolTip="Datum polaska"
-                                    Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
-                                <Button
-                                    Grid.Row="1" Grid.Column="2"
-                                    Margin="7 20 7 7"
-                                    Height="46"
-                                    FontSize="18"
-                                    materialDesign:ButtonAssist.CornerRadius="5"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
-                                    Content="Potvrdi"
-                                    Background="#2d2c94"
-                                    Foreground="White"
-                                    Click="handleFilterClick"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="1" Margin="0 20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <DataGrid
-                        x:Name="departuresGrid"
-                        Grid.Column="1"
-                        CanUserAddRows="False"
-                        SelectionUnit="Cell"
-                        SelectionMode="Extended"
-                        AutoGenerateColumns="False"
-                        CanUserResizeRows="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Naziv"
-                                IsReadOnly="True"
-                                Binding="{Binding Train.Name}"/>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Datum"
-                                IsReadOnly="True"
-                                Binding="{Binding DepartureDate, Converter={StaticResource DateTimeFormatConverter}}"/>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Polazak"
-                                IsReadOnly="True"
-                                Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Dolazak"
-                                IsReadOnly="True"
-                                Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Trajanje"
-                                IsReadOnly="True">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding Converter="{StaticResource TimeConcatConverter}">
-                                        <Binding Path="Departure.DepartureDateTime" />
-                                        <Binding Path="Departure.ArrivalDateTime" />
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn
-                                Width="2*"
-                                Header="Cena"
-                                IsReadOnly="True">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding Converter="{StaticResource PriceConverter}">
-                                        <Binding Path="Train" />
-                                        <Binding Path="Departure" />
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTemplateColumn 
-                                Width="130"
-                                IsReadOnly="True">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button 
-                                            Click="buyTicketButtonClick"
-                                            Background="#2d2c94"
-                                            FontSize="12"
-                                            Height="28"
-                                            Content="Kupi kartu"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-                
+                    </Grid>
+                </ScrollViewer>
             </Grid>
-        </ScrollViewer>
+        </materialDesign:DialogHost>
     </Grid>
 </Page>

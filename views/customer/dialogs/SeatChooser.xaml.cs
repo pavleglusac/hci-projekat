@@ -14,13 +14,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HCIProjekat.views.manager.pages
+namespace HCIProjekat.views.customer.dialogs
 {
     /// <summary>
     /// Interaction logic for TrainAddition.xaml
     /// </summary>
     public partial class SeatChooser : Page
     {
+        Train Train;
+        Departure Departure;
+        DateOnly DepartureDate;
 
         List<Rectangle> seats = new List<Rectangle>();
 
@@ -45,9 +48,6 @@ namespace HCIProjekat.views.manager.pages
 
         int SelectedIndex = -1;
 
-        Train train;
-
-
         public SeatChooser()
         {
             InitializeComponent();
@@ -56,12 +56,47 @@ namespace HCIProjekat.views.manager.pages
             AdjustRowWidth();
         }
 
-        public SeatChooser(Train train)
+        public SeatChooser(Train train, Departure departure, DateOnly departureDate)
         {
-            this.train = train; 
+            this.Train = train;
+            this.Departure = departure;
+            this.DepartureDate = departureDate;
             InitializeComponent();
             this.Focus();
             ConvertTrainToUI(train);
+        }
+
+        private void BuyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (chosenSeats.Count == 0)
+            {
+                System.Windows.MessageBox.Show(
+                    "Niste izabrali nijedno sedište.",
+                    "Greška", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
+                    "Da li ste sigurni da želite kupiti karte za izabrana sedišta?",
+                    "Potvrda kupovine", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    BuyTickets();
+                    System.Windows.MessageBox.Show(
+                        "Uspešno ste kupili karte!",
+                        "Potvrda uspešne kupovine", System.Windows.MessageBoxButton.OK);
+                }
+            }
+        }
+
+        private void BuyTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            chosenSeats.ForEach(seat =>
+            {
+                tickets.Add(new Ticket(Train, Departure, Database.CurrentUser, seat, DepartureDate));
+            });
+            Database.AddTickets(tickets);
         }
 
         void ConvertTrainToUI(Train train)
@@ -163,12 +198,12 @@ namespace HCIProjekat.views.manager.pages
             // add to list or remove from list
             chosenSeats.ForEach(x => System.Diagnostics.Debug.WriteLine($" {x.Label} "));
             // aloooooooooo
-            train.PrintSeatLabels();
+            Train.PrintSeatLabels();
 
             if(toAdd)
             {
-                System.Diagnostics.Debug.WriteLine($"DATABASE SEAT {Database.GetSeatFromTrain(train, seatLabel)}");
-                chosenSeats.Add(Database.GetSeatFromTrain(train, seatLabel));
+                System.Diagnostics.Debug.WriteLine($"DATABASE SEAT {Database.GetSeatFromTrain(Train, seatLabel)}");
+                chosenSeats.Add(Database.GetSeatFromTrain(Train, seatLabel));
             }
             else
             {
@@ -448,7 +483,6 @@ namespace HCIProjekat.views.manager.pages
                 return row;
             }
         }
-
 
         class SeatBuilder
         {

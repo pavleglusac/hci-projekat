@@ -1,4 +1,6 @@
 ﻿using HCIProjekat.model;
+using HCIProjekat.views.customer.dialogs;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +28,11 @@ namespace HCIProjekat.views.customer
     {
         List<string> Locations;
         List<TimetableEntry> DepartureEntries = new List<TimetableEntry>();
+
+        public bool IsDialogOpen = true;
+        public Frame DialogContent = new Frame();
+
+        List<Train> Trains = new List<Train>();
         public Timetable()
         {
             InitializeComponent();
@@ -38,8 +45,28 @@ namespace HCIProjekat.views.customer
                 "Kikinda",
                 "Pančevo"
             };
+            GetTrains();
+            ShowData();
             startComboBox.ItemsSource = Locations;
             destinationComboBox.ItemsSource = Locations;
+        }
+
+        private void GetTrains()
+        {
+            Trains = Database.Trains;
+        }
+
+        private void ShowData()
+        {
+            DepartureEntries = new List<TimetableEntry>();
+            Trains.ForEach(train =>
+            {
+                train.Timetable.Departures.ForEach(departure =>
+                {
+                    DepartureEntries.Add(new(train, departure, DateOnly.FromDateTime(DateTime.Now)));
+                });
+            });
+            departuresGrid.ItemsSource = DepartureEntries;
         }
 
         private void handleFilterClick(object sender, RoutedEventArgs e)
@@ -67,6 +94,15 @@ namespace HCIProjekat.views.customer
         {
             TimetableEntry timetableEntry = (TimetableEntry)((Button)e.Source).DataContext;
             System.Diagnostics.Debug.WriteLine(timetableEntry.Departure.DepartureDateTime);
+
+            
+            DialogContent.Content = new SeatChooser(timetableEntry.Train, timetableEntry.Departure, timetableEntry.DepartureDate);
+            DialogContent.Height = 600;
+            DialogContent.Width = 800;
+            IsDialogOpen = true;
+            BuyTicketDialogHost.DialogContent = DialogContent;
+            BuyTicketDialogHost.CloseOnClickAway = true;
+            BuyTicketDialogHost.ShowDialog(DialogContent);
         }
 
 

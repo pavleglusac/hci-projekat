@@ -305,6 +305,11 @@ namespace HCIProjekat.model
             return Tickets.FindAll(x => x.Owner == CurrentUser);
         }
 
+        public static void AddTickets(List<Ticket> tickets)
+        {
+            tickets.ForEach(ticket => Tickets.Add(ticket));
+        }
+
         public static User? GetUser(string username, string password)
         {
             return Users.FirstOrDefault(x => x.Username == username && x.Password == password);

@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="views\manager\pages\SeatChooser.xaml.cs">
+    <Compile Update="views\customer\dialogs\SeatChooser.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
@@ -58,7 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="views\manager\pages\SeatChooser.xaml">
+    <Page Update="views\customer\dialogs\SeatChooser.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
