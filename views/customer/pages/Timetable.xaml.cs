@@ -79,9 +79,9 @@ namespace HCIProjekat.views.customer
             List<Train> trains = GetTrains();
 
             Random random = new();
-            List<Departure> departures = new List<Departure>();
             trains.ForEach(train =>
             {
+                List<Departure> departures = new List<Departure>();
                 int totalStations = train.Stations.Count;
                 if (totalStations < 2) return;
                 train.Timetable.Departures.ForEach(originalDeparture =>
@@ -104,16 +104,7 @@ namespace HCIProjekat.views.customer
                     TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations*timeSpanBetweenStations));
                     departures.Add(new Departure(start, end, from, to));
                 });
-
                 departures.ForEach(departure => DepartureEntries.Add(new(train, departure, departureDate)));
-
-                //train.Timetable.Departures.ForEach(departure =>
-                //{
-                //    if (departure.From == Database.getStationByName(departureStation)
-                //    && departure.To == Database.getStationByName(destinationStation))
-                //        DepartureEntries.Add(new(train, departure, departureDate));
-                //});
-
             });
             departuresGrid.ItemsSource = DepartureEntries;
 
