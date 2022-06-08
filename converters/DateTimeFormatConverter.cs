@@ -16,11 +16,11 @@ namespace HCIProjekat.converters
 
             if (value.GetType() == typeof(DateTime))
             {
-                return ((DateTime)value).ToString("yyyy/MM/dd HH:mm");
+                return ((DateTime)value).ToString("dd.MM.yyyy. HH:mm");
             }
             else if(value.GetType() == typeof(DateOnly))
             {
-                return ((DateOnly)value).ToString("yyyy/MM/dd");
+                return ((DateOnly)value).ToString("dd.MM.yyyy.");
             }
             else if (value.GetType() == typeof(TimeOnly))
             {

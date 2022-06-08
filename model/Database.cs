@@ -107,14 +107,14 @@ namespace HCIProjekat.model
 
                 TimeSpan timeSpanFuture = DateTime.Now.AddDays(2).Subtract(startDate);
                 TimeSpan newSpanFuture = new TimeSpan(0, randomTest.Next(0, (int)timeSpanFuture.TotalMinutes), 0);
-                DateTime newDateFuture = startDate + newSpan;
+                DateTime newDateFuture = DateTime.Now + newSpan;
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Tickets.Add(new Ticket(x, x.Timetable.Departures[i % x.Timetable.Departures.Count], Users[random.Next(0, 2)], new Seat(), TicketStatus.BOUGHT, DateOnly.FromDateTime(newDate)));
+                    Tickets.Add(new Ticket(x, x.Timetable.Departures[i % x.Timetable.Departures.Count], Users[random.Next(0, 2)], new Seat(), DateOnly.FromDateTime(newDate)));
                 }
 
-                Tickets.Add(new Ticket(x, x.Timetable.Departures[random.Next(0, x.Timetable.Departures.Count)], Users[random.Next(0, 2)], new Seat(), TicketStatus.RESERVED, DateOnly.FromDateTime(newDateFuture)));
+                Tickets.Add(new Ticket(x, x.Timetable.Departures[random.Next(0, x.Timetable.Departures.Count)], Users[random.Next(0, 2)], new Seat(), DateOnly.FromDateTime(newDateFuture)));
 
             });
         }

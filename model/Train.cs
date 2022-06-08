@@ -22,7 +22,7 @@ namespace HCIProjekat.model
             LeftRows = new List<Row>();
             RightRows = new List<Row>();
             Stations = new Dictionary<Station,int>();
-            CreationDate = DateOnly.FromDateTime(DateTime.Now);
+            CreationDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-3));
         }
 
         public Train(string name, Dictionary<Station, int> stations, List<Departure> timetable, double pricePerMinute)

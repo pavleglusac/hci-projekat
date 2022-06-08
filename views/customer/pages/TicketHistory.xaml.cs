@@ -22,6 +22,7 @@ namespace HCIProjekat.views.customer
     public partial class TicketHistory : Page
     {
         List<Ticket> Tickets = new List<Ticket>();
+        List<Ticket> PastTickets = new List<Ticket>();
         public TicketHistory()
         {
             InitializeComponent();
@@ -31,11 +32,26 @@ namespace HCIProjekat.views.customer
 
         private void GetTickets()
         {
-            Tickets = Database.GetCurrentUsersTickets();
+            List<Ticket> AllTickets = Database.GetCurrentUsersTickets();
+            foreach(Ticket ticket in AllTickets)
+            {
+                System.Diagnostics.Debug.WriteLine($"{ticket.DepartureDate.ToDateTime(ticket.Departure.DepartureDateTime)} {DateTime.Now}");
+                if(ticket.DepartureDate.ToDateTime(ticket.Departure.DepartureDateTime) < DateTime.Now)
+                {
+                    PastTickets.Add(ticket);
+                }
+                else
+                {
+                    Tickets.Add(ticket);
+                }
+            }
         }
+
+
         private void ShowTickets()
         {
-            ticketHistoryGrid.ItemsSource = Tickets;
+            ticketHistoryGrid.ItemsSource = PastTickets;
+            reservationHistoryGrid.ItemsSource = Tickets;
         }
     }
 }
