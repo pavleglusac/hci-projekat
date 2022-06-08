@@ -1,0 +1,209 @@
+﻿<Page x:Class="HCIProjekat.views.manager.tutorial.SeatCreatorTutorial"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.manager.tutorial"
+      xmlns:l="clr-namespace:HCIProjekat"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="TrainAddition"
+      x:Name="trainAdditionPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Focusable="True"
+      l:HelpProvider.HelpKey="seats"
+      Loaded="Step1"
+>
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.SeatAddCommand}" Executed="SeatAddCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.SeatRemoveCommand}" Executed="SeatRemoveCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowAddCommand}" Executed="RowAddCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowRemoveCommand}" Executed="RowRemoveCommandExecuted" />
+
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowUpCommand}" Executed="RowUpCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowDownCommand}" Executed="RowDownCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowLeftCommand}" Executed="RowLeftCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowRightCommand}" Executed="RowRightCommandExecuted" />
+
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowSwapUpCommand}" Executed="RowSwapUpCommandExecuted" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RowSwapDownCommand}" Executed="RowSwapDownCommandExecuted" />
+
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.UndoCommand}" Executed="UndoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RedoCommand}" Executed="RedoCommand_Executed" />
+
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.SaveCommand}" Executed="SaveCommand_Executed" />
+        <CommandBinding Command="{x:Static local:SeatCreatorTutorial.RemoveAllCommand}" Executed="RemoveAllCommand_Executed" />
+
+    </Page.CommandBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="90*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"></ColumnDefinition>
+                <ColumnDefinition Width="20*"></ColumnDefinition>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                Grid.Column="1"
+                x:Name="TrainNameInput"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                VerticalAlignment="Center"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                MaxWidth="400"
+                materialDesign:HintAssist.Hint="Ime voza"
+                FontSize="16"
+                IsEnabled="True" />
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    Height="40"
+                    Width="100"
+                    Background="#2d2c94"
+                    Margin="5 0 0 0"
+                    x:Name="UndoButton"
+                    IsEnabled="False"
+                    HorizontalAlignment="Left" Click="Undo_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
+                        <TextBlock Text="Nazad" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    Height="40"
+                    Width="110"
+                    Background="#2d2c94"
+                    HorizontalAlignment="Left"
+                    x:Name="RedoButton"
+                    Margin="5 0 0 0"
+                    IsEnabled="False"
+                    Click="Redo_Click">
+                    <StackPanel Orientation="Horizontal" >
+                        <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
+                        <TextBlock Text="Napred" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    IsEnabled="False"
+                    Height="40"
+                    Width="110"
+                    Background="#2d2c94"
+                    Margin="5 0 0 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Click="Save_Click"
+                    Name="SaveButton">
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"/>
+                        <TextBlock Text=" Sačuvaj" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    IsEnabled="False"
+                    Height="40"
+                    Width="130"
+                    Background="#2d2c94"
+                    Margin="5 0 0 0"
+                    VerticalAlignment="Center"
+                    Name="DeleteAllButton"
+                    Click="DeleteAll_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="DeleteAlert" Height="25" Width="25"/>
+                        <TextBlock Text=" Ukloni sve" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="False"
+                        Height="40"
+                        Width="40"
+                        Background="#2d2c94"
+                        Margin="5 0 5 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Help" Height="25" Width="25"></materialDesign:PackIcon>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="grid" AllowDrop="True" Grid.Row="1" Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="20*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="scrollViewer" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Focusable="False" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                <Grid ShowGridLines="True" x:Name="seatsGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="35*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="20" Height="5*"></RowDefinition>
+                        <RowDefinition MinHeight="400" Height="50*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="leftNumbersStack" Grid.Column="1" Grid.Row="0" Orientation="Horizontal"  VerticalAlignment="Center"/>
+                    <StackPanel x:Name="rightNumbersStack" Grid.Column="2" Grid.Row="0" Orientation="Horizontal"  VerticalAlignment="Center"/>
+
+                    <StackPanel x:Name="rowNumbersStack" Width="Auto" Grid.Column="0" Grid.Row="1" Orientation="Vertical"  VerticalAlignment="Top"/>
+                    <StackPanel x:Name="leftRowStack" Width="Auto" HorizontalAlignment="Left" Margin="10 0 0 0"  Orientation="Vertical" Grid.Column="1" Grid.Row="1"/>
+                    <StackPanel x:Name="rightRowStack" Width="Auto" HorizontalAlignment="Left" Margin="20 0 0 0" Orientation="Vertical" Grid.Column="2" Grid.Row="1"/>
+                </Grid>
+            </ScrollViewer>
+            <Grid x:Name="toolGrid" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Label HorizontalAlignment="Center" Grid.Row="1" Content="Običan red" Name="redLabel"></Label>
+                <Label HorizontalAlignment="Center" Grid.Row="3" Content="Kupe - gornji"></Label>
+                <Label HorizontalAlignment="Center" Grid.Row="5" Content="Kupe - donji"></Label>
+                <Label HorizontalAlignment="Center" Grid.Row="7" Content="Sedište"></Label>
+                <Label HorizontalAlignment="Center" Grid.Row="9" Content="Kanta"></Label>
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+
+</Page>

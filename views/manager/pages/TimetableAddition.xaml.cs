@@ -38,11 +38,13 @@ namespace HCIProjekat.views.manager.pages
         public TimetableAddition()
         {
             InitializeComponent();
+            this.Focus();
         }
 
         public TimetableAddition(Train train)
         {
             InitializeComponent();
+            this.Focus();
             DataContext = this;
             this.train = train;
             Timetable = Database.GetTimetableForTrainName(train.Name);
@@ -140,6 +142,34 @@ namespace HCIProjekat.views.manager.pages
                 if (start == depStart || start == depEnd || end == depStart || end == depEnd) return new Tuple<Boolean, Departure>(true, departure);
             }
             return new Tuple<Boolean, Departure>(false, null);
+        }
+
+        public void Save_Click(object sender, EventArgs e)
+        {
+            string message = "Da li ste sigurni da želite da sačuvate redove vožnji?";
+            string caption = "Potvrda";
+
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            if (MessageBox.Show(message, caption, buttons, icon) == MessageBoxResult.Yes)
+            {
+                train.Timetable = Timetable;
+            }
+        }
+
+        public void Help_Click(object sender, EventArgs e)
+        {
+            var wnd = (MainWindow)Window.GetWindow(this);
+            wnd.CommandBinding_Executed(sender, null);
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "timetables");
+            }
         }
     }
 
