@@ -11,14 +11,16 @@ namespace HCIProjekat.model
         public User Owner { get; set; }
         public Train Train { get; set; }
         public Departure Departure { get; set; }
+        public DateOnly DepartureDate { get; set; }
         public double Price { get; set; }
         public Seat Seat { get; set; }
-        public Ticket(Train train, Departure departure, User owner, Seat seat)
+        public Ticket(Train train, Departure departure, User owner, Seat seat, DateOnly date)
         {
             Train = train;
             Departure = departure;
             Owner = owner;
             Seat = seat;
+            DepartureDate = date;
             Price = departure.GetTripTimeInMinutes() * train.PricePerMinute;
         }
     }

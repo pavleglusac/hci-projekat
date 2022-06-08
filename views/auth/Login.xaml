@@ -59,7 +59,7 @@
                     ToolTip="Prijavi se u aplikaciju"
                     Content="Prijavi se"
                     Background="#2d2c94"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+                    IsEnabled="True" />
 
                 <Button
                     Click="handleChooseRegisterButton"

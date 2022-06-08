@@ -53,8 +53,8 @@ namespace HCIProjekat.views.manager.pages
             Train train = new Train("Soko X", Stations, 10);
             for (int i = 0; i < 10; i++)
             {
-                Departures.Add(new Departure(DateTime.Parse($"2022-06-01T0{i % 5}:0{(i * 23) % 10}"),
-                    DateTime.Parse($"2022-06-01T0{i % 3 + 5}:0{(i * 27) % 10}"), Stations.Keys.ToList()[i % 3], Stations.Keys.ToList()[(i + 1) % 3]));
+                Departures.Add(new Departure(TimeOnly.FromDateTime(DateTime.Parse($"2022-06-01T0{i % 5}:0{(i * 23) % 10}")),
+                    TimeOnly.FromDateTime(DateTime.Parse($"2022-06-01T0{i % 3 + 5}:0{(i * 27) % 10}")), Stations.Keys.ToList()[i % 3], Stations.Keys.ToList()[(i + 1) % 3]));
                 int rnd = new Random().Next(20, 40);
                 RideHistoryData.Add(
                     new RideHistoryEntry

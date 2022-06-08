@@ -8,11 +8,11 @@ using System.Windows.Data;
 
 namespace HCIProjekat.converters
 {
-    public class DateTimeToTimeConverter : IValueConverter
+    public class TimeOnlyToTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((DateTime)value).ToString("HH:mm");
+            return ((TimeOnly)value).ToString("HH:mm");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

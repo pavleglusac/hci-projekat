@@ -57,7 +57,7 @@
                 MaxWidth="400"
                 materialDesign:HintAssist.Hint="Ime voza"
                 FontSize="16"
-                IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}" />
+                IsEnabled="True" />
             <StackPanel Orientation="Horizontal">
                 <Button
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
@@ -95,7 +95,7 @@
                 <Button
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="True"
                     Height="40"
                     Width="110"
                     Background="#2d2c94"
@@ -110,7 +110,7 @@
                 <Button
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="True"
                     Height="40"
                     Width="130"
                     Background="#2d2c94"

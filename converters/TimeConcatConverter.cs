@@ -12,9 +12,9 @@ namespace HCIProjekat.converters
     {
         public object Convert(object[] values, Type targetType, object parameters, CultureInfo culture)
         {
-            DateTime departure = (DateTime)values[0];
-            DateTime arrival = (DateTime)values[1];
-            TimeSpan span = arrival.Subtract(departure);
+            TimeOnly departure = (TimeOnly)values[0];
+            TimeOnly arrival = (TimeOnly)values[1];
+            TimeSpan span = arrival - (departure);
             return (span.Hours + 24*span.Days).ToString() + ":" +
                 ((span.Minutes).ToString().Length == 1 ? "0" +(span.Minutes).ToString() : (span.Minutes).ToString()) + " Hrs";
         }

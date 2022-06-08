@@ -26,7 +26,7 @@
             <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
             <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
             <converters:PriceConverter x:Key="PriceConverter" />
-            <converters:DateTimeToTimeConverter x:Key="DateTimeToTimeConverter" />
+            <converters:TimeOnlyToTimeConverter x:Key="DateTimeToTimeConverter" />
         </ResourceDictionary>
     </Page.Resources>
 

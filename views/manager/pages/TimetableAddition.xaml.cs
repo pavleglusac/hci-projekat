@@ -56,7 +56,7 @@ namespace HCIProjekat.views.manager.pages
 
         public void RemoveDeparture_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            int ind = Timetable.Departures.FindIndex(x => x.DepartureDateTime == (DateTime)e.Parameter);
+            int ind = Timetable.Departures.FindIndex(x => x.DepartureDateTime == (TimeOnly)e.Parameter);
             Timetable.Departures.RemoveAt(ind);
             HistoryManager.AddEntry(Timetable.Copy());
             timetablesGrid.ItemsSource = Timetable.Departures;
@@ -101,8 +101,8 @@ namespace HCIProjekat.views.manager.pages
                 Tuple<Boolean, Departure> conflictResult = DeparturesConflict(dep, arr);
                 if(conflictResult.Item1)
                 {
-                    TimeOnly depStart = TimeOnly.FromDateTime(conflictResult.Item2.DepartureDateTime);
-                    TimeOnly depEnd = TimeOnly.FromDateTime(conflictResult.Item2.ArrivalDateTime);
+                    TimeOnly depStart = conflictResult.Item2.DepartureDateTime;
+                    TimeOnly depEnd = conflictResult.Item2.ArrivalDateTime;
                     MessageBox.Show($"Konflikt sa postojećim polaskom! Polazak: {depStart} - {depEnd}", "Nevalidni podaci", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -111,8 +111,8 @@ namespace HCIProjekat.views.manager.pages
                     {
                         To = To,
                         From = From,
-                        DepartureDateTime = DateTime.Parse($"06/08/2022 {dep.Hour}:{dep.Minute}:00"),
-                        ArrivalDateTime = DateTime.Parse($"06/08/2022 {arr.Hour}:{arr.Minute}:00"),
+                        DepartureDateTime = TimeOnly.Parse($"{dep.Hour}:{dep.Minute}:00"),
+                        ArrivalDateTime = TimeOnly.Parse($"{arr.Hour}:{arr.Minute}:00"),
                     }
                 );
 
@@ -133,8 +133,8 @@ namespace HCIProjekat.views.manager.pages
         {
             foreach(Departure departure in Timetable.Departures)
             {
-                TimeOnly depStart = TimeOnly.FromDateTime(departure.DepartureDateTime);
-                TimeOnly depEnd = TimeOnly.FromDateTime(departure.ArrivalDateTime);
+                TimeOnly depStart = departure.DepartureDateTime;
+                TimeOnly depEnd = departure.ArrivalDateTime;
                 System.Diagnostics.Debug.WriteLine($"DEPARTURE {depStart} {depEnd} |  {start}  {end} | {start.IsBetween(depStart, depEnd)} {end.IsBetween(depStart, depEnd)} ");
                 if (start.IsBetween(depStart, depEnd) || end.IsBetween(depStart, depEnd)) return new Tuple<Boolean, Departure>(true, departure);
                 if (start == depStart || start == depEnd || end == depStart || end == depEnd) return new Tuple<Boolean, Departure>(true, departure);

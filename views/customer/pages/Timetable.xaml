@@ -22,6 +22,7 @@
             <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
             <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
             <converters:PriceConverter x:Key="PriceConverter" />
+            <converters:TimeOnlyToTimeConverter x:Key="TimeOnlyToTimeConverter" />
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
@@ -132,15 +133,20 @@
                                 IsReadOnly="True"
                                 Binding="{Binding Train.Name}"/>
                             <DataGridTextColumn
-                                Width="3*"
+                                Width="2*"
+                                Header="Datum"
+                                IsReadOnly="True"
+                                Binding="{Binding DepartureDate, Converter={StaticResource DateTimeFormatConverter}}"/>
+                            <DataGridTextColumn
+                                Width="2*"
                                 Header="Polazak"
                                 IsReadOnly="True"
-                                Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
                             <DataGridTextColumn
-                                Width="3*"
+                                Width="2*"
                                 Header="Dolazak"
                                 IsReadOnly="True"
-                                Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
                             <DataGridTextColumn
                                 Width="2*"
                                 Header="Trajanje"
@@ -153,7 +159,7 @@
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                             <DataGridTextColumn
-                                Width="*"
+                                Width="2*"
                                 Header="Cena"
                                 IsReadOnly="True">
                                 <DataGridTextColumn.Binding>
