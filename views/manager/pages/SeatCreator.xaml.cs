@@ -216,6 +216,7 @@ namespace HCIProjekat.views.manager.pages
         public SeatCreator(Train train)
         {
             InitializeComponent();
+            this.train = train;
             this.Focus();
             IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
             if (focusedControl is DependencyObject)
@@ -264,15 +265,14 @@ namespace HCIProjekat.views.manager.pages
                     return seat;
                 }
             ).ToList());
-            if(newRow.Seats.Count < 4)
-            {
-                Rectangle emptySeat = SeatBuilder.buildEmptySeat();
-                emptySeat.Visibility = Visibility.Collapsed;
-                emptySeats.Add(emptySeat);
-                newRow.RowUI.Children.Add(emptySeat);
-                rowEmptySeat[newRow] = emptySeat;
-                seatParent.Add(emptySeat, newRow);
-            }
+            
+            Rectangle emptySeat = SeatBuilder.buildEmptySeat();
+            emptySeat.Visibility = Visibility.Collapsed;
+            emptySeats.Add(emptySeat);
+            newRow.RowUI.Children.Add(emptySeat);
+            rowEmptySeat[newRow] = emptySeat;
+            seatParent.Add(emptySeat, newRow);
+            
             newRow.RowBorder.MouseDown += SelectRow;
             newRow.RowBorder.Margin = new Thickness(0, 5, 0, 5);
             if (left)
@@ -523,6 +523,7 @@ namespace HCIProjekat.views.manager.pages
                     if (rightRowStack.Children.Count >= 7) return;
                 }
                 Row clone = parent.DeepCopy();
+                SetRowEvents(clone, clone.RowType);
                 Rectangle emptySeat = SeatBuilder.buildEmptySeat();
                 emptySeat.Visibility = Visibility.Collapsed;
                 emptySeat.Margin = new Thickness(5, 5, 5, 5);
@@ -532,7 +533,7 @@ namespace HCIProjekat.views.manager.pages
                 seatParent.Add(emptySeat, clone);
                 int ind = rows.IndexOf(parent);
                 rows.Insert(ind, clone);
-                SelectedIndex = ind;
+                SelectedIndex = ind + 1;
                 scrollViewer.ScrollToVerticalOffset(ind * 60);
                 borderParent[clone.RowBorder] = clone;
                 if (clone.LeftRow)
@@ -573,6 +574,9 @@ namespace HCIProjekat.views.manager.pages
                 var parent = borderParent[border];
                 if (parent.Seats.Count >= 4) return;
                 var seat = SeatBuilder.buildSeat();
+                seat.MouseLeftButtonDown += root_MouseLeftButtonDown;
+                seat.MouseMove += root_MouseMove;
+                seat.MouseLeftButtonUp += root_MouseLeftButtonUp;
                 seat.Margin = new Thickness(5, 5, 5, 5);
                 var emptySeat = rowEmptySeat[parent];
                 parent.RowUI.Children.Remove(emptySeat);
@@ -866,7 +870,6 @@ namespace HCIProjekat.views.manager.pages
             }
             return index;
         }
-
 
         // MOVE SEAT
 

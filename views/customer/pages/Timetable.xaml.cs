@@ -1,4 +1,6 @@
 ﻿using HCIProjekat.model;
+using HCIProjekat.views.customer.dialogs;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,49 +26,118 @@ namespace HCIProjekat.views.customer
     /// </summary>
     public partial class Timetable : Page
     {
-        List<string> Locations;
-        List<TimetableEntry> DepartureEntries = new List<TimetableEntry>();
+        List<String> Locations = new();
+        List<TimetableEntry> DepartureEntries = new();
+
+        string departureStation;
+        string destinationStation;
+
         public Timetable()
         {
             InitializeComponent();
-            Locations = new List<string>(){
-                "Novi Sad",
-                "Beograd",
-                "Zrenjanin",
-                "Subotica",
-                "Sombor",
-                "Kikinda",
-                "Pančevo"
-            };
-            startComboBox.ItemsSource = Locations;
-            destinationComboBox.ItemsSource = Locations;
+            GetLocations();
+            ShowLocations();
+        }
+
+        private List<Train> GetTrains()
+        {
+            return Database.FilterTrains(departureStation, destinationStation);
+        }
+
+        private void GetLocations()
+        {
+            Locations = new();
+            Database.Stations.ForEach(station => Locations.Add(station.Name));
+        }
+        private void ShowLocations()
+        {
+            departureStationComboBox.ItemsSource = Locations;
+            destinationStationComboBox.ItemsSource = Locations;
         }
 
         private void handleFilterClick(object sender, RoutedEventArgs e)
         {
-            DepartureEntries = new List<TimetableEntry>();
-            List<Departure> Departures = new List<Departure>();
-            Dictionary<Station, int> Stations = new Dictionary<Station, int>();
-            Stations.Add(new Station("Novi Sad"), 0);
-            Stations.Add(new Station("Zrenjanin"), 1);
-            Stations.Add(new Station("Beograd"), 2);
-            Stations.Add(new Station("Subotica"), 3);
-            Train train = new Train("Soko X", Stations, 10);
-            for (int i = 0; i < 10; i++)
+            departureStation = (string)departureStationComboBox.SelectedValue;
+            destinationStation = (string)destinationStationComboBox.SelectedValue;
+            if (departureDatePicker.SelectedDate == null)
             {
-                Departures.Add(new Departure(TimeOnly.FromDateTime(DateTime.Parse($"2022-06-01T0{i%5}:0{(i * 23) % 10}")), 
-                    TimeOnly.FromDateTime(DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}")), Stations.Keys.ToList()[i%3], Stations.Keys.ToList()[(i+1)% 3]));
+                System.Windows.MessageBox.Show(
+                    "Datum ne može biti prazan.",
+                    "Greška", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else
+            {
+                DateOnly departureDate = DateOnly.FromDateTime((DateTime)departureDatePicker.SelectedDate);
+                ShowData(departureDate);
+            }
+        }
 
-            train.Timetable = new model.Timetable { Departures = Departures };
-            train.Timetable.Departures.ForEach(x => DepartureEntries.Add(new TimetableEntry(train, x, DateOnly.FromDateTime(DateTime.Now))));
+        private void ShowData(DateOnly departureDate)
+        {
+            System.Diagnostics.Debug.WriteLine(departureStation + " " + destinationStation + " " + departureDate);
+            DepartureEntries = new List<TimetableEntry>();
+            List<Train> trains = GetTrains();
+
+            Random random = new();
+            trains.ForEach(train =>
+            {
+                List<Departure> departures = new List<Departure>();
+                int totalStations = train.Stations.Count;
+                if (totalStations < 2) return;
+                train.Timetable.Departures.ForEach(originalDeparture =>
+                {
+                    TimeOnly totalStart = originalDeparture.DepartureDateTime;
+                    TimeOnly totalEnd = originalDeparture.ArrivalDateTime;
+                    TimeSpan span = totalEnd - totalStart;
+
+                    int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
+                    int timeSpanBetweenStations = spanInMinutes / (totalStations - 1);
+
+
+                    Station from = Database.getStationByName(departureStation);
+                    Station to = Database.getStationByName(destinationStation);
+
+                    int spanFromFirstStation = train.Stations[from] - 1;
+                    int spanBetweenStations = train.Stations[to] - train.Stations[from];
+
+                    TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStation * timeSpanBetweenStations));
+                    TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations*timeSpanBetweenStations));
+                    departures.Add(new Departure(start, end, from, to));
+                });
+                departures.ForEach(departure => DepartureEntries.Add(new(train, departure, departureDate)));
+            });
             departuresGrid.ItemsSource = DepartureEntries;
+
+            if (DepartureEntries.Any()) timetableComponent.Visibility = Visibility.Visible;
+            else timetableComponent.Visibility = Visibility.Collapsed;
+        }
+
+        private void departureStationComboBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            string departureStation = (string)departureStationComboBox.SelectedValue;
+            destinationStationComboBox.ItemsSource = Locations.FindAll(location => location != departureStation);
+        }
+
+        private void destinationStationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string destinationStation = (string)destinationStationComboBox.SelectedValue;
+            departureStationComboBox.ItemsSource = Locations.FindAll(location => location != destinationStation);
         }
 
         private void buyTicketButtonClick(object sender, RoutedEventArgs e)
         {
             TimetableEntry timetableEntry = (TimetableEntry)((Button)e.Source).DataContext;
             System.Diagnostics.Debug.WriteLine(timetableEntry.Departure.DepartureDateTime);
+
+            MainWindow mw = new(new SeatChooser(
+                timetableEntry.Train,
+                timetableEntry.Departure,
+                timetableEntry.DepartureDate,
+                departureStation,
+                destinationStation));
+            mw.Height = 600;
+            mw.Width = 800;
+            mw.ShowDialog();
         }
 
 

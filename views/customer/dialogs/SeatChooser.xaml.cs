@@ -14,13 +14,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HCIProjekat.views.manager.pages
+namespace HCIProjekat.views.customer.dialogs
 {
     /// <summary>
     /// Interaction logic for TrainAddition.xaml
     /// </summary>
     public partial class SeatChooser : Page
     {
+        Train Train;
+        Departure Departure;
+        DateOnly DepartureDate;
+        string departureStationName;
+        string destinationStationName;
 
         List<Rectangle> seats = new List<Rectangle>();
 
@@ -39,14 +44,12 @@ namespace HCIProjekat.views.manager.pages
         SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Gray);
         SolidColorBrush regularBrush = new SolidColorBrush(Colors.Black);
 
+        List<Seat> TakenSeats = new List<Seat>();
 
         List<model.Seat> chosenSeats = new List<Seat>();
 
 
         int SelectedIndex = -1;
-
-        Train train;
-
 
         public SeatChooser()
         {
@@ -56,12 +59,85 @@ namespace HCIProjekat.views.manager.pages
             AdjustRowWidth();
         }
 
-        public SeatChooser(Train train)
+        public SeatChooser(Train train, Departure departure, DateOnly departureDate, string departureStationName, string destinationStationName)
         {
-            this.train = train; 
+            this.Train = train;
+            this.Departure = departure;
+            this.DepartureDate = departureDate;
             InitializeComponent();
             this.Focus();
+            MarkTakenSeats();
             ConvertTrainToUI(train);
+        }
+
+        private void MarkTakenSeats()
+        {
+            
+            List<Station> CriticalStations = Train.GetCriticalStations(Departure.From, Departure.To);
+            Station first = Departure.From;
+            Station last = Departure.To;
+            List<Ticket> Tickets = Database.Tickets;
+            foreach (Ticket ticket in Tickets)
+            {
+                if(ticket.DepartureDate == DepartureDate && ticket.Train == Train)
+                {
+                    if (CriticalStations.Contains(ticket.Departure.To) || CriticalStations.Contains(ticket.Departure.From))
+                    {
+                        if (ticket.Departure.DepartureDateTime.IsBetween(Departure.DepartureDateTime, Departure.ArrivalDateTime) || ticket.Departure.ArrivalDateTime.IsBetween(Departure.DepartureDateTime, Departure.ArrivalDateTime))
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                    else if(ticket.Departure.To == last)
+                    {
+                        if (ticket.Departure.ArrivalDateTime == Departure.ArrivalDateTime)
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                    else if(ticket.Departure.From == first)
+                    {
+                        if (ticket.Departure.DepartureDateTime == Departure.DepartureDateTime)
+                        {
+                            TakenSeats.Add(ticket.Seat);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void BuyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (chosenSeats.Count == 0)
+            {
+                System.Windows.MessageBox.Show(
+                    "Niste izabrali nijedno sedište.",
+                    "Greška", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(
+                    "Da li ste sigurni da želite kupiti karte za izabrana sedišta?",
+                    "Potvrda kupovine", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    BuyTickets();
+                    System.Windows.MessageBox.Show(
+                        "Uspešno ste kupili karte!",
+                        "Potvrda uspešne kupovine", System.Windows.MessageBoxButton.OK);
+                }
+            }
+        }
+
+        private void BuyTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            chosenSeats.ForEach(seat =>
+            {
+                tickets.Add(new Ticket(Train, Departure, Database.CurrentUser, seat, DepartureDate));
+            });
+            Database.AddTickets(tickets);
         }
 
         void ConvertTrainToUI(Train train)
@@ -91,7 +167,14 @@ namespace HCIProjekat.views.manager.pages
                     var seat = SeatBuilder.buildSeat();
                     newRow.RowUI.Children.Add(seat);
                     // logika da li je slobodno
-                    seat.MouseLeftButtonDown += ChooseSeat;
+                    if(TakenSeats.Contains(x))
+                    {
+                        seat.Opacity = 0.4;
+                    }
+                    else
+                    {
+                        seat.MouseLeftButtonDown += ChooseSeat;
+                    }
                     seatParent.Add(seat, newRow);
                     return seat;
                 }
@@ -109,24 +192,27 @@ namespace HCIProjekat.views.manager.pages
             // logika da li je slobodno
             Rectangle seat = (Rectangle)sender;
             bool toAdd = false;
-            if(seat.Opacity == 0.5)
+            if(seat.Fill == SeatBuilder.ImageBrushTaken)
             {
                 toAdd = false;
-                seat.Opacity = 1;
+                seat.Fill = SeatBuilder.ImageBrush;
             }
             else
             {
                 toAdd = true;
-                seat.Opacity = 0.5;
+                seat.Fill = SeatBuilder.ImageBrushTaken;
             }
             int lefts = 0;
             int rights = 0;
+            int leftsFound = 0;
+            int rightsFound = 0;
             int maxLeft = 0;
             int maxRight = 0;
             bool inLeft = false;
             bool found = false;
             string seatLabel = "";
             int seatOrder = 0;
+            int foundSeatOrder = 0;
             foreach (var row in rows)
             {
                 if (row.LeftRow)
@@ -140,7 +226,6 @@ namespace HCIProjekat.views.manager.pages
                     maxRight = Math.Max(maxRight, row.Seats.Count);
                 }
                 
-                found = false;
                 seatOrder = 0;
                 foreach (var rowSeat in row.Seats)
                 {
@@ -148,27 +233,29 @@ namespace HCIProjekat.views.manager.pages
                     {
                         inLeft = row.LeftRow;
                         found = true;
+                        foundSeatOrder = seatOrder;
+                        leftsFound = lefts;
+                        rightsFound = rights;
                         break;
                     }
                     seatOrder++;
                 }
-                if (found) break;
             }
             if (!found) return;
 
-            if (inLeft) seatLabel = $"{(char)('A' + seatOrder)}-{lefts}-L";
-            else seatLabel = $"{(char)('A' + maxLeft + seatOrder)}-{rights}-R";
+            if (inLeft) seatLabel = $"{(char)('A' + foundSeatOrder)}-{leftsFound}-L";
+            else seatLabel = $"{(char)('A' + maxLeft + foundSeatOrder)}-{rightsFound}-R";
 
             System.Diagnostics.Debug.WriteLine($"CLICKED SEAT {seatLabel}");
             // add to list or remove from list
             chosenSeats.ForEach(x => System.Diagnostics.Debug.WriteLine($" {x.Label} "));
             // aloooooooooo
-            train.PrintSeatLabels();
+            Train.PrintSeatLabels();
 
             if(toAdd)
             {
-                System.Diagnostics.Debug.WriteLine($"DATABASE SEAT {Database.GetSeatFromTrain(train, seatLabel)}");
-                chosenSeats.Add(Database.GetSeatFromTrain(train, seatLabel));
+                System.Diagnostics.Debug.WriteLine($"DATABASE SEAT {Database.GetSeatFromTrain(Train, seatLabel)}");
+                chosenSeats.Add(Database.GetSeatFromTrain(Train, seatLabel));
             }
             else
             {
@@ -449,7 +536,6 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
-
         class SeatBuilder
         {
             public static int W = 50;
@@ -460,6 +546,13 @@ namespace HCIProjekat.views.manager.pages
             {
                 ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.jpg"))
             };
+
+            public static ImageBrush ImageBrushTaken = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/takenseat.jpg")),
+                
+            };
+
 
             public static ImageBrush LowOpacityImageBrush = new ImageBrush
             {

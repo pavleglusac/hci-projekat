@@ -14,8 +14,9 @@ namespace HCIProjekat.views.manager.pages
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"{value}");
-                if (value == null) throw  new Exception("Whaaat");
+                System.Diagnostics.Debug.WriteLine($"ovo je value {value}");
+                System.Diagnostics.Debug.WriteLine($"{value == null}");
+                if (value == null || ((string)value).Length == 0) return new ValidationResult(true, "Vreme je validno");
                 TimeOnly orderDate = TimeOnly.Parse((string)value);
             }
             catch(Exception ex)

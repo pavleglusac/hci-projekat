@@ -1,4 +1,5 @@
 ﻿using HCIProjekat.model;
+using HCIProjekat.views.customer.dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace HCIProjekat.views.customer
     {
         List<Ticket> Tickets = new List<Ticket>();
         List<Ticket> PastTickets = new List<Ticket>();
+
         public TicketHistory()
         {
             InitializeComponent();

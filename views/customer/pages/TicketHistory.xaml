@@ -25,6 +25,7 @@
             <converters:TimeOnlyToTimeConverter x:Key="TimeOnlyToTimeConverter" />
         </ResourceDictionary>
     </Page.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -38,7 +39,7 @@
                 <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Collapsed" x:Name="reservationsComponent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="20*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
@@ -64,24 +65,24 @@
                                 CanUserResizeRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Voz"
                                         IsReadOnly="True"
                                         Binding="{Binding Train.Name}"/>
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Od"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.From.Name}"
                                         />
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Do"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.To.Name}"></DataGridTextColumn>
                                         
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Datum"
                                         IsReadOnly="True"
                                         Binding="{Binding DepartureDate, Converter={StaticResource DateTimeFormatConverter}}"/>
@@ -109,7 +110,13 @@
                                         </DataGridTextColumn.Binding>
                                     </DataGridTextColumn>
                                     <DataGridTextColumn
-                                        Width="*"
+                                        Width="2*"
+                                        Header="Sedište"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Seat.Label}"
+                                        />
+                                    <DataGridTextColumn
+                                        Width="2*"
                                         Header="Cena"
                                         IsReadOnly="True">
                                         <DataGridTextColumn.Binding>
@@ -130,7 +137,7 @@
                 <Grid Margin="0 50 0 50" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="20*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
@@ -156,24 +163,24 @@
                                 CanUserResizeRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Voz"
                                         IsReadOnly="True"
                                         Binding="{Binding Train.Name}"/>
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Od"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.From.Name}"
                                         />
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Do"
                                         IsReadOnly="True"
                                         Binding="{Binding Departure.To.Name}"
                                         />
                                     <DataGridTextColumn
-                                        Width="2*"
+                                        Width="3*"
                                         Header="Datum"
                                         IsReadOnly="True"
                                         Binding="{Binding DepartureDate,
@@ -200,7 +207,13 @@
                                         </DataGridTextColumn.Binding>
                                     </DataGridTextColumn>
                                     <DataGridTextColumn
-                                        Width="*"
+                                        Width="2*"
+                                        Header="Sedište"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Seat.Label}"
+                                        />
+                                    <DataGridTextColumn
+                                        Width="2*"
                                         Header="Cena"
                                         IsReadOnly="True">
                                         <DataGridTextColumn.Binding>

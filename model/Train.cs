@@ -52,6 +52,21 @@ namespace HCIProjekat.model
             this.PricePerMinute = pricePerMinute;
         }
 
+        internal List<Station> GetCriticalStations(Station from, Station to)
+        {
+            List<Station> CriticalStations = new List<Station>();
+            int fromOrder = Stations[from];
+            int toOrder = Stations[to];
+            foreach (Station station in this.Stations.Keys)
+            {
+                if(Stations[station] > fromOrder && Stations[station] < toOrder)
+                {
+                    CriticalStations.Add(station);
+                }
+            }
+            return CriticalStations;
+        }
+
         public override string ToString()
         {
             string s = "LEFT\n";
@@ -77,6 +92,10 @@ namespace HCIProjekat.model
             return Stations.Where(k => k.Value == Stations.Count).Select(k => k.Key).First();
         }
 
+        public Station GetStationByIndex(int i)
+        {
+            return Stations.Where(k => k.Value == i).Select(k => k.Key).First();
+        }
 
         internal void updateStations(Dictionary<Station, int> trainsStations)
         {
@@ -134,22 +153,22 @@ namespace HCIProjekat.model
             foreach (var row in LeftRows)
             {
                 seatOrder = 0;
+                lefts++;
                 foreach (var rowSeat in row.Seats)
                 {
-                    rowSeat.Label = $"{(char)('A' + lefts)}-{++seatOrder}-L";
+                    rowSeat.Label = $"{(char)('A' + seatOrder++)}-{lefts}-L";
                 }
-                lefts++;
                 maxLeft = Math.Max(maxLeft, seatOrder);
             }
 
             foreach (var row in RightRows)
             {
                 seatOrder = 0;
+                rights++;
                 foreach (var rowSeat in row.Seats)
                 {
-                    rowSeat.Label = $"{(char)('A' + maxLeft + rights)}-{++seatOrder}-R";
+                    rowSeat.Label = $"{(char)('A' + maxLeft + seatOrder++)}-{rights}-R";
                 }
-                rights++;
             }
         }
 
