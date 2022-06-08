@@ -173,6 +173,15 @@ namespace HCIProjekat.model
             }
         }
 
+        internal static List<Train> FilterTrains(string departureStation, string destinationStation)
+        {
+            return Trains.FindAll(train =>
+                train.Stations.ContainsKey(getStationByName(departureStation)) &&
+                train.Stations.ContainsKey(getStationByName(destinationStation)) &&
+                train.Stations[getStationByName(departureStation)] < train.Stations[getStationByName(destinationStation)]
+            );
+        }
+
         public static List<Train> SearchTrainsByName(string name)
         {
             return Trains.Where(x => x.Name.ToLower().StartsWith(name.ToLower())).ToList();
@@ -229,6 +238,18 @@ namespace HCIProjekat.model
                 }
             }
             return addStation(new Station(location));
+        }
+
+        public static Station getStationByName(string name)
+        {
+            foreach (Station station in Stations)
+            {
+                if (station.Name == name)
+                {
+                    return station;
+                }
+            }
+            return null;
         }
         public static void setName(Location location, String name)
         {
