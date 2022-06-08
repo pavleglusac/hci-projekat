@@ -33,18 +33,12 @@ namespace HCIProjekat.views.customer
         private void GetTickets()
         {
             List<Ticket> AllTickets = Database.GetCurrentUsersTickets();
-            foreach(Ticket ticket in AllTickets)
-            {
-                System.Diagnostics.Debug.WriteLine($"{ticket.DepartureDate.ToDateTime(ticket.Departure.DepartureDateTime)} {DateTime.Now}");
-                if(ticket.DepartureDate.ToDateTime(ticket.Departure.DepartureDateTime) < DateTime.Now)
-                {
-                    PastTickets.Add(ticket);
-                }
-                else
-                {
-                    Tickets.Add(ticket);
-                }
-            }
+
+            PastTickets = AllTickets.FindAll(x => x.DepartureDate.ToDateTime(x.Departure.DepartureDateTime) < DateTime.Now);
+            Tickets = AllTickets.FindAll(x => x.DepartureDate.ToDateTime(x.Departure.DepartureDateTime) >= DateTime.Now);
+
+            if (Tickets.Any()) reservationsComponent.Visibility = Visibility.Visible;
+            else reservationsComponent.Visibility = Visibility.Collapsed;
         }
 
 

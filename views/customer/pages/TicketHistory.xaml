@@ -35,7 +35,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Visible" x:Name="reservationsComponent">
+                <Grid Margin="0 50 0 0" Grid.Row="0" Visibility="Collapsed" x:Name="reservationsComponent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="15*"/>
@@ -50,7 +50,7 @@
                                         Margin="20 18 0 0"
                                         Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                                         Foreground="White"
-                                        Text="Aktivne rezervacije" />
+                                        Text="Aktivne karte" />
                                 </StackPanel>
                             </Border>
 
