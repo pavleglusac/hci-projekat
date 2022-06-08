@@ -61,7 +61,7 @@ namespace HCIProjekat.views.manager.pages
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
             MainWindow mw = new MainWindow(new SeatCreator(train));
-            mw.Show();
+            mw.ShowDialog();
         }
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -98,7 +98,7 @@ namespace HCIProjekat.views.manager.pages
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
             MainWindow mw = new MainWindow(new TimetableAddition(train));
-            mw.Show();
+            mw.ShowDialog();
         }
 
         public void SetHelpKey(object sender, EventArgs e)
