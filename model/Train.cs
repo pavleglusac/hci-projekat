@@ -153,22 +153,22 @@ namespace HCIProjekat.model
             foreach (var row in LeftRows)
             {
                 seatOrder = 0;
+                lefts++;
                 foreach (var rowSeat in row.Seats)
                 {
-                    rowSeat.Label = $"{(char)('A' + lefts)}-{++seatOrder}-L";
+                    rowSeat.Label = $"{(char)('A' + seatOrder++)}-{lefts}-L";
                 }
-                lefts++;
                 maxLeft = Math.Max(maxLeft, seatOrder);
             }
 
             foreach (var row in RightRows)
             {
                 seatOrder = 0;
+                rights++;
                 foreach (var rowSeat in row.Seats)
                 {
-                    rowSeat.Label = $"{(char)('A' + maxLeft + rights)}-{++seatOrder}-R";
+                    rowSeat.Label = $"{(char)('A' + maxLeft + seatOrder++)}-{rights}-R";
                 }
-                rights++;
             }
         }
 

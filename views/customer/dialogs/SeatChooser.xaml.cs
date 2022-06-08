@@ -169,8 +169,7 @@ namespace HCIProjekat.views.customer.dialogs
                     // logika da li je slobodno
                     if(TakenSeats.Contains(x))
                     {
-                        seat.Fill = new SolidColorBrush(Colors.Red);
-                        seat.Stroke = new SolidColorBrush(Colors.Red);
+                        seat.Opacity = 0.4;
                     }
                     else
                     {
@@ -193,24 +192,27 @@ namespace HCIProjekat.views.customer.dialogs
             // logika da li je slobodno
             Rectangle seat = (Rectangle)sender;
             bool toAdd = false;
-            if(seat.Opacity == 0.5)
+            if(seat.Fill == SeatBuilder.ImageBrushTaken)
             {
                 toAdd = false;
-                seat.Opacity = 1;
+                seat.Fill = SeatBuilder.ImageBrush;
             }
             else
             {
                 toAdd = true;
-                seat.Opacity = 0.5;
+                seat.Fill = SeatBuilder.ImageBrushTaken;
             }
             int lefts = 0;
             int rights = 0;
+            int leftsFound = 0;
+            int rightsFound = 0;
             int maxLeft = 0;
             int maxRight = 0;
             bool inLeft = false;
             bool found = false;
             string seatLabel = "";
             int seatOrder = 0;
+            int foundSeatOrder = 0;
             foreach (var row in rows)
             {
                 if (row.LeftRow)
@@ -224,7 +226,6 @@ namespace HCIProjekat.views.customer.dialogs
                     maxRight = Math.Max(maxRight, row.Seats.Count);
                 }
                 
-                found = false;
                 seatOrder = 0;
                 foreach (var rowSeat in row.Seats)
                 {
@@ -232,16 +233,18 @@ namespace HCIProjekat.views.customer.dialogs
                     {
                         inLeft = row.LeftRow;
                         found = true;
+                        foundSeatOrder = seatOrder;
+                        leftsFound = lefts;
+                        rightsFound = rights;
                         break;
                     }
                     seatOrder++;
                 }
-                if (found) break;
             }
             if (!found) return;
 
-            if (inLeft) seatLabel = $"{(char)('A' + seatOrder)}-{lefts}-L";
-            else seatLabel = $"{(char)('A' + maxLeft + seatOrder)}-{rights}-R";
+            if (inLeft) seatLabel = $"{(char)('A' + foundSeatOrder)}-{leftsFound}-L";
+            else seatLabel = $"{(char)('A' + maxLeft + foundSeatOrder)}-{rightsFound}-R";
 
             System.Diagnostics.Debug.WriteLine($"CLICKED SEAT {seatLabel}");
             // add to list or remove from list
@@ -543,6 +546,13 @@ namespace HCIProjekat.views.customer.dialogs
             {
                 ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/seat.jpg"))
             };
+
+            public static ImageBrush ImageBrushTaken = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/assets/takenseat.jpg")),
+                
+            };
+
 
             public static ImageBrush LowOpacityImageBrush = new ImageBrush
             {

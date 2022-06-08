@@ -27,6 +27,8 @@ namespace HCIProjekat.model
             Stations.Add(new Station("Novi Sad", new Location(45.246813, 19.853059)));
             Stations.Add(new Station("Ečka", new Location(45.315630, 20.442566)));
             Stations.Add(new Station("Borča", new Location(44.880790, 20.465300)));
+            Stations.Add(new Station("Pančevo", new Location(44.880790, 20.465300)));
+            Stations.Add(new Station("Beograd", new Location(44.880790, 20.465300)));
 
             System.Diagnostics.Debug.WriteLine("ucitao stanice");
             Train train1 = new();
@@ -50,6 +52,9 @@ namespace HCIProjekat.model
 
             train1.Stations.Add(Stations[0], 1);
             train1.Stations.Add(Stations[1], 2);
+            train1.Stations.Add(Stations[2], 3);
+            train1.Stations.Add(Stations[3], 4);
+            train1.Stations.Add(Stations[4], 5);
 
             train2.Stations.Add(Stations[0], 1);
             train2.Stations.Add(Stations[2], 2);

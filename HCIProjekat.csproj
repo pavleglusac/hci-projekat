@@ -11,6 +11,7 @@
     <None Remove="assets\icon.ico" />
     <None Remove="assets\logo3.png" />
     <None Remove="assets\seat.jpg" />
+    <None Remove="assets\takenseat.jpg" />
     <None Remove="assets\trash.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <Resource Include="assets\logo3.png" />
     <Resource Include="assets\seat.jpg" />
+    <Resource Include="assets\takenseat.jpg" />
     <Resource Include="assets\trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
