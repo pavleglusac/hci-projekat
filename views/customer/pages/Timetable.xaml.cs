@@ -78,12 +78,42 @@ namespace HCIProjekat.views.customer
             DepartureEntries = new List<TimetableEntry>();
             List<Train> trains = GetTrains();
 
+            Random random = new();
+            List<Departure> departures = new List<Departure>();
             trains.ForEach(train =>
             {
-                train.Timetable.Departures.ForEach(departure =>
+                int totalStations = train.Stations.Count;
+                if (totalStations < 2) return;
+                train.Timetable.Departures.ForEach(originalDeparture =>
                 {
-                    DepartureEntries.Add(new(train, departure, departureDate));
+                    TimeOnly totalStart = originalDeparture.DepartureDateTime;
+                    TimeOnly totalEnd = originalDeparture.ArrivalDateTime;
+                    TimeSpan span = totalEnd - totalStart;
+
+                    int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
+                    int timeSpanBetweenStations = spanInMinutes / (totalStations - 1);
+
+
+                    Station from = Database.getStationByName(departureStation);
+                    Station to = Database.getStationByName(destinationStation);
+
+                    int spanFromFirstStation = train.Stations[from] - 1;
+                    int spanBetweenStations = train.Stations[to] - train.Stations[from];
+
+                    TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStation * timeSpanBetweenStations));
+                    TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations*timeSpanBetweenStations));
+                    departures.Add(new Departure(start, end, from, to));
                 });
+
+                departures.ForEach(departure => DepartureEntries.Add(new(train, departure, departureDate)));
+
+                //train.Timetable.Departures.ForEach(departure =>
+                //{
+                //    if (departure.From == Database.getStationByName(departureStation)
+                //    && departure.To == Database.getStationByName(destinationStation))
+                //        DepartureEntries.Add(new(train, departure, departureDate));
+                //});
+
             });
             departuresGrid.ItemsSource = DepartureEntries;
 

@@ -77,6 +77,10 @@ namespace HCIProjekat.model
             return Stations.Where(k => k.Value == Stations.Count).Select(k => k.Key).First();
         }
 
+        public Station GetStationByIndex(int i)
+        {
+            return Stations.Where(k => k.Value == i).Select(k => k.Key).First();
+        }
 
         internal void updateStations(Dictionary<Station, int> trainsStations)
         {
