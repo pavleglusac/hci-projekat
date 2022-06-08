@@ -69,6 +69,7 @@ namespace HCIProjekat.views.manager.pages
                     }
                     SelectedPushpin = null;
                 }
+                drawLines();
             }
             if (e.Key == Key.Down)
             {
@@ -79,8 +80,13 @@ namespace HCIProjekat.views.manager.pages
                         return;
                     }
                     SelectedPushpin.Content = Int32.Parse(SelectedPushpin.Content.ToString()) - 1;
-                    foreach (Pushpin pushpin in MapWithEvents.Children)
+                    foreach (var child in MapWithEvents.Children)
                     {
+                        if (child is not Pushpin)
+                        {
+                            continue;
+                        }
+                        Pushpin pushpin = (Pushpin)child;
                         if (!Int32.TryParse(pushpin.Content.ToString(), out _))
                         {
                             continue;
@@ -91,6 +97,7 @@ namespace HCIProjekat.views.manager.pages
                         }
                     }
                 }
+                drawLines();
             }
             if (e.Key == Key.Up)
             {
@@ -101,8 +108,13 @@ namespace HCIProjekat.views.manager.pages
                         return;
                     }
                     SelectedPushpin.Content = Int32.Parse(SelectedPushpin.Content.ToString()) + 1;
-                    foreach (Pushpin pushpin in MapWithEvents.Children)
+                    foreach (var child in MapWithEvents.Children)
                     {
+                        if (child is not Pushpin)
+                        {
+                            continue;
+                        }
+                        Pushpin pushpin = (Pushpin)child;
                         if (!Int32.TryParse(pushpin.Content.ToString(), out _))
                         {
                             continue;
@@ -113,6 +125,7 @@ namespace HCIProjekat.views.manager.pages
                         }
                     }
                 }
+                drawLines();
             }
             if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
             {
@@ -136,8 +149,13 @@ namespace HCIProjekat.views.manager.pages
                             }
                             contentBefore = Int32.Parse(SelectedPushpin.Content.ToString());
                             SelectedPushpin.Content = numberPressed;
-                            foreach (Pushpin pushpin in MapWithEvents.Children)
+                            foreach (var child in MapWithEvents.Children)
                             {
+                                if (child is not Pushpin)
+                                {
+                                    continue;
+                                }
+                                Pushpin pushpin = (Pushpin)child;
                                 if (!Int32.TryParse(pushpin.Content.ToString(), out _))
                                 {
                                     continue;
@@ -150,6 +168,7 @@ namespace HCIProjekat.views.manager.pages
                         }
                         numberPressed = 0;
                         numbersPressed = 0;
+                        drawLines();
                     });
                 }, 200);
             }
@@ -189,8 +208,13 @@ namespace HCIProjekat.views.manager.pages
         void updatePushpinsNumber(int deletedNumber)
         {
 
-            foreach (Pushpin pushpin in MapWithEvents.Children)
+            foreach (var child in MapWithEvents.Children)
             {
+                if (child is not Pushpin)
+                {
+                    continue;
+                }
+                Pushpin pushpin = (Pushpin)child;
                 if (!Int32.TryParse(pushpin.Content.ToString(), out _))
                 {
                     continue;
@@ -200,6 +224,7 @@ namespace HCIProjekat.views.manager.pages
                     pushpin.Content = Int32.Parse(pushpin.Content.ToString()) - 1;
                 }
             }
+            drawLines();
         }
         private void MapWithEvents_MouseMove(object sender, MouseEventArgs e)
         {
@@ -217,6 +242,7 @@ namespace HCIProjekat.views.manager.pages
                     }
                     SelectedPushpin.Location = MapWithEvents.ViewportPointToLocation(
                       Point.Add(e.GetPosition(MapWithEvents), _mouseToMarker));
+                    drawLines();
                     e.Handled = true;
                 }
             }
@@ -310,6 +336,7 @@ namespace HCIProjekat.views.manager.pages
 
                 }
             }
+            drawLines();
         }
         void pin_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -352,7 +379,7 @@ namespace HCIProjekat.views.manager.pages
             Task.Delay(100).ContinueWith(t =>
                 Dispatcher.Invoke(() =>
             {
-                DialogContent.Content = new StationName(ref pin,ref TrainsDialogHost, ref MapWithEvents, onModalClose);
+                DialogContent.Content = new StationName(ref pin,ref TrainsDialogHost, ref MapWithEvents, onModalClose, onModalClose2);
                 DialogContent.Height = 250;
                 DialogContent.Width = 500;
                 IsDialogOpen = true;
@@ -368,6 +395,12 @@ namespace HCIProjekat.views.manager.pages
             return pinNumber++;
         }
 
+        public int onModalClose2()
+        {
+            drawLines();
+            return 0;
+        }
+
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -375,9 +408,14 @@ namespace HCIProjekat.views.manager.pages
             bool addPushpin = true;
             foreach (Station station in Database.Stations)
             {
-                foreach (Pushpin child in MapWithEvents.Children)
+                foreach (var child in MapWithEvents.Children)
                 {
-                    if (child.Location.Equals(station.Location))
+                    if (child is not Pushpin)
+                    {
+                        continue;
+                    }
+                    Pushpin pushpin = (Pushpin)child;
+                    if (pushpin.Location.Equals(station.Location))
                     {
                         addPushpin = false;
                     }
@@ -408,12 +446,17 @@ namespace HCIProjekat.views.manager.pages
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             List<Pushpin> pushpinsToRemove = new List<Pushpin>();
-            foreach (Pushpin child in MapWithEvents.Children)
+            foreach (var child in MapWithEvents.Children)
             {
-                System.Diagnostics.Debug.WriteLine(child.Background.ToString() + "-" + new SolidColorBrush(Colors.Green).ToString() + "=" + child.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()));
-                if (child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                if (child is not Pushpin)
                 {
-                    pushpinsToRemove.Add(child);
+                    continue;
+                }
+                Pushpin pushpin = (Pushpin)child;
+                System.Diagnostics.Debug.WriteLine(pushpin.Background.ToString() + "-" + new SolidColorBrush(Colors.Green).ToString() + "=" + pushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Green).ToString()));
+                if (pushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                {
+                    pushpinsToRemove.Add(pushpin);
                 }
 
             }
@@ -427,17 +470,22 @@ namespace HCIProjekat.views.manager.pages
         {
             List<Pushpin> pushpinsToAdd = new List<Pushpin>();
             Dictionary<Station, int> trainsStations = new Dictionary<Station, int>();
-            foreach (Pushpin child in MapWithEvents.Children)
+            foreach (var child in MapWithEvents.Children)
             {
-                if (!child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                if (child is not Pushpin)
                 {
-                    trainsStations.Add(Database.getOrAddStation(child.Location), Int32.Parse(child.Content.ToString()));
+                    continue;
+                }
+                Pushpin pushpin = (Pushpin)child;
+                if (!pushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                {
+                    trainsStations.Add(Database.getOrAddStation(pushpin.Location), Int32.Parse(pushpin.Content.ToString()));
                 }
                 foreach (Station s in Database.Stations)
                 {
-                    if (!child.Location.Equals(s.Location) && !child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                    if (!pushpin.Location.Equals(s.Location) && !pushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
                     {
-                        pushpinsToAdd.Add(child);
+                        pushpinsToAdd.Add(pushpin);
                     }
                 }
             }
@@ -445,6 +493,86 @@ namespace HCIProjekat.views.manager.pages
             Database.Trains.Add(train);
             parentDialog.IsOpen = false;
         }
+
+        private void drawLines(List<Pushpin> pushpinsToAdd)
+        {
+            var line = new MapPolyline();
+            line.Locations = new LocationCollection();
+            Location[] sortedLocations = new Location[pinNumber + 1];
+            line.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+            line.StrokeThickness = 3;
+            foreach (Pushpin child in pushpinsToAdd)
+            {
+                if (!child.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                {
+                    sortedLocations[Int32.Parse(child.Content.ToString())] = child.Location;
+                }
+            }
+            for (int i = 1; i < pinNumber; i++)
+            {
+                line.Locations.Add(sortedLocations[i]);
+            }
+            MapWithEvents.Children.Add(line);
+        }
+        private void drawLines()
+        {
+            removeAllLines();
+            var line = new MapPolyline();
+            line.Locations = new LocationCollection();
+            Location[] sortedLocations = new Location[pinNumber + 1];
+            List<Pushpin> pushpins = new List<Pushpin>();
+            line.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+            line.StrokeThickness = 3;
+            foreach (var child in MapWithEvents.Children)
+            {
+                if (child is not Pushpin)
+                {
+                    continue;
+                }
+                Pushpin pushpin = (Pushpin)child;
+                pushpins.Add(pushpin);
+                if (!pushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
+                {
+                    if (pushpin.Content == null || String.IsNullOrEmpty(pushpin.Content.ToString()))
+                    {
+                        continue;
+                    }
+                    sortedLocations[Int32.Parse(pushpin.Content.ToString())] = pushpin.Location;
+                }
+            }
+            for (int i = 1; i < pinNumber; i++)
+            {
+                line.Locations.Add(sortedLocations[i]);
+            }
+            MapWithEvents.Children.Add(line);
+            foreach (Pushpin pushpin in pushpins)
+            {
+                MapWithEvents.Children.Remove(pushpin);
+                MapWithEvents.Children.Add(pushpin);
+            }
+        }
+
+
+
+        private void removeAllLines()
+        {
+
+            List<MapPolyline> linesToRemove = new List<MapPolyline>();
+            foreach (var child in MapWithEvents.Children)
+            {
+                if (child is not Pushpin)
+                {
+                    linesToRemove.Add((MapPolyline)child);
+                    continue;
+                }
+            }
+            foreach (MapPolyline mapPolyline in linesToRemove)
+            {
+                MapWithEvents.Children.Remove(mapPolyline);
+            }
+        }
+
+
 
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

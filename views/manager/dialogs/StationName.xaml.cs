@@ -30,10 +30,12 @@ namespace HCIProjekat.views.manager.dialogs
         public int pinNum;
         public Map map;
         Func<int> parentMethod;
-        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodd)
+        Func<int> parentMethod2;
+        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent)
         {
             currentLocation = pin.Location;
-            parentMethod = parentMethodd;
+            parentMethod = parentMethodSent;
+            parentMethod2 = parentMethod2Sent;
             pushpin = pin;
             hostDialog = dialog;
             map = MapWithEvents;
@@ -59,6 +61,7 @@ namespace HCIProjekat.views.manager.dialogs
             {
                 map.Children.Add(pushpin);
                 pushpin.Content = parentMethod();
+                parentMethod2();
             }
             hostDialog.IsOpen = false;
         }
