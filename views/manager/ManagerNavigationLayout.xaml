@@ -100,6 +100,13 @@
                             <TextBlock Text="Istorija vožnji" VerticalAlignment="Center"  Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
+                    <ListViewItem x:Name="ItemTutor" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="SchoolOutline" Height="25"
+                                                     Width="25" Margin="13 10 10 10"/>
+                            <TextBlock Text="Tutor" VerticalAlignment="Center" Margin="20 10"/>
+                        </StackPanel>
+                    </ListViewItem>
                     <ListViewItem x:Name="ItemLogout" Height="60">
                         <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Logout" Height="25" Width="25"

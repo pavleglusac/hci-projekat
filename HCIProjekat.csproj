@@ -15,9 +15,14 @@
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
     <None Remove="help\seats.html" />
+    <None Remove="help\timetables.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="help\timetables.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Content>
     <Content Include="help\seats.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Component</SubType>
@@ -55,6 +60,12 @@
     <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="views\manager\tutorial\Tutor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\manager\tutorial\SeatCreatorTutorial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +74,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="views\manager\pages\UpdateTrain.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\Tutor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\SeatCreatorTutorial.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
