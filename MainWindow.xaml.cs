@@ -35,6 +35,7 @@ namespace HCIProjekat
         public MainWindow(model.Train train)
         {
             InitializeComponent();
+            this.Activate();
             MainFrame.Content = new ManagerNavigationLayout(train);
         }
 

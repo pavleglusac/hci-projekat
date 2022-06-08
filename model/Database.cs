@@ -72,7 +72,8 @@ namespace HCIProjekat.model
                     departures.Add(new Departure(start, end,
                         x.Stations.Keys.ToList()[i % x.Stations.Count], x.Stations.Keys.ToList()[(i + 1) % x.Stations.Count]));
                 }
-                x.Timetable = departures;
+                x.Timetable = new Timetable();
+                x.Timetable.Departures = departures;
             });
 
 
@@ -97,9 +98,14 @@ namespace HCIProjekat.model
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    Tickets.Add(new Ticket(x, x.Timetable[i % x.Timetable.Count], Users[random.Next(0, 2)], new Seat()));
+                    Tickets.Add(new Ticket(x, x.Timetable.Departures[i % x.Timetable.Departures.Count], Users[random.Next(0, 2)], new Seat()));
                 }
             });
+        }
+
+        public static Timetable GetTimetableForTrainName(string name)
+        {
+            return Trains.Where(x => x.Name == name).First().Timetable;
         }
 
         public static List<String> getTrainsNamesWithStation(Location location)

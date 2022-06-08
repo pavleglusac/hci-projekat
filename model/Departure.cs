@@ -13,6 +13,11 @@ namespace HCIProjekat.model
         public Station From { get; set; }
         public Station To { get; set; }
 
+        public Departure()
+        {
+
+        }
+
         public Departure(DateTime departureDateTime, DateTime arrivalDateTime, Station from, Station to)
         {
             DepartureDateTime = departureDateTime;
@@ -32,6 +37,16 @@ namespace HCIProjekat.model
         {
             TimeSpan span = ArrivalDateTime.Subtract(DepartureDateTime);
             return span.Minutes + (span.Hours + 24 * span.Days) * 60;
+        }
+
+        public Departure Copy()
+        {
+            Departure departure = new Departure();
+            departure.To = To;
+            departure.From = From;
+            departure.DepartureDateTime = DepartureDateTime;
+            departure.ArrivalDateTime = ArrivalDateTime;
+            return departure;
         }
     }
 }

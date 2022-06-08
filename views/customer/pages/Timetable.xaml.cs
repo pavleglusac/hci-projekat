@@ -57,8 +57,9 @@ namespace HCIProjekat.views.customer
                 Departures.Add(new Departure(DateTime.Parse($"2022-06-01T0{i%5}:0{(i * 23) % 10}"), 
                     DateTime.Parse($"2022-06-01T0{i%3+5}:0{(i* 27) % 10}"), Stations.Keys.ToList()[i%3], Stations.Keys.ToList()[(i+1)% 3]));
             }
-            train.Timetable = Departures;
-            train.Timetable.ForEach(x => DepartureEntries.Add(new TimetableEntry(train, x)));
+
+            train.Timetable = new model.Timetable { Departures = Departures };
+            train.Timetable.Departures.ForEach(x => DepartureEntries.Add(new TimetableEntry(train, x)));
             departuresGrid.ItemsSource = DepartureEntries;
         }
 
