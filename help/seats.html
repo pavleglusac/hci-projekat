@@ -6,11 +6,10 @@
         <title>Pomoć za sedišta</title>
         <style type="text/css">
             body {
-                margin: 40px auto;
                 max-width: 650px;
                 line-height: 1.6;
                 font-size: 18px;
-                color: #444;
+                color: #333;
                 padding: 0 10px
             }
 
@@ -21,7 +20,62 @@
     </head>
     <body>
         <h1>Uređivanje sedišta</h1>
+        <p>
+            Ukoliko želite da uređujete sedišta nekog voza, prvo morate navigirati na stranicu vozova.
+        </p>
+        <div>
+            <img src="seats_help_1.png" width="100%" />
+        </div>
+        <p>
+            Nakon toga, pretražite željeni voz. Klikom na dugme 'Sedišta' možete videti
+            i uređivati sedišta. Prikazaće Vam se ekran kao na slici ispod.
+        </p>
+        <div>
+            <img src="seats_help_2.png" width="100%" />
+        </div>
+        <ol>
+            <li>Ime voza</li>
+            <li>Običan red</li>
+            <li>Kupe - gornji</li>
+            <li>Kupe - donji</li>
+            <li>Sedište</li>
+            <li>Kanta</li>
+        </ol>
 
+        <p>
+            Manipulacija sedištima vrši se prevlačenjem miša ili prečicama.
+            Sedišta je moguće prevući u red čime se dodaju ili ih je moguće
+            obrisati prevlačenjem u kantu. Maksimalan broj sedišta je <strong>4</strong> po redu.
+        </p>
+
+        <p>
+            Manipulacija redovima vrši se prevlačenjem miša ili prečicama.
+            Redove je moguće prevući na levu ili desnu stranu voza čime se dodaju ili ih je moguće
+            obrisati prevlačenjem u kantu ukoliko <strong>nemaju sedišta u sebi</strong>. 
+            Maksimalan broj redova je <strong>7</strong> po jednoj strani voza.
+        </p>
+
+        <p>
+            Sedišta i redovi biće automatski labelirani i vodiće se računa da li se nalaze
+            sa desne ili sa leve strane voza.
+        </p>
+
+        <p>
+            Selektovanje reda vrši se klikom na taj red ili navigiranjem strelicama.
+        </p>
+
+        <div style="border: 1px solid black; border-radius: 8%; padding-left: 5%;">
+            <h2>Lista prečica</h2>
+            <ul>
+                <li>Kopiranje reda: Ctrl + Dole</li>
+                <li>Zanema redosleda redova: Alt + Dole / Alt + Gore</li>
+                <li>Dodavanje sedišta: Ctrl + Desno</li>
+                <li>Korak unazad: Ctrl + Z</li>
+                <li>Korak unapred: Ctrl + Y</li>
+                <li>Sačuvaj voz u bazu: Ctrl + S</li>
+                <li>Obriši sve elemente voza: Ctrl + Delete</li>
+            </ul>
+        </div>
     </body>
 
 </html>

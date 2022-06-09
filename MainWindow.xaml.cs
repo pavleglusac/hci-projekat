@@ -44,6 +44,7 @@ namespace HCIProjekat
         {
             InitializeComponent();
             MainFrame.Content = page;
+            WindowState = WindowState.Normal;
         }
 
         public void doThings(string param)

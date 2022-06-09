@@ -77,7 +77,9 @@
                                         <Button
                                             HorizontalAlignment="Right"
                                             Margin="0 0 30 0"
-                                            Grid.Column="1" Style="{StaticResource MaterialDesignIconForegroundButton}" ToolTip="MaterialDesignIconForegroundButton">
+                                            Click="Help_Click"
+                                            ToolTip="Otvorite pomoć"
+                                            Grid.Column="1" Style="{StaticResource MaterialDesignIconForegroundButton}">
                                             <materialDesign:PackIcon Foreground="White" Kind="Help" />
                                         </Button>
                                     </Grid>
@@ -109,7 +111,7 @@
                                     FontSize="18"
                                     materialDesign:ButtonAssist.CornerRadius="5"
                                     Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                    ToolTip="Pretražite"
                                     Content="Potvrdi"
                                     Background="#2d2c94"
                                     Foreground="White"
@@ -121,7 +123,7 @@
                                     FontSize="18"
                                     materialDesign:ButtonAssist.CornerRadius="5"
                                     Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                    ToolTip="Dodajte voz"
                                     Content="Dodaj voz"
                                     Command="{x:Static local:Trains.OpenCreate}"
                                     CommandParameter="{Binding Name}"
@@ -168,6 +170,7 @@
                                             Background="#2d2c94"
                                             FontSize="14"
                                             Height="28"
+                                            ToolTip="Upravljajte redovima vožnji"
                                             Command="{x:Static local:Trains.OpenTimetables}"
                                             CommandParameter="{Binding Name}">
                                             <StackPanel Orientation="Horizontal">
@@ -190,6 +193,7 @@
                                         Background="#2d2c94"
                                         FontSize="14"
                                         Height="28"
+                                        ToolTip="Upravljajte sedištima"
                                         Command="{x:Static local:Trains.OpenSeats}"
                                         CommandParameter="{Binding Name}"
                                         IsEnabled="True">
@@ -211,6 +215,7 @@
                                             Background="#2d2c94"
                                             FontSize="14"
                                             Height="28"
+                                            ToolTip="Upravljajte rutom voza"
                                             Command="{x:Static local:Trains.OpenUpdate}"
                                             CommandParameter="{Binding Name}"
                                             IsEnabled="True">
@@ -234,6 +239,7 @@
                                             Height="28"
                                             Command="{x:Static local:Trains.OpenUpdate}"
                                             CommandParameter="{Binding Name}"
+                                            ToolTip="Obrišite voz"
                                             IsEnabled="True">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="DeleteOutline" Margin="0 0 5 0"></materialDesign:PackIcon>

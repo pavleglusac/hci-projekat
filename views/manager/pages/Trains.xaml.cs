@@ -35,16 +35,15 @@ namespace HCIProjekat.views.manager.pages
         public Trains()
         {
             InitializeComponent();
+            TrainsData = Database.Trains;
             trainsGrid.ItemsSource = TrainsData;
             AutoComplete();
         }
-
 
         private void handleFilterClick(object sender, EventArgs e)
         {
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
             trainsGrid.ItemsSource = TrainsData;
-            TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
         }
 
         private void AutoComplete()
@@ -99,6 +98,12 @@ namespace HCIProjekat.views.manager.pages
             Train train = Database.GetTrainByName((string)e.Parameter);
             MainWindow mw = new MainWindow(new TimetableAddition(train));
             mw.ShowDialog();
+        }
+
+        public void Help_Click(object sender, EventArgs e)
+        {
+            var wnd = (MainWindow)Window.GetWindow(this);
+            wnd.CommandBinding_Executed(sender, null);
         }
 
         public void SetHelpKey(object sender, EventArgs e)

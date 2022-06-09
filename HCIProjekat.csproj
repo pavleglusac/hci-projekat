@@ -15,13 +15,25 @@
     <None Remove="assets\takenseat.jpg" />
     <None Remove="assets\takenseat.png" />
     <None Remove="assets\trash.png" />
+    <None Remove="help\banner.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
     <None Remove="help\seats.html" />
+    <None Remove="help\seats_help_1.png" />
+    <None Remove="help\seats_help_2.png" />
     <None Remove="help\timetables.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="help\banner.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\seats_help_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\seats_help_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\timetables.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Component</SubType>

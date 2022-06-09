@@ -216,11 +216,44 @@ namespace HCIProjekat.model
 
         internal static List<Train> FilterTrains(string departureStation, string destinationStation)
         {
-            return Trains.FindAll(train =>
-                train.Stations.ContainsKey(getStationByName(departureStation)) &&
-                train.Stations.ContainsKey(getStationByName(destinationStation)) &&
+            return Trains.FindAll(train => TrainContainsStationName(train, departureStation) && TrainContainsStationName(train, destinationStation) &&
                 train.Stations[getStationByName(departureStation)] < train.Stations[getStationByName(destinationStation)]
             );
+        }
+
+        internal static List<Train> FilterTrainsEmpty(string departureStation, string destinationStation)
+        {
+            return Trains.FindAll(train =>
+                {
+                    int num1 = -1;
+                    int num2 = -1;
+                    if (departureStation != null)
+                    {
+                        if(TrainContainsStationName(train, departureStation))
+                            num1 = train.Stations[getStationByName(departureStation)];
+                        else
+                            return false;
+                    }
+                    if(destinationStation != null)
+                    {
+                        if (TrainContainsStationName(train, destinationStation))
+                            num2 = train.Stations[getStationByName(destinationStation)];
+                        else
+                            return false;
+
+                    }
+                    if ((num1 == -1 && num2 != -1) || (num2 == -1 && num1 != -1) || (num1 == num2 && num1 == -1)) return true;
+                    if (num1 < num2) return true;
+                    return false;
+                }
+            );
+        }
+
+        internal static Boolean TrainContainsStationName(Train train, string name)
+        {
+            if (name == null || name.Length == 0) return false;
+            return train.Stations.ContainsKey(getStationByName(name));
+
         }
 
         public static List<Train> SearchTrainsByName(string name)

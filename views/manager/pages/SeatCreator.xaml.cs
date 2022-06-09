@@ -1513,6 +1513,21 @@ namespace HCIProjekat.views.manager.pages
             emptyRows.Clear();
         }
 
+        public void Help_Click(object sender, EventArgs e)
+        {
+            var wnd = (MainWindow)Window.GetWindow(this);
+            wnd.CommandBinding_Executed(sender, null);
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "seats");
+            }
+        }
+
         // MODEL
 
         class Row
