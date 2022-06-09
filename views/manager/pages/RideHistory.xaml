@@ -69,7 +69,7 @@
 
                                 <ComboBox 
                                           x:Name="TrainSearchInput"
-                                          materialDesign:HintAssist.Hint="Search" materialDesign:HintAssist.HintOpacity=".26"
+                                          materialDesign:HintAssist.Hint="Ime voza" materialDesign:HintAssist.HintOpacity=".26"
                                           IsEditable="True" FontSize="24" >
 
                                 </ComboBox>
@@ -77,9 +77,10 @@
                                 <ComboBox
                                     Grid.Row="0" Grid.Column="1"
                                     Margin="5"
-                                    x:Name="startComboBox"
+                                    x:Name="departureStationComboBox"
                                     FontSize="18"
                                     FontWeight="Medium"
+                                    SelectionChanged="departureStationComboBox_SelectionChanged"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Od"
                                     ToolTip="Mesto polaska"/>
@@ -89,7 +90,8 @@
                                     Margin="5"
                                     FontSize="18"
                                     FontWeight="Medium"
-                                    x:Name="destinationComboBox"
+                                    x:Name="destinationStationComboBox"
+                                    SelectionChanged="destinationStationComboBox_SelectionChanged"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Do"
                                     ToolTip="Mesto odredišta"/>
@@ -99,6 +101,7 @@
                                     Margin="5"
                                     FontSize="18"
                                     FontWeight="Medium"
+                                    Name="departureDatePicker"
                                     materialDesign:HintAssist.Hint="Datum"
                                     ToolTip="Datum polaska"
                                     Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
@@ -109,7 +112,8 @@
                                     FontSize="18"
                                     materialDesign:ButtonAssist.CornerRadius="5"
                                     Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                    ToolTip="Pretražite"
+                                    Click="handleFilterClick"
                                     Content="Potvrdi"
                                     Background="#2d2c94"
                                     Foreground="White"
@@ -120,7 +124,7 @@
                         </StackPanel>
                     </Border>
                 </Grid>
-                <Grid Grid.Row="1" Margin="0 20">
+                <Grid Grid.Row="1" Margin="0 20" x:Name="timetableComponent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="5*"/>
