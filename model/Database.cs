@@ -132,6 +132,21 @@ namespace HCIProjekat.model
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
         }
 
+        public static Tuple<double, double> getTicketNumberAndIncomeForTrain(int month, string year, Train train)
+        {
+            double x = 0;
+            double y = 0;
+            foreach (Ticket t in Tickets)
+            {
+                if (t.Train.Name.Equals(train.Name) && t.DepartureDate.Month == month && (String.IsNullOrEmpty(year) || t.DepartureDate.Year == Int32.Parse(year))){
+                    x++;
+                    y += t.Price;
+                }
+            }
+            Tuple<double, double> tuple = new(x, y);
+            return tuple;
+        }
+
         private static void GenerateTestTickets()
         {
             Random random = new();
@@ -429,5 +444,6 @@ namespace HCIProjekat.model
         {
             CurrentUser = null;
         }
+
     }
 }
