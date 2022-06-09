@@ -37,6 +37,7 @@ namespace HCIProjekat.views.manager.pages
         public DialogHost parentDialog;
         public AddTrain()
         {
+            Database.CurrentTrainName = "";
             InitializeComponent();
             //Set focus on map
             MapWithEvents.Focus();
@@ -491,7 +492,6 @@ namespace HCIProjekat.views.manager.pages
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
             Database.Trains.Add(train);
-            parentDialog.IsOpen = false;
         }
 
         private void drawLines(List<Pushpin> pushpinsToAdd)
@@ -577,7 +577,16 @@ namespace HCIProjekat.views.manager.pages
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (String.IsNullOrEmpty(textBoxTrainName.Text))
+            Boolean exists = false;
+            foreach (Train train in Database.Trains)
+            {
+                if (train.Name.Equals(textBoxTrainName.Text))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (String.IsNullOrEmpty(textBoxTrainName.Text) || exists)
             {
                 addButton.IsEnabled = false;
             }

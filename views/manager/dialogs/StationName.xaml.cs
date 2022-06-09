@@ -23,6 +23,7 @@ namespace HCIProjekat.views.manager.dialogs
     /// </summary>
     public partial class StationName : Page
     {
+        public static String currentStationName;
         public Location currentLocation;
         public Pushpin pushpin;
         public Frame thisFrame;
@@ -34,6 +35,7 @@ namespace HCIProjekat.views.manager.dialogs
         Func<int> parentMethod2;
         public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent)
         {
+            currentStationName = "";
             currentLocation = pin.Location;
             parentMethod = parentMethodSent;
             parentMethod2 = parentMethod2Sent;
@@ -46,6 +48,7 @@ namespace HCIProjekat.views.manager.dialogs
         }
         public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent,Boolean tutor)
         {
+            currentStationName = "";
             currentLocation = pin.Location;
             parentMethod = parentMethodSent;
             parentMethod2 = parentMethod2Sent;
@@ -58,6 +61,7 @@ namespace HCIProjekat.views.manager.dialogs
         }
         public StationName(Pushpin pin, ref DialogHost dialog, string name)
         {
+            currentStationName = name;
             map = null;
             pushpin = pin;
             currentLocation = pin.Location;
@@ -71,6 +75,7 @@ namespace HCIProjekat.views.manager.dialogs
 
         public StationName(Pushpin pin, ref DialogHost dialog, string name, Func<int> parentMethod2Sent)
         {
+            currentStationName = name;
             map = null;
             pushpin = pin;
             currentLocation = pin.Location;
@@ -82,6 +87,8 @@ namespace HCIProjekat.views.manager.dialogs
         }
         public StationName(Pushpin pin, ref DialogHost dialog, string name, Func<int> parentMethod2Sent, Boolean tutor)
         {
+
+            currentStationName = name;
             map = null;
             pushpin = pin;
             currentLocation = pin.Location;
@@ -152,12 +159,24 @@ namespace HCIProjekat.views.manager.dialogs
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (String.IsNullOrEmpty(textBoxTrainName.Text))
+            if (addButton != null)
             {
-                addButton.IsEnabled = false;
+                Boolean exists = false;
+                foreach (Station station in Database.Stations)
+                {
+                    if (station.Name.Equals(textBoxTrainName.Text) && !station.Name.Equals(StationName.currentStationName))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (String.IsNullOrEmpty(textBoxTrainName.Text) || exists)
+                {
+                    addButton.IsEnabled = false;
+                }
+                else
+                    addButton.IsEnabled = true;
             }
-            else
-                addButton.IsEnabled = true;
         }
 
     }

@@ -70,6 +70,7 @@
                                                  UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
                                                 <local1:NonEmptyRule />
+                                                <local1:SameTrainRule />
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>

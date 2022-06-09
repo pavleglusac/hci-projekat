@@ -38,6 +38,7 @@
                          UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <local1:NonEmptyRule />
+                        <local1:SameStationRule />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

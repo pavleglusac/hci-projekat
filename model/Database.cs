@@ -16,8 +16,11 @@ namespace HCIProjekat.model
         public static List<Ticket> Tickets { get; set; }
         public static User? CurrentUser { get; set; }
 
+        public static String CurrentTrainName { get; set;}
+
         public static void loadData()
         {
+            CurrentTrainName = "";
             System.Diagnostics.Debug.WriteLine("pocetak ucitavanja");
             Stations = new List<Station>();
             Timetable = new List<Timetable>();

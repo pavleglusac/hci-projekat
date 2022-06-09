@@ -49,6 +49,7 @@ namespace HCIProjekat.views.manager.pages
         CancellationTokenSource timeout { get; set; }
         public UpdateTrain(Train train)
         {
+            Database.CurrentTrainName = train.Name;
             InitializeComponent();
             //Set focus on map
             MapWithEvents.Focus();
