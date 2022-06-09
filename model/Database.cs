@@ -377,6 +377,16 @@ namespace HCIProjekat.model
             return Users.FirstOrDefault(x => x.Username == username && x.Password == password);
         }
 
+        public static bool IsExistingUsername(string username)
+        {
+            return Users.Any(x => x.Username == username);
+        }
+
+        public static void SaveUser(User user)
+        {
+            Users.Add(user);
+        }
+
         public static void SetCurrentUser(User user)
         {
             CurrentUser = user;

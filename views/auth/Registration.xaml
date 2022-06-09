@@ -5,10 +5,116 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HCIProjekat.views.auth"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Registration">
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="Registration"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"        
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}">
 
-    <Grid>
-        <TextBlock Text="Registration" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid Background="#A7C7E7">
+        <Border CornerRadius="30" Width="450" Height="560" Background="White">
+            <StackPanel Width="350" HorizontalAlignment="Center">
+
+                <TextBlock Text="Registracija" FontSize="28" Margin="0 30 0 30"/>
+                <TextBox
+                        x:Name="usernameField"
+                        FontSize="16"
+                        Margin="0 0 0 24"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        materialDesign:HintAssist.Hint="Korisničko ime"
+                        materialDesign:HintAssist.HelperText="Unesite Vaše korisničko ime."
+                        KeyDown="hangleRegisterKeypress">
+                    <TextBox.Text>
+                        <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:NonEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBox
+                        x:Name="nameField"
+                        FontSize="16"
+                        Margin="0 0 0 24"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        materialDesign:HintAssist.Hint="Ime"
+                        materialDesign:HintAssist.HelperText="Unesite Vaše ime."
+                        KeyDown="hangleRegisterKeypress">
+                    <TextBox.Text>
+                        <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:NonEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBox
+                        x:Name="surnameField"
+                        FontSize="16"
+                        Margin="0 0 0 24"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        materialDesign:HintAssist.Hint="Prezime"
+                        materialDesign:HintAssist.HelperText="Unesite Vaše prezime."
+                        KeyDown="hangleRegisterKeypress">
+                    <TextBox.Text>
+                        <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:NonEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <PasswordBox
+                        x:Name="passwordField"
+                        FontSize="16"
+                        Margin="0 0 0 24"
+                        materialDesign:HintAssist.Hint="Lozinka"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:HintAssist.HelperText="Unesite lozinku." 
+                        KeyDown="hangleRegisterKeypress"
+                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                </PasswordBox>
+
+                <PasswordBox
+                        x:Name="confirmPasswordField"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Potvrdite lozinku"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:HintAssist.HelperText="Potvrdite lozinku." 
+                        KeyDown="hangleRegisterKeypress"
+                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                </PasswordBox>
+
+                <TextBlock Margin="0 50 0 2" HorizontalAlignment="Center" x:Name="loginError" 
+                           Visibility="Hidden" Foreground="DarkRed" FontSize="11">
+                </TextBlock>
+                <Button
+                    Margin="0 0 0 0"
+                    Click="handleRegisterButton"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="Registruj profil"
+                    Content="Registruj se"
+                    Background="#2d2c94"
+                    IsEnabled="True" />
+
+                <Button
+                    Click="handleChooseLoginButton"
+                    Width="220"
+                    Height="25"
+                    ToolTip="Otvori formu za prijavu"
+                    Content="Prijavi se na postojeći profil"
+                    Foreground="#2d2c94"
+                    Background="Transparent"
+                    BorderBrush="Transparent"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

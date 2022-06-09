@@ -42,7 +42,7 @@
                 <PasswordBox
                         x:Name="passwordField"
                         FontSize="16"
-                        materialDesign:HintAssist.Hint="Password"
+                        materialDesign:HintAssist.Hint="Lozinka"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:HintAssist.HelperText="Unesite Vašu lozinku." 
                         KeyDown="handleLoginKeypress"

@@ -33,7 +33,6 @@ namespace HCIProjekat.views.auth
 
         private void SignIn()
         {
-            // login logic
             hideError();
             string username = usernameField.Text;
             string password = passwordField.Password;
@@ -42,7 +41,6 @@ namespace HCIProjekat.views.auth
 
             ((TextBox)usernameField).Text = ((TextBox)usernameField).Text;
 
-            //if successful -> transfer to navigation
             User? user = Database.GetUser(username, password);
             if (user != null)
             {
@@ -71,9 +69,7 @@ namespace HCIProjekat.views.auth
         {
             hideError();
             if (e.Key == Key.Return)
-            {
                 SignIn();
-            }
         }
         
         private void hideError()
