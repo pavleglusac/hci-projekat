@@ -35,13 +35,12 @@ namespace HCIProjekat.views.manager.pages
         public bool IsDialogOpen = true;
         public Frame DialogContent = new Frame();
         public DialogHost parentDialog;
-        public AddTrain(ref DialogHost dialog)
+        public AddTrain()
         {
             InitializeComponent();
             //Set focus on map
             MapWithEvents.Focus();
-            parentDialog = dialog;
-
+            DataContext = new LoginInfo("", "");
             MapWithEvents.MouseDoubleClick +=
                 new MouseButtonEventHandler(MapWithEvents_MouseDoubleClick);
             MapWithEvents.MouseDown +=
@@ -50,6 +49,7 @@ namespace HCIProjekat.views.manager.pages
             MapWithEvents.MouseMove +=
                 new MouseEventHandler(MapWithEvents_MouseMove);
             MapWithEvents.KeyDown += new KeyEventHandler(preventDefault);
+            addButton.IsEnabled = false;
         }
 
         void preventDefault(object sender, KeyEventArgs e)
@@ -577,7 +577,39 @@ namespace HCIProjekat.views.manager.pages
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(textBoxTrainName.Text);
+            System.Diagnostics.Debug.WriteLine(String.IsNullOrEmpty(textBoxTrainName.Text));
+            if (String.IsNullOrEmpty(textBoxTrainName.Text))
+            {
+                addButton.IsEnabled = false;
+            }
+            else
+                addButton.IsEnabled = true;
+        }
 
+
+        public class LoginInfo
+        {
+            public string TrainName { get; set; }
+            public string LoginError { get; set; }
+            public LoginInfo(string trainName, string error)
+            {
+                TrainName = trainName;
+                LoginError = error;
+            }
+        }
+
+
+        private void handleLoginKeypress(object sender, KeyEventArgs e)
+        {
+            hideError();
+        }
+
+
+        private void hideError()
+        {
+            loginError.Text = "";
+            loginError.Visibility = Visibility.Hidden;
         }
     }
 }

@@ -66,25 +66,15 @@ namespace HCIProjekat.views.manager.pages
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
-            DialogContent.Content = new UpdateTrain(train, ref TrainsDialogHost);
-            DialogContent.Height = 640;
-            DialogContent.Width = 800;
-            IsDialogOpen = true;
-            TrainsDialogHost.DialogContent = DialogContent;
-            TrainsDialogHost.CloseOnClickAway = true;
-            TrainsDialogHost.ShowDialog(DialogContent);
+            MainWindow mw = new MainWindow(new UpdateTrain(train));
+            mw.ShowDialog();
             
         }
 
         public void OpenCreateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            DialogContent.Content = new AddTrain(ref TrainsDialogHost);
-            DialogContent.Height = 640;
-            DialogContent.Width = 800;
-            IsDialogOpen = true;
-            TrainsDialogHost.DialogContent = DialogContent;
-            TrainsDialogHost.CloseOnClickAway = true;
-            TrainsDialogHost.ShowDialog(DialogContent);
+            MainWindow mw = new MainWindow(new AddTrain());
+            mw.ShowDialog();
         }
 
         public void Refresh(object sender, EventArgs args)

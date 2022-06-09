@@ -7,6 +7,7 @@
       mc:Ignorable="d"
       xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local1="clr-namespace:HCIProjekat.views.auth"
       Title="MainWindow"
       Background="#FF3A3A3A">
 
@@ -37,7 +38,7 @@
                 <materialDesign:PackIcon Kind="MapMarker" VerticalAlignment="Center" Margin="2"/>
             </Grid>-->
                     <ListView>
-                        <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                        <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
                             <Border BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1"
                                     Width="{Binding ActualWidth, ElementName=ttt}">
@@ -49,32 +50,46 @@
                                 </Grid>
                             </Border>
                         </ListViewItem>
-                        <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
+                        <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0">Unesite ime voza:</Label>
+                                <Label Grid.Row="0">Ime voza:</Label>
                                 <TextBox x:Name="textBoxTrainName"
-                                         Width="{Binding ActualWidth, ElementName=ttt}"
-                                         HorizontalAlignment="Stretch"
                                          Grid.Row="1"
+                                         HorizontalAlignment="Stretch"
                                          BorderBrush="LightGray"
                                          BorderThickness="0 0 0 1"
+                                         Width="{Binding ActualWidth, ElementName=ttt}"
+                                         KeyDown="handleLoginKeypress"
                                          TextChanged="TextBox_TextChanged">
+                                    <TextBox.Text>
+                                        <Binding Path="TrainName"
+                                                 UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local1:NonEmptyRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
                                 </TextBox>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem>
-                            <Border BorderBrush="LightGray"
+                            <Border x:Name="addButton" BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1">
                                 <Button Click="Button_Click">Dodaj</Button>
                             </Border>
                         </ListViewItem>
                         <ListViewItem>
-                            <Border BorderBrush="LightGray"
-                                    BorderThickness="0 0 0 1" />
+                            <TextBlock Margin="0 50 0 2"
+                                       HorizontalAlignment="Center"
+                                       x:Name="loginError"
+                                       Visibility="Hidden"
+                                       Foreground="DarkRed"
+                                       FontSize="11">
+                            </TextBlock>
                         </ListViewItem>
                     </ListView>
                 </StackPanel>

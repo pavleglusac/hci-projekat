@@ -47,11 +47,10 @@ namespace HCIProjekat.views.manager.pages
         public IEnumerable<string> DataSource { get; set; }
         public Pushpin SelectedPushpin{get; set; }
         CancellationTokenSource timeout { get; set; }
-        public UpdateTrain(Train train, ref DialogHost dialog)
+        public UpdateTrain(Train train)
         {
             InitializeComponent();
             //Set focus on map
-            parentDialog = dialog;
             MapWithEvents.Focus();
             currentTrain = train.Name;
             MapWithEvents.MouseDoubleClick +=
