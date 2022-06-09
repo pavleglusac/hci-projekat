@@ -72,17 +72,17 @@
                                 <Button Grid.Row="0" Grid.Column="1" FontSize="16" Margin="10 0 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94" Click="SeatTutorClick">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Height="20" Width="20" Kind="PlayOutline" />
-                                        <TextBlock> Pokeni</TextBlock>
+                                        <TextBlock> Pokreni</TextBlock>
                                     </StackPanel>
                                 </Button>
 
 
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center">Upravljanje redovima vožnji</TextBlock>
-                                <Button Grid.Row="1" Grid.Column="1" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94">
+                                <Button Grid.Row="1" Grid.Column="1" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94" Click="TimetableTutorClick">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Height="20" Width="20" Kind="PlayOutline" />
-                                        <TextBlock> Pokeni</TextBlock>
+                                        <TextBlock> Pokreni</TextBlock>
                                     </StackPanel>
                                 </Button>
 
@@ -90,7 +90,7 @@
                                 <Button Grid.Row="2" Grid.Column="1" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Height="20" Width="20" Kind="PlayOutline" />
-                                        <TextBlock> Pokeni</TextBlock>
+                                        <TextBlock> Pokreni</TextBlock>
                                     </StackPanel>
                                 </Button>
 
@@ -112,7 +112,7 @@
                                         <materialDesign:PackIcon Height="20"
                                                                  Width="20"
                                                                  Kind="PlayOutline" />
-                                        <TextBlock> Pokeni</TextBlock>
+                                        <TextBlock> Pokreni</TextBlock>
                                     </StackPanel>
                                 </Button>
 

@@ -91,6 +91,31 @@ namespace HCIProjekat.model
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
         }
 
+        public static Train GetTestTrain()
+        {
+            Train train1 = new();
+            train1.Name = "Soko";
+            AddRowsToTrain(train1, RowEnum.ALL, 2);
+            AddRowsToTrain(train1, RowEnum.TOP, 2);
+            train1.SetSeatLabels();
+            train1.PricePerMinute = 10;
+            train1.Stations.Add(Stations[0], 1);
+            train1.Stations.Add(Stations[1], 2);
+
+            List<Departure> departures = new();
+            for (int i = 0; i < 5; i++)
+            {
+                TimeOnly start = TimeOnly.Parse("00:00:00").AddHours(i + 5).AddMinutes((i % 2) * 15);
+                TimeOnly end = start.Add(TimeSpan.FromMinutes(30));
+                Station first = train1.GetFirstStation(); 
+                Station last = train1.GetLastStation();
+                departures.Add(new Departure(start, end, first, last));
+            }
+            train1.Timetable = new Timetable();
+            train1.Timetable.Departures = departures;
+            return train1;
+        }
+
         private static void GenerateTestTickets()
         {
             Random random = new();

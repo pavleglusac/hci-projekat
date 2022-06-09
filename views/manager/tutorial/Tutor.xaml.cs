@@ -38,5 +38,10 @@ namespace HCIProjekat.views.manager.tutorial
             MainWindow newWindow = new MainWindow(new AddTrainTutorial());
             newWindow.Show();
         }
+        private void TimetableTutorClick(object sender, EventArgs e)
+        {
+            MainWindow newWindow = new MainWindow(new TimetableTutorial(TutorDatabase.GetTestTrain()));
+            newWindow.Show();
+        }
     }
 }

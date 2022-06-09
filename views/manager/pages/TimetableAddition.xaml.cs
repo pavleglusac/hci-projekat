@@ -47,7 +47,7 @@ namespace HCIProjekat.views.manager.pages
             this.Focus();
             DataContext = this;
             this.train = train;
-            Timetable = Database.GetTimetableForTrainName(train.Name);
+            Timetable = TutorDatabase.GetTimetableForTrainName(train.Name);
             From = train.GetFirstStation();
             To = train.GetLastStation();
             DepartureLocation.Text = From.Name;
