@@ -27,8 +27,8 @@ namespace HCIProjekat.model
             Stations.Add(new Station("Novi Sad", new Location(45.246813, 19.853059)));
             Stations.Add(new Station("Ečka", new Location(45.315630, 20.442566)));
             Stations.Add(new Station("Borča", new Location(44.880790, 20.465300)));
-            Stations.Add(new Station("Pančevo", new Location(44.880790, 20.465300)));
-            Stations.Add(new Station("Beograd", new Location(44.880790, 20.465300)));
+            Stations.Add(new Station("Pančevo", new Location(43.880790, 21.465300)));
+            Stations.Add(new Station("Beograd", new Location(43.880790, 19.465300)));
 
             System.Diagnostics.Debug.WriteLine("ucitao stanice");
             Train train1 = new();
@@ -86,36 +86,6 @@ namespace HCIProjekat.model
                 x.Timetable = new Timetable();
                 x.Timetable.Departures = departures;
             });
-
-            //Trains.ForEach(train =>
-            //{
-            //    List<Departure> departures = new();
-
-            //    for (int i = 0; i < 5; i++)
-            //    {
-            //        int totalStations = train.Stations.Count;
-            //        if (totalStations < 2) continue;
-            //        TimeOnly totalStart = TimeOnly.Parse("00:00:00").AddHours(i + 5).AddMinutes((i % 2) * 15);
-            //        TimeOnly totalEnd = totalStart.Add(TimeSpan.FromMinutes(random.Next(30, 90)));
-            //        TimeSpan span = totalEnd - totalStart;
-            //        int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-            //        int spanBetweenStations = spanInMinutes / (totalStations - 1);
-
-            //        TimeOnly lastEnd = totalStart;
-            //        for (int j = 1; j < totalStations; j++)
-            //        {
-
-            //            Station from = train.GetStationByIndex(j);
-            //            Station to = train.GetStationByIndex(j + 1);
-
-            //            TimeOnly end = lastEnd.Add(TimeSpan.FromMinutes(spanBetweenStations));
-            //            departures.Add(new Departure(lastEnd, end, from, to));
-            //            lastEnd = end;
-            //        }
-            //    }
-            //    train.Timetable = new Timetable();
-            //    train.Timetable.Departures = departures;
-            //});
 
 
             User customer1 = new("Marko", "Markovic", "test", "test", UserType.CUSTOMER);

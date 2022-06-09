@@ -47,7 +47,7 @@ namespace HCIProjekat.views.manager.pages
             this.Focus();
             DataContext = this;
             this.train = train;
-            Timetable = TutorDatabase.GetTimetableForTrainName(train.Name);
+            Timetable = Database.GetTimetableForTrainName(train.Name).Copy();
             From = train.GetFirstStation();
             To = train.GetLastStation();
             DepartureLocation.Text = From.Name;
@@ -71,7 +71,7 @@ namespace HCIProjekat.views.manager.pages
         {
             if (HistoryManager.CanUndo())
             {
-                Timetable = HistoryManager.Undo();
+                Timetable = HistoryManager.Undo().Copy();
                 timetablesGrid.ItemsSource = Timetable.Departures;
             }
             UndoButton.IsEnabled = HistoryManager.CanUndo();
@@ -82,7 +82,7 @@ namespace HCIProjekat.views.manager.pages
         {
             if (HistoryManager.CanRedo())
             {
-                Timetable = HistoryManager.Redo();
+                Timetable = HistoryManager.Redo().Copy();
                 timetablesGrid.ItemsSource = Timetable.Departures;
             }
             UndoButton.IsEnabled = HistoryManager.CanUndo();

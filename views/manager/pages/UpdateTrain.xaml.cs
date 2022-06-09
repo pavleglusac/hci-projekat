@@ -510,7 +510,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             t.updateStations(trainsStations);
-            parentDialog.IsOpen = false;
+            //parentDialog.IsOpen = false;
         }
 
         private void ComboBox_DropDownClosed(object sender, EventArgs e)

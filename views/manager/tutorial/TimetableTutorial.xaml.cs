@@ -56,7 +56,7 @@ namespace HCIProjekat.views.manager.tutorial
             InitializeComponent();
             this.Focus();
             this.train = train;
-            Timetable = Database.GetTimetableForTrainName(train.Name);
+            Timetable = TutorDatabase.GetTimetableForTrainName(train.Name);
             From = train.GetFirstStation();
             To = train.GetLastStation();
             DepartureLocation.Text = From.Name;
