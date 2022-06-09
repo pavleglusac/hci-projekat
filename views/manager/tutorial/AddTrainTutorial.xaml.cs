@@ -35,6 +35,8 @@ namespace HCIProjekat.views.manager.tutorial
         bool rEnabled;
         bool doubleClickEnabled;
         bool dragEnabled;
+        bool rightEnabled;
+        bool returnGreenEnabled;
         int stepNum = 1;
         Vector _mouseToMarker;
         private bool _dragPin;
@@ -67,11 +69,14 @@ namespace HCIProjekat.views.manager.tutorial
             doubleClickEnabled = true;
             dragEnabled = false;
             Add_Button.IsEnabled = false;
+            returnGreenEnabled = false;
+            rightEnabled = false;
         }
 
         public void nextStep()
         {
             stepNum++;
+            drawLines();
             callNextStep();
         }
 
@@ -166,13 +171,38 @@ namespace HCIProjekat.views.manager.tutorial
                     }
                 case 12:
                     {
-                        MessageBox.Show("Čestitamo! Unesite ime vašeg voza pa pritiskom na dugme dodajte voz", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
-                        textBoxTrainName.IsEnabled = true;
+                        MessageBox.Show("Čestitamo! Dvoklikom na mapu dodajte još jednu stanicu", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
                         deleteEnabled = false;
-                        textBlock.Text = " Unesite ime vašeg voza!";
+                        rightEnabled = false; 
+                        doubleClickEnabled = true;
+                        textBlock.Text = "Dvokliknite na mapu da dodate stanicu.";
                         break;
                     }
                 case 13:
+                    {
+                        MessageBox.Show("Čestitamo! Izaberite jednu stanicu i pritiskom na desni klik je uklonite sa rute", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
+                        rightEnabled = true;
+                        doubleClickEnabled = false;
+                        textBlock.Text = "Izaberite jednu stanicu i pritiskom na taster delete je obrišite.";
+                        break;
+                    }
+                case 14:
+                    {
+                        MessageBox.Show("Čestitamo! Izaberite istu stanicu i pritiskom na levi klik je vratite na rutu", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
+                        rightEnabled = false;
+                        returnGreenEnabled = true;
+                        textBlock.Text = " Izaberite istu stanicu i pritiskom na levi klik je vratite na rutu.";
+                        break;
+                    }
+                case 15:
+                    {
+                        MessageBox.Show("Čestitamo! Unesite ime vašeg voza pa pritiskom na dugme dodajte voz", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
+                        textBoxTrainName.IsEnabled = true;
+                        returnGreenEnabled = false;
+                        textBlock.Text = " Unesite ime vašeg voza!";
+                        break;
+                    }
+                case 16:
                     {
                         MessageBox.Show("Čestitamo! Uspešno ste završili ovaj tutorial", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
 
@@ -286,7 +316,6 @@ namespace HCIProjekat.views.manager.tutorial
                             }
                             contentBefore = Int32.Parse(SelectedPushpin.Content.ToString());
                             SelectedPushpin.Content = numberPressed;
-                            nextStep();
                             foreach (var child in MapWithEvents.Children)
                             {
                                 if (child is not Pushpin)
@@ -306,7 +335,7 @@ namespace HCIProjekat.views.manager.tutorial
                         }
                         numberPressed = 0;
                         numbersPressed = 0;
-                        drawLines();
+                        nextStep();
                     });
                 }, 200);
             }
@@ -409,22 +438,25 @@ namespace HCIProjekat.views.manager.tutorial
             }
             if (trainNames.Count > 0 && (oldPushpinLocation is null || !oldPushpinLocation.Equals((sender as Pushpin).Location)))
             {
-                if (MessageBox.Show("You are about to edit a station that will affect these trains:" + showString.Remove(showString.Length - 2) + ".",
+                if (returnGreenEnabled)
+                {
+                    if (MessageBox.Show("You are about to edit a station that will affect these trains:" + showString.Remove(showString.Length - 2) + ".",
                     "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    //_dragPin = true;
-                    if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
                     {
-                        SelectedPushpin.Content = pinNumber++;
+                        //_dragPin = true;
+                        if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
+                        {
+                            SelectedPushpin.Content = pinNumber++;
+                        }
+                        if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Blue)).ToString()))
+                        {
+                            SelectedPushpin.Background = new SolidColorBrush(Colors.Blue);
+                        }
                     }
-                    if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Blue)).ToString()))
+                    else
                     {
-                        SelectedPushpin.Background = new SolidColorBrush(Colors.Blue);
+                        SelectedPushpin = null;
                     }
-                }
-                else
-                {
-                    SelectedPushpin = null;
                 }
             }
             else
@@ -434,7 +466,7 @@ namespace HCIProjekat.views.manager.tutorial
                 _mouseToMarker = Point.Subtract(
                   MapWithEvents.LocationToViewportPoint(SelectedPushpin.Location),
                   e.GetPosition(MapWithEvents));
-                if (e.RightButton == MouseButtonState.Pressed)
+                if (e.RightButton == MouseButtonState.Pressed && rightEnabled)
                 {
                     System.Diagnostics.Debug.WriteLine("----" + SelectedPushpin.Background.ToString() + "=" + new SolidColorBrush(Colors.Orange).ToString());
                     if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
@@ -459,19 +491,25 @@ namespace HCIProjekat.views.manager.tutorial
                         updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
                         SelectedPushpin.Content = "";
                         pinNumber--;
+                        nextStep();
                     }
                 }
-                else
+                else if((e.RightButton == MouseButtonState.Pressed && rightEnabled) || 
+                    (e.LeftButton == MouseButtonState.Pressed && (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()) || returnGreenEnabled)))
                 {
                     if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
                     {
+
+                        if (returnGreenEnabled)
+                        {
+                            nextStep();
+                        }
                         SelectedPushpin.Content = pinNumber++;
                     }
                     if (!SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Blue)).ToString()))
                     {
                         SelectedPushpin.Background = new SolidColorBrush(Colors.Blue);
                     }
-
                 }
             }
             drawLines();

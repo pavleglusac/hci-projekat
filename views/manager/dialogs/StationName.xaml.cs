@@ -41,6 +41,7 @@ namespace HCIProjekat.views.manager.dialogs
             hostDialog = dialog;
             map = MapWithEvents;
             tutor = false;
+            DataContext = new LoginInfo("", "");
             InitializeComponent();
         }
         public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent,Boolean tutor)
@@ -52,6 +53,7 @@ namespace HCIProjekat.views.manager.dialogs
             hostDialog = dialog;
             map = MapWithEvents;
             this.tutor = true;
+            DataContext = new LoginInfo("", "");
             InitializeComponent();
         }
         public StationName(Pushpin pin, ref DialogHost dialog, string name)
@@ -60,6 +62,7 @@ namespace HCIProjekat.views.manager.dialogs
             pushpin = pin;
             currentLocation = pin.Location;
             hostDialog = dialog;
+            DataContext = new LoginInfo(name, "");
             tutor = false;
             InitializeComponent();
             textBoxTrainName.Text = name;
@@ -72,8 +75,8 @@ namespace HCIProjekat.views.manager.dialogs
             pushpin = pin;
             currentLocation = pin.Location;
             hostDialog = dialog;
+            DataContext = new LoginInfo(name, "");
             InitializeComponent();
-            textBoxTrainName.Text = name;
             tutor = false;
             parentMethod2 = parentMethod2Sent;
         }
@@ -83,6 +86,7 @@ namespace HCIProjekat.views.manager.dialogs
             pushpin = pin;
             currentLocation = pin.Location;
             hostDialog = dialog;
+            DataContext = new LoginInfo("", "");
             InitializeComponent();
             textBoxTrainName.Text = name;
             this.tutor = true;
@@ -119,5 +123,42 @@ namespace HCIProjekat.views.manager.dialogs
             hostDialog.IsOpen = false;
 
         }
+
+
+        private void handleLoginKeypress(object sender, KeyEventArgs e)
+        {
+            hideError();
+        }
+
+        private void hideError()
+        {
+            loginError.Text = "";
+            loginError.Visibility = Visibility.Hidden;
+        }
+
+
+        public class LoginInfo
+        {
+            public string Username { get; set; }
+            public string LoginError { get; set; }
+            public LoginInfo(string username, string error)
+            {
+                Username = username;
+                LoginError = error;
+            }
+        }
+
+
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(textBoxTrainName.Text))
+            {
+                addButton.IsEnabled = false;
+            }
+            else
+                addButton.IsEnabled = true;
+        }
+
     }
 }

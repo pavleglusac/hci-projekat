@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:HCIProjekat.views.manager.dialogs"
+      xmlns:local1="clr-namespace:HCIProjekat.views.auth"
       mc:Ignorable="d"
       d:DesignHeight="250"
       d:DesignWidth="500"
@@ -29,8 +30,26 @@
                  Grid.Row="2"
                  Height="25"
                  BorderBrush="LightGray"
+                 TextChanged="TextBox_TextChanged"
                  BorderThickness="0 0 0 1">
+
+            <TextBox.Text>
+                <Binding Path="Username"
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local1:NonEmptyRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
         </TextBox>
+
+        <TextBlock Margin="0 50 0 2"
+                   HorizontalAlignment="Center"
+                   x:Name="loginError"
+                   Visibility="Hidden"
+                   Foreground="DarkRed"
+                   FontSize="11">
+        </TextBlock>
         <Border BorderBrush="LightGray"
                 Margin="10"
                 Width="100"
@@ -41,7 +60,9 @@
         <DockPanel Width="250"
                    Grid.Column="1"
                    Grid.Row="3">
-            <Button Click="Button_Click"
+            <Button x:Name="addButton"
+                    Click="Button_Click"
+                    IsEnabled="False"
                     Margin="10"
                     HorizontalAlignment="Right"
                     Width="100">Prihvati</Button>

@@ -577,8 +577,6 @@ namespace HCIProjekat.views.manager.pages
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(textBoxTrainName.Text);
-            System.Diagnostics.Debug.WriteLine(String.IsNullOrEmpty(textBoxTrainName.Text));
             if (String.IsNullOrEmpty(textBoxTrainName.Text))
             {
                 addButton.IsEnabled = false;
