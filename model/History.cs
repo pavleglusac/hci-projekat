@@ -42,6 +42,8 @@ namespace HCIProjekat.model
                 History.RemoveRange(Index + 1, History.Count() - 1 - Index);
             }
             Index++;
+            History.ForEach(x => System.Diagnostics.Debug.Write($"{x.ToString()} ->"));
+            System.Diagnostics.Debug.WriteLine("");
             History.Add(other);
         }
 

@@ -15,6 +15,16 @@ namespace HCIProjekat.model
             Departures = new List<Departure>();
         }
 
+        public override string ToString()
+        {
+            string s = "";
+            foreach (Departure departure in Departures)
+            {
+                s += $"{departure.DepartureDateTime} - {departure.ArrivalDateTime}  |";
+            }
+            return s;
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj == null) return false;
