@@ -440,8 +440,8 @@ namespace HCIProjekat.views.manager.tutorial
             {
                 if (returnGreenEnabled)
                 {
-                    if (MessageBox.Show("You are about to edit a station that will affect these trains:" + showString.Remove(showString.Length - 2) + ".",
-                    "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    if (MessageBox.Show("Upravo će te da uredite stanicu koja će uticati na ove vozove:" + showString.Remove(showString.Length - 2) + ".",
+                    "Potvrda", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
                         //_dragPin = true;
                         if (SelectedPushpin.Background.ToString().Equals((new SolidColorBrush(Colors.Orange)).ToString()))
