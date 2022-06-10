@@ -32,6 +32,8 @@ namespace HCIProjekat.views.customer
         public List<string> DepartureLocations = new();
         public List<string> DestinationLocations = new();
 
+        bool menja = false;
+
         string departureStation;
         string destinationStation;
 
@@ -59,8 +61,14 @@ namespace HCIProjekat.views.customer
             DepartureLocations.AddRange(Locations);
             DestinationLocations.Clear();
             DestinationLocations.AddRange(Locations);
-            departureStationComboBox.ItemsSource = DepartureLocations;
-            destinationStationComboBox.ItemsSource = DestinationLocations;
+            menja = true;
+            departureStationComboBox.Items.Clear();
+            destinationStationComboBox.Items.Clear();
+            DepartureLocations.ForEach(x => departureStationComboBox.Items.Add(x));
+            DestinationLocations.ForEach(x => destinationStationComboBox.Items.Add(x));
+            departureStationComboBox.Items.Refresh();
+            destinationStationComboBox.Items.Refresh();
+            menja = false;
         }
 
         private void handleFilterClick(object sender, RoutedEventArgs e)
@@ -127,28 +135,38 @@ namespace HCIProjekat.views.customer
 
         private void departureStationComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            string destinationStation = (string)destinationStationComboBox.SelectedValue;
-            string departureStation = (string)departureStationComboBox.SelectedValue;
-            DepartureLocations.Clear();
-            DepartureLocations.AddRange(Locations.FindAll(location => location != destinationStation));
-            DestinationLocations.Clear();
-            DestinationLocations.AddRange(Locations.FindAll(location => location != departureStation));
-            departureStationComboBox.ItemsSource = DepartureLocations;
-            destinationStationComboBox.ItemsSource = DestinationLocations;
+            if(!menja)
+            {
+                menja = true;
+
+                string destinationStation = (string)destinationStationComboBox.SelectedItem;
+                string departureStation = (string)departureStationComboBox.SelectedItem;
+                System.Diagnostics.Debug.WriteLine($"{destinationStation} -> {departureStation}");
+                departureStationComboBox.Items.Clear();
+                destinationStationComboBox.Items.Clear();
+                DepartureLocations.ForEach(x => departureStationComboBox.Items.Add(x));
+                DestinationLocations.ForEach(x => destinationStationComboBox.Items.Add(x));
+                menja = false;
+
+            }
+            //SetCorrectIndex();
         }
 
         private void destinationStationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string destinationStation = (string)destinationStationComboBox.SelectedValue;
-            string departureStation = (string)departureStationComboBox.SelectedValue;
-            DepartureLocations.Clear();
-            DepartureLocations.AddRange(Locations.FindAll(location => location != destinationStation));
-            DestinationLocations.Clear();
-            DestinationLocations.AddRange(Locations.FindAll(location => location != departureStation));
-            departureStationComboBox.ItemsSource = DepartureLocations;
-            destinationStationComboBox.ItemsSource = DestinationLocations;
-            destinationStationComboBox.Items.Refresh();
-            departureStationComboBox.Items.Refresh();
+            if (!menja)
+            {
+                menja = true;
+                string destinationStation = (string)destinationStationComboBox.SelectedItem;
+                string departureStation = (string)departureStationComboBox.SelectedItem;
+                System.Diagnostics.Debug.WriteLine($"{destinationStation} -> {departureStation}");
+                departureStationComboBox.Items.Clear();
+                destinationStationComboBox.Items.Clear();
+                DepartureLocations.ForEach(x => departureStationComboBox.Items.Add(x));
+                DestinationLocations.ForEach(x => destinationStationComboBox.Items.Add(x));
+                menja = false;
+            }
+            //SetCorrectIndex();
         }
 
         private void buyTicketButtonClick(object sender, RoutedEventArgs e)
@@ -169,16 +187,50 @@ namespace HCIProjekat.views.customer
 
         public void SwapPlaces(object sender, EventArgs e)
         {
-            string departureStation = (string)departureStationComboBox.SelectedValue;
-            string destinationStation = (string)destinationStationComboBox.SelectedValue;
-            ShowLocations();
-            int ind = departureStationComboBox.Items.IndexOf(destinationStation);
+            string departureStation = (string)departureStationComboBox.SelectedItem;
+            string destinationStation = (string)destinationStationComboBox.SelectedItem;
+            menja = true;
+
+            System.Diagnostics.Debug.WriteLine($"{departureStation} {destinationStation}  *****");
+
+            DepartureLocations = (Locations.Where(x => x != departureStation).ToList());
+            DestinationLocations = (Locations.Where(x => x != destinationStation).ToList());
+
+
+            departureStationComboBox.Items.Clear();
+            destinationStationComboBox.Items.Clear();
+            DepartureLocations.ForEach(x => departureStationComboBox.Items.Add(x));
+            DestinationLocations.ForEach(x => destinationStationComboBox.Items.Add(x));
+
+
+            int ind = 0, ind2 = 0;
+            ind = DepartureLocations.IndexOf(destinationStation);
+            ind2 = DestinationLocations.IndexOf(departureStation);
+
+
+
+            departureStationComboBox.Items.Refresh();
+            destinationStationComboBox.Items.Refresh();
+
+
             departureStationComboBox.SelectedIndex = ind;
 
-            ind = destinationStationComboBox.Items.IndexOf(departureStation);
-            destinationStationComboBox.SelectedIndex = ind;
+            destinationStationComboBox.SelectedIndex = ind2;
+            
+            menja = false;
+            //destinationStationComboBox_SelectionChanged(null, null);
+        }
 
-            destinationStationComboBox_SelectionChanged(null, null);
+        public void SetCorrectIndex()
+        {
+            string departureStation = (string)departureStationComboBox.SelectedItem;
+            string destinationStation = (string)destinationStationComboBox.SelectedItem;
+            int ind = departureStationComboBox.Items.IndexOf(departureStation);
+            departureStationComboBox.SelectedIndex = ind;
+            departureStationComboBox.SelectedItem=departureStation;
+            ind = destinationStationComboBox.Items.IndexOf(destinationStation);
+            destinationStationComboBox.SelectedIndex = ind;
+            destinationStationComboBox.SelectedItem = destinationStation;
         }
 
 

@@ -57,7 +57,7 @@
                                     <TextBlock Margin="20 18 0 0"
                                                Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                                                Foreground="White"
-                                               Text="Pretraga i filtriranje" />
+                                               Text="Mesečni izveštaji" />
                                 </StackPanel>
                             </Border>
 
@@ -67,14 +67,15 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
                                 <ComboBox x:Name="TrainSearchInput"
-                                          Grid.Column="1"
+                                          Grid.Column="0"
+                                          Grid.ColumnSpan="2"
                                           Margin="20 20 20 20"
                                           materialDesign:HintAssist.Hint="Mesec"
                                           materialDesign:HintAssist.HintOpacity=".26"
@@ -84,6 +85,7 @@
                                 </ComboBox>
                                 <ComboBox x:Name="TrainSearchInput2"
                                           Grid.Column="2"
+                                          Grid.ColumnSpan="2"
                                           Margin="20 20 20 20"
                                           materialDesign:HintAssist.Hint="Godina"
                                           materialDesign:HintAssist.HintOpacity=".26"
@@ -92,7 +94,7 @@
 
                                 </ComboBox>
                                 <Button Grid.Row="1"
-                                        Grid.Column="3"
+                                        Grid.Column="4"
                                         Margin="7 20 7 7"
                                         Height="50"
                                         FontSize="18"

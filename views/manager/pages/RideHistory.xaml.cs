@@ -69,6 +69,26 @@ namespace HCIProjekat.views.manager.pages
             }
         }
 
+        public void ClearClick(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show(
+                    "Da li ste sigurni da želite da očistite parametre?",
+                    "Potvrda", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                departureStationComboBox.SelectedIndex = -1;
+                departureStationComboBox.Items.Refresh();
+                destinationStationComboBox.SelectedIndex = -1;
+                destinationStationComboBox.Items.Refresh();
+                TrainSearchInput.SelectedIndex = -1;
+                departureDatePicker.Text = "";
+            }
+            else
+            {
+
+            }
+        }
+
         private void ShowData(DateOnly departureDate)
         {
             List<Train> trains = GetTrains();
@@ -105,6 +125,7 @@ namespace HCIProjekat.views.manager.pages
                     if (start == end) return;
                     departures.Add(new Departure(start, end, from, to));
                 });
+
                 departures.ForEach(departure =>
                     {
                         Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);

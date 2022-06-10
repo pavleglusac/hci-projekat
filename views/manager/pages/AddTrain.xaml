@@ -38,8 +38,7 @@
                         Background="#2d2c94"
                         Margin="5 0 0 0"
                         x:Name="UndoButton"
-                        HorizontalAlignment="Left"
-                        Click="Undo_Click">
+                        HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Undo"
                                                  Height="25"
@@ -56,8 +55,7 @@
                         Background="#2d2c94"
                         HorizontalAlignment="Left"
                         x:Name="RedoButton"
-                        Margin="5 0 0 0"
-                        Click="Redo_Click">
+                        Margin="5 0 0 0">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Redo"
                                                  Height="25"
@@ -78,8 +76,7 @@
                         Background="#2d2c94"
                         Margin="5 0 0 0"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Click="Save_Click">
+                        VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="ContentSave"
                                                  Height="25"
@@ -95,8 +92,7 @@
                         Width="130"
                         Background="#2d2c94"
                         Margin="5 0 5 0"
-                        VerticalAlignment="Center"
-                        Click="DeleteAll_Click">
+                        VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="DeleteAlert"
                                                  Height="25"

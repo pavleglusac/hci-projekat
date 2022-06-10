@@ -129,7 +129,7 @@ namespace HCIProjekat.views.manager.pages
         private void AutoComplete()
         {
             TrainSearchInput.ItemsSource = new List<String> { "Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar" };
-            TrainSearchInput2.ItemsSource = new List<String> { "2019", "2020", "2021", "2022", "2023"};
+            TrainSearchInput2.ItemsSource = new List<String> { "2019", "2020", "2021", "2022"};
         }
 
         private class RideHistoryEntry

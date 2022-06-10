@@ -51,7 +51,7 @@
                                         Margin="20 18 0 0"
                                         Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                                         Foreground="White"
-                                        Text="Pretraga i filtriranje" />
+                                        Text="Istorija vožnji" />
                                 </StackPanel>
                             </Border>
 
@@ -105,6 +105,21 @@
                                     materialDesign:HintAssist.Hint="Datum"
                                     ToolTip="Datum polaska"
                                     Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+
+                                <Button
+                                    Grid.Row="1" Grid.Column="2"
+                                    Margin="7 20 7 7"
+                                    Height="50"
+                                    FontSize="18"
+                                    materialDesign:ButtonAssist.CornerRadius="5"
+                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    ToolTip="Pretražite"
+                                    Click="ClearClick"
+                                    Content="Resetuj parametre"
+                                    Background="#2d2c94"
+                                    Foreground="White"
+                                    />
+
                                 <Button
                                     Grid.Row="1" Grid.Column="3"
                                     Margin="7 20 7 7"
@@ -144,6 +159,16 @@
                                 Header="Naziv"
                                 IsReadOnly="True"
                                 Binding="{Binding Train.Name}"/>
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Polazište"
+                                IsReadOnly="True"
+                                Binding="{Binding Departure.From.Name}"/>
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Odredište"
+                                IsReadOnly="True"
+                                Binding="{Binding Departure.To.Name}"/>
                             <DataGridTextColumn
                                 Width="2*"
                                 Header="Polazak"
