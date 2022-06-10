@@ -16,20 +16,38 @@
     <None Remove="assets\takenseat.png" />
     <None Remove="assets\trash.png" />
     <None Remove="help\addTrain.html" />
+    <None Remove="help\addTrainMap.PNG" />
     <None Remove="help\banner.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
+    <None Remove="help\pushpin-blue.png" />
+    <None Remove="help\pushpin-green.png" />
+    <None Remove="help\pushpin-orange.png" />
     <None Remove="help\seats.html" />
     <None Remove="help\seats_help_1.png" />
     <None Remove="help\seats_help_2.png" />
     <None Remove="help\timetables.html" />
+    <None Remove="help\updateTrain.html" />
+    <None Remove="help\updateTrainMap.PNG" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="help\addTrain.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="help\addTrainMap.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\banner.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-orange.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seats_help_1.png">
@@ -51,6 +69,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\updateTrain.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\updateTrainMap.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
