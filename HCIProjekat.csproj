@@ -15,6 +15,7 @@
     <None Remove="assets\takenseat.jpg" />
     <None Remove="assets\takenseat.png" />
     <None Remove="assets\trash.png" />
+    <None Remove="help\addTrain.html" />
     <None Remove="help\banner.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
@@ -25,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="help\addTrain.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\banner.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -8,8 +8,12 @@
       xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local1="clr-namespace:HCIProjekat.views.auth"
+      xmlns:l="clr-namespace:HCIProjekat"
       Title="MainWindow"
-      Background="White">
+      Background="White"
+      Focusable="True"
+      l:HelpProvider.HelpKey="addTrain"
+      GotFocus="SetHelpKey">
 
 
     <Grid>
@@ -19,96 +23,125 @@
 
 
 
-        <Grid x:Name="mainGrid" Grid.Row="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <materialDesign:DialogHost x:Name="TrainsDialogHost"
-                                   DialogTheme="Inherit"
-                                   IsOpen="{Binding IsDialogOpen}"
-                                   CloseOnClickAway="True"
-                                   OverlayBackground="AliceBlue"
-                                   Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
-            <Grid Margin="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+        <Grid x:Name="mainGrid"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <materialDesign:DialogHost x:Name="TrainsDialogHost"
+                                       DialogTheme="Inherit"
+                                       IsOpen="{Binding IsDialogOpen}"
+                                       CloseOnClickAway="True"
+                                       OverlayBackground="AliceBlue"
+                                       Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
 
-                <StackPanel Grid.Row="1"
-                            Grid.Column="1"
-                            Background="White"
-                            x:Name="ttt">
-                    <!--<Grid>
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="1"
+                                Background="White"
+                                x:Name="ttt">
+                        <!--<Grid>
                 <TextBox Background="White" Padding="10 0 25 0"/>
                 <materialDesign:PackIcon Kind="MapMarker" VerticalAlignment="Center" Margin="2"/>
             </Grid>-->
-                    <ListView>
-                        <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
-                            <Border BorderBrush="LightGray"
-                                    BorderThickness="0 0 0 1"
-                                    Width="{Binding ActualWidth, ElementName=ttt}">
-                                <Grid Height="50">
-                                    <StackPanel Height="50">
-                                        <CheckBox Checked="CheckBox_Checked"
-                                                  Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </ListViewItem>
-                        <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0">Ime voza:</Label>
-                                <TextBox x:Name="textBoxTrainName"
-                                         Grid.Row="1"
-                                         HorizontalAlignment="Stretch"
-                                         BorderBrush="LightGray"
-                                         BorderThickness="0 0 0 1"
-                                         Width="{Binding ActualWidth, ElementName=ttt}"
-                                         KeyDown="handleLoginKeypress"
-                                         TextChanged="TextBox_TextChanged">
-                                    <TextBox.Text>
-                                        <Binding Path="TrainName"
-                                                 UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <local1:NonEmptyRule />
-                                                <local1:SameTrainRule />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
-                            </Grid>
-                        </ListViewItem>
-                        <ListViewItem>
-                            <Border x:Name="addButton" BorderBrush="LightGray"
-                                    BorderThickness="0 0 0 1">
-                                <Button Click="Button_Click">Dodaj</Button>
-                            </Border>
-                        </ListViewItem>
-                        <ListViewItem>
-                            <TextBlock Margin="0 50 0 2"
-                                       HorizontalAlignment="Center"
-                                       x:Name="loginError"
-                                       Visibility="Hidden"
-                                       Foreground="DarkRed"
-                                       FontSize="11">
-                            </TextBlock>
-                        </ListViewItem>
-                    </ListView>
-                </StackPanel>
+                        <ListView>
+                            <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
+                                <Border BorderBrush="LightGray"
+                                        BorderThickness="0 0 0 0"
+                                        Width="{Binding ActualWidth, ElementName=ttt}">
+                                    <Grid Height="50"   >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Height="50"
+                                                    Orientation="Horizontal">
+                                            <CheckBox Checked="CheckBox_Checked"
+                                                      Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
+                                        </StackPanel>
+                                        <StackPanel Height="50"
+                                                    Grid.Column="1"
+                                                    FlowDirection="RightToLeft"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0 0 30 25"
+                                                    Width="Auto">
 
-                <m:Map x:Name="MapWithEvents"
-                       CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo"
-                       Mode="Road"
-                       Grid.Column="0"
-                       Grid.Row="1"
-                       ZoomLevel="12"
-                       Center="45.246813,19.853059">
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                                                    IsEnabled="True"
+                                                    Height="20"
+                                                    Width="20"
+                                                    Background="#2d2c94"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Click="Help_Click">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="Help"
+                                                                             Height="12"
+                                                                             Width="12"></materialDesign:PackIcon>
+                                                </StackPanel>
+                                            </Button></StackPanel>
+                                    </Grid>
+                                </Border>
+                            </ListViewItem>
+                            <ListViewItem  Width="{Binding ActualWidth, ElementName=ttt}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0">Ime voza:</Label>
+                                    <TextBox x:Name="textBoxTrainName"
+                                             Grid.Row="1"
+                                             HorizontalAlignment="Stretch"
+                                             BorderBrush="LightGray"
+                                             BorderThickness="0 0 0 1"
+                                             Width="{Binding ActualWidth, ElementName=ttt}"
+                                             KeyDown="handleLoginKeypress"
+                                             TextChanged="TextBox_TextChanged">
+                                        <TextBox.Text>
+                                            <Binding Path="TrainName"
+                                                     UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <local1:NonEmptyRule />
+                                                    <local1:SameTrainRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem>
+                                <Border x:Name="addButton"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="0 0 0 1">
+                                    <Button Click="Button_Click">Dodaj</Button>
+                                </Border>
+                            </ListViewItem>
+                            <ListViewItem>
+                                <TextBlock Margin="0 50 0 2"
+                                           HorizontalAlignment="Center"
+                                           x:Name="loginError"
+                                           Visibility="Hidden"
+                                           Foreground="DarkRed"
+                                           FontSize="11">
+                                </TextBlock>
+                            </ListViewItem>
+                        </ListView>
+                    </StackPanel>
+
+                    <m:Map x:Name="MapWithEvents"
+                           CredentialsProvider="AttsGkqIHCOIEA11KtQZDphl5bi8lppin64jeg-ZOOhiS4cdHA_EXJwHSbyZi4Xo"
+                           Mode="Road"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           ZoomLevel="12"
+                           Center="45.246813,19.853059">
 
                     </m:Map>
                 </Grid>
