@@ -48,7 +48,7 @@
                         <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
                             <Border BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1">
-                                <Button Click="Button_Click">Azuriraj</Button>
+                                <Button Click="Button_Click">Ažuriraj</Button>
                             </Border>
                         </ListViewItem>
                     </ListView>
