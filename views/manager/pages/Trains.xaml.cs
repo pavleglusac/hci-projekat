@@ -37,27 +37,19 @@ namespace HCIProjekat.views.manager.pages
         {
             InitializeComponent();
             TrainsData = Database.Trains;
-            trainsGrid.ItemsSource = TrainsData;
-            Loading.IsIndeterminate = false;
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name)); ;
             AutoComplete();
         }
 
         private void handleFilterClick(object sender, EventArgs e)
         {
-            Loading.IsIndeterminate = true;
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
-            trainsGrid.ItemsSource = TrainsData;
-            Loading.IsIndeterminate = false;
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name)); ;
         }
 
         private void AutoComplete()
         {
-            TrainSearchInput.ItemsSource = TrainsData.Select(x => {
-                ComboBoxItem? cbi = new ComboBoxItem
-                {
-                    Content = x.Name
-                }; return cbi;
-            }).ToList();
+            TrainSearchInput.ItemsSource = TrainsData.Select(x => x.Name);
         }
 
         public void OpenSeatsExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -115,11 +107,18 @@ namespace HCIProjekat.views.manager.pages
             Train train = Database.GetTrainByName(((TextBlock)sender).Tag.ToString());
             NameChanger nameChanger = new NameChanger(train);
             nameChanger.ShowDialog();
-            Loading.IsIndeterminate = true;
 
             trainsGrid.Items.Refresh();
-            Loading.IsIndeterminate = false;
             this.Focus();
+        }
+
+        class GridEntry
+        {
+            public string Name { get; set; }
+            public GridEntry (string name)
+            {
+                Name = name;
+            }
         }
     }
 }
