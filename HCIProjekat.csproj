@@ -20,9 +20,12 @@
     <None Remove="help\banner.png" />
     <None Remove="help\err.html" />
     <None Remove="help\index.html" />
+    <None Remove="help\login.html" />
+    <None Remove="help\loginPageLook.png" />
     <None Remove="help\pushpin-blue.png" />
     <None Remove="help\pushpin-green.png" />
     <None Remove="help\pushpin-orange.png" />
+    <None Remove="help\register.html" />
     <None Remove="help\seats.html" />
     <None Remove="help\seats_help_1.png" />
     <None Remove="help\seats_help_2.png" />
@@ -41,6 +44,12 @@
     <Content Include="help\banner.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="help\login.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\loginPageLook.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\pushpin-blue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -50,10 +59,16 @@
     <Content Include="help\pushpin-orange.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="help\register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\seats_help_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seats_help_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\updateTrainMap.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\timetables.html">
@@ -74,13 +89,12 @@
     <Content Include="help\updateTrain.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="help\updateTrainMap.PNG">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\icon.ico" />
+    <Resource Include="assets\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -89,11 +103,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\logo3.png" />
-    <Resource Include="assets\seat.jpg" />
-    <Resource Include="assets\seat.png" />
-    <Resource Include="assets\takenseat.jpg" />
-    <Resource Include="assets\takenseat.png" />
+    <Resource Include="assets\logo3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\seat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\seat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\takenseat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\takenseat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="assets\trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -115,6 +139,15 @@
     <Compile Update="views\manager\tutorial\SeatCreatorTutorial.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="assets\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="assets\logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
