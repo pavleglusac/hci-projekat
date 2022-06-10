@@ -20,7 +20,7 @@
         <Border CornerRadius="30" Width="450" Height="375" Background="White">
             <StackPanel Width="350" HorizontalAlignment="Center">
 
-                <TextBlock Text="Login" FontSize="28" Margin="0 30 0 30"/>
+                <TextBlock Text="Prijava" FontSize="28" Margin="0 30 0 30"/>
                 <TextBox
                         x:Name="usernameField"
                         FontSize="16"

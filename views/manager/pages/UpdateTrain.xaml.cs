@@ -511,6 +511,7 @@ namespace HCIProjekat.views.manager.pages
                 }
             }
             t.updateStations(trainsStations);
+            MessageBox.Show("Red vožnje uspešno ažuriran.", "Potvrda", MessageBoxButton.OK);
             //parentDialog.IsOpen = false;
         }
 

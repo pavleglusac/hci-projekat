@@ -54,16 +54,6 @@ namespace HCIProjekat.views.manager.pages
         }
 
 
-        private void Redo_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Undo_Click(object sender, RoutedEventArgs e)
-        { }
-        private void DeleteAll_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Help_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Save_Click(object sender, RoutedEventArgs e)
-        { }
 
         void preventDefault(object sender, KeyEventArgs e)
         {
@@ -563,6 +553,24 @@ namespace HCIProjekat.views.manager.pages
                 MapWithEvents.Children.Add(pushpin);
             }
         }
+
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "addTrain");
+            }
+        }
+
+
+        public void Help_Click(object sender, EventArgs e)
+        {
+            var wnd = (MainWindow)Window.GetWindow(this);
+            wnd.CommandBinding_Executed(sender, null);
+        }
+
 
 
 
