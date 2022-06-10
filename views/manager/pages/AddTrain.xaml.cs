@@ -54,16 +54,6 @@ namespace HCIProjekat.views.manager.pages
         }
 
 
-        private void Redo_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Undo_Click(object sender, RoutedEventArgs e)
-        { }
-        private void DeleteAll_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Help_Click(object sender, RoutedEventArgs e)
-        { }
-        private void Save_Click(object sender, RoutedEventArgs e)
-        { }
 
         void preventDefault(object sender, KeyEventArgs e)
         {
