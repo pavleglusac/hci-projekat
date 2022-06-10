@@ -26,6 +26,7 @@
     <None Remove="help\pushpin-green.png" />
     <None Remove="help\pushpin-orange.png" />
     <None Remove="help\register.html" />
+    <None Remove="help\registrationPageLook.png" />
     <None Remove="help\seats.html" />
     <None Remove="help\seats_help_1.png" />
     <None Remove="help\seats_help_2.png" />
@@ -60,6 +61,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\registrationPageLook.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seats_help_1.png">
