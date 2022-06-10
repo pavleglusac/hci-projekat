@@ -29,12 +29,16 @@ namespace HCIProjekat.views.customer
         List<String> Locations = new();
         List<TimetableEntry> DepartureEntries = new();
 
+        public List<string> DepartureLocations = new();
+        public List<string> DestinationLocations = new();
+
         string departureStation;
         string destinationStation;
 
         public Timetable()
         {
             InitializeComponent();
+            DataContext = this;
             GetLocations();
             ShowLocations();
         }
@@ -51,8 +55,12 @@ namespace HCIProjekat.views.customer
         }
         private void ShowLocations()
         {
-            departureStationComboBox.ItemsSource = Locations;
-            destinationStationComboBox.ItemsSource = Locations;
+            DepartureLocations.Clear();
+            DepartureLocations.AddRange(Locations);
+            DestinationLocations.Clear();
+            DestinationLocations.AddRange(Locations);
+            departureStationComboBox.ItemsSource = DepartureLocations;
+            destinationStationComboBox.ItemsSource = DestinationLocations;
         }
 
         private void handleFilterClick(object sender, RoutedEventArgs e)
@@ -102,6 +110,7 @@ namespace HCIProjekat.views.customer
 
                     TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStation * timeSpanBetweenStations));
                     TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations*timeSpanBetweenStations));
+                    if (departureDate == DateOnly.FromDateTime(DateTime.Now) && start <= TimeOnly.FromDateTime(DateTime.Now)) return;
                     departures.Add(new Departure(start, end, from, to));
                 });
                 departures.ForEach(departure => DepartureEntries.Add(new(train, departure, departureDate)));
@@ -109,19 +118,37 @@ namespace HCIProjekat.views.customer
             departuresGrid.ItemsSource = DepartureEntries;
 
             if (DepartureEntries.Any()) timetableComponent.Visibility = Visibility.Visible;
-            else timetableComponent.Visibility = Visibility.Collapsed;
+            else
+            {
+                timetableComponent.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Nema vožnji sa zadatim parametrima!");
+            }
         }
 
         private void departureStationComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            string destinationStation = (string)destinationStationComboBox.SelectedValue;
             string departureStation = (string)departureStationComboBox.SelectedValue;
-            destinationStationComboBox.ItemsSource = Locations.FindAll(location => location != departureStation);
+            DepartureLocations.Clear();
+            DepartureLocations.AddRange(Locations.FindAll(location => location != destinationStation));
+            DestinationLocations.Clear();
+            DestinationLocations.AddRange(Locations.FindAll(location => location != departureStation));
+            departureStationComboBox.ItemsSource = DepartureLocations;
+            destinationStationComboBox.ItemsSource = DestinationLocations;
         }
 
         private void destinationStationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string destinationStation = (string)destinationStationComboBox.SelectedValue;
-            departureStationComboBox.ItemsSource = Locations.FindAll(location => location != destinationStation);
+            string departureStation = (string)departureStationComboBox.SelectedValue;
+            DepartureLocations.Clear();
+            DepartureLocations.AddRange(Locations.FindAll(location => location != destinationStation));
+            DestinationLocations.Clear();
+            DestinationLocations.AddRange(Locations.FindAll(location => location != departureStation));
+            departureStationComboBox.ItemsSource = DepartureLocations;
+            destinationStationComboBox.ItemsSource = DestinationLocations;
+            destinationStationComboBox.Items.Refresh();
+            departureStationComboBox.Items.Refresh();
         }
 
         private void buyTicketButtonClick(object sender, RoutedEventArgs e)
@@ -138,6 +165,20 @@ namespace HCIProjekat.views.customer
             mw.Height = 600;
             mw.Width = 800;
             mw.ShowDialog();
+        }
+
+        public void SwapPlaces(object sender, EventArgs e)
+        {
+            string departureStation = (string)departureStationComboBox.SelectedValue;
+            string destinationStation = (string)destinationStationComboBox.SelectedValue;
+            ShowLocations();
+            int ind = departureStationComboBox.Items.IndexOf(destinationStation);
+            departureStationComboBox.SelectedIndex = ind;
+
+            ind = destinationStationComboBox.Items.IndexOf(departureStation);
+            destinationStationComboBox.SelectedIndex = ind;
+
+            destinationStationComboBox_SelectionChanged(null, null);
         }
 
 

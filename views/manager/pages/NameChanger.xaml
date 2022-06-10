@@ -21,7 +21,7 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="0 20 0 0">
@@ -45,6 +45,7 @@
                 </TextBox.Text>
             </TextBox>
         </StackPanel>
-        <Button Width="200" Style="{StaticResource MaterialDesignRaisedButton}" Grid.Row="1" Content="Sačuvaj" Click="SaveButtonClicked" Name="SaveButton" Margin="190,31,10,31" />
+        <Button Width="200" Style="{StaticResource MaterialDesignRaisedButton}" Grid.Row="1" Content="Sačuvaj" Click="SaveButtonClicked" Name="SaveButton" 
+                HorizontalAlignment="Right" Margin="0 0 10 0"/>
     </Grid>
 </Window>

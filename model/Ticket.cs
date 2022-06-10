@@ -23,5 +23,10 @@ namespace HCIProjekat.model
             DepartureDate = date;
             Price = departure.GetTripTimeInMinutes() * train.PricePerMinute;
         }
+
+        public override string ToString()
+        {
+            return $"{Train.Name} {DepartureDate} {Departure.DepartureDateTime} {Departure.ArrivalDateTime} {Price} {Seat}";
+        }
     }
 }

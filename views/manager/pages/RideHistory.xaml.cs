@@ -78,7 +78,7 @@ namespace HCIProjekat.views.manager.pages
             Random random = new();
             trains.ForEach(train =>
             {
-                if(TrainSearchInput.Text != null && TrainSearchInput.Text.Length > 0)
+                if (TrainSearchInput.Text != null && TrainSearchInput.Text.Length > 0)
                 {
                     if (train.Name != TrainSearchInput.Text) return;
                 }
@@ -92,7 +92,7 @@ namespace HCIProjekat.views.manager.pages
                     TimeSpan span = totalEnd - totalStart;
 
                     int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-                    int timeSpanBetweenStations = spanInMinutes / (totalStations - 1);
+                    double timeSpanBetweenStations = spanInMinutes*1.0 / (totalStations - 1);
 
                     Station from = departureStation == null || departureStation.Length == 0 ? train.GetFirstStation() : Database.getStationByName(departureStation);
                     Station to = destinationStation == null || destinationStation.Length == 0 ? train.GetLastStation() : Database.getStationByName(destinationStation);
@@ -105,7 +105,12 @@ namespace HCIProjekat.views.manager.pages
                     if (start == end) return;
                     departures.Add(new Departure(start, end, from, to));
                 });
-                departures.ForEach(departure => RideHistoryData.Add(new(train, departure, 20, 10)));
+                departures.ForEach(departure =>
+                    {
+                        Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
+                        RideHistoryData.Add(new(train, departure, res.Item1, res.Item2));
+                    }
+                );
             });
             departuresGrid.ItemsSource = RideHistoryData;
             departuresGrid.Items.Refresh();

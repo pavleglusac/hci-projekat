@@ -29,7 +29,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        IsEnabled="True"
                         Height="40"
                         Width="100"
                         Background="#2d2c94"
@@ -47,7 +47,7 @@
                 </Button>
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        IsEnabled="True"
                         Height="40"
                         Width="110"
                         Background="#2d2c94"
