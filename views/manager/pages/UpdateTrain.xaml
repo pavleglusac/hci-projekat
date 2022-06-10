@@ -40,6 +40,7 @@
                                 <Grid Height="50">
                                     <StackPanel Height="50">
                                         <CheckBox Checked="CheckBox_Checked"
+                                                  ToolTip="Pritisnite za prikaz/sklanjanje svih neodabranih stanica"
                                                   Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
                                     </StackPanel>
                                 </Grid>
@@ -48,7 +49,8 @@
                         <ListViewItem Width="{Binding ActualWidth, ElementName=ttt}">
                             <Border BorderBrush="LightGray"
                                     BorderThickness="0 0 0 1">
-                                <Button Click="Button_Click">Ažuriraj</Button>
+                                <Button Click="Button_Click"
+                                        ToolTip="Pritisnite za ažuriranje stanice">Ažuriraj</Button>
                             </Border>
                         </ListViewItem>
                     </ListView>

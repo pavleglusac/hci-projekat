@@ -62,6 +62,7 @@
                                         <StackPanel Height="50"
                                                     Orientation="Horizontal">
                                             <CheckBox Checked="CheckBox_Checked"
+                                                      ToolTip="Pritisnite za prikaz/sklanjanje svih neodabranih stanica"
                                                       Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
                                         </StackPanel>
                                         <StackPanel Height="50"
@@ -97,6 +98,7 @@
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0">Ime voza:</Label>
                                     <TextBox x:Name="textBoxTrainName"
+                                             ToolTip="Unesite ime voza"
                                              Grid.Row="1"
                                              HorizontalAlignment="Stretch"
                                              BorderBrush="LightGray"
@@ -119,8 +121,9 @@
                             <ListViewItem>
                                 <Border x:Name="addButton"
                                         BorderBrush="LightGray"
-                                        BorderThickness="0 0 0 1">
-                                    <Button Click="Button_Click">Dodaj</Button>
+                                        BorderThickness="0 0 0 1">  
+                                    <Button Click="Button_Click"
+                                            ToolTip="Pritisnite za dodavanja stanice">Dodaj</Button>
                                 </Border>
                             </ListViewItem>
                             <ListViewItem>
