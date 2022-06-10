@@ -98,10 +98,10 @@
                                 </Grid.RowDefinitions>
 
                                 <ComboBox 
-                                          x:Name="TrainSearchInput"
-                                          materialDesign:HintAssist.Hint="Ime voza" materialDesign:HintAssist.HintOpacity=".26"
-                                          IsEditable="True" FontSize="24" Grid.ColumnSpan="2">
-
+                                    x:Name="TrainSearchInput"
+                                    materialDesign:HintAssist.Hint="Ime voza"
+                                    materialDesign:HintAssist.HintOpacity=".26"
+                                    IsEditable="True" FontSize="24" Grid.ColumnSpan="2">
                                 </ComboBox>
 
                                 <Button

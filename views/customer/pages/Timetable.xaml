@@ -59,7 +59,7 @@
                             <Grid Margin="20">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="10*"/>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
@@ -75,16 +75,19 @@
                                     x:Name="departureStationComboBox"
                                     FontSize="18"
                                     FontWeight="Medium"
-                                    SelectedIndex="0"
-                                    SelectionChanged="departureStationComboBox_SelectionChanged"
+                                    SelectionChanged="stationComboBox_SelectionChanged"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Od"
                                     ToolTip="Mesto polaska"/>
 
-                                <Button Grid.Column="1" Click="SwapPlaces" Background="White" Height="50" Width="60" >
+                                <Button Grid.Column="1"
+                                        Click="SwapPlaces"
+                                        Background="White"
+                                        Height="60" Width="60" 
+                                        Style="{StaticResource MaterialDesignFlatDarkButton}">
                                     <materialDesign:PackIcon 
                                         Foreground="Black"
-                                        Kind="SwapHorizontal" Height="40" Width="40" 
+                                        Kind="SwapHorizontal" Height="35" Width="35" 
                                         VerticalAlignment="Center" HorizontalAlignment="Center" 
                                         />
                                 </Button>
@@ -96,8 +99,7 @@
                                     FontSize="18"
                                     FontWeight="Medium"
                                     x:Name="destinationStationComboBox"
-                                    SelectedIndex="1"
-                                    SelectionChanged="destinationStationComboBox_SelectionChanged"
+                                    SelectionChanged="stationComboBox_SelectionChanged"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                     materialDesign:HintAssist.Hint="Do"
                                     ToolTip="Mesto odredišta"/>
