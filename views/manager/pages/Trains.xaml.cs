@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
+using System.Threading;
 
 namespace HCIProjekat.views.manager.pages
 {
@@ -37,13 +38,16 @@ namespace HCIProjekat.views.manager.pages
             InitializeComponent();
             TrainsData = Database.Trains;
             trainsGrid.ItemsSource = TrainsData;
+            Loading.IsIndeterminate = false;
             AutoComplete();
         }
 
         private void handleFilterClick(object sender, EventArgs e)
         {
+            Loading.IsIndeterminate = true;
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
             trainsGrid.ItemsSource = TrainsData;
+            Loading.IsIndeterminate = false;
         }
 
         private void AutoComplete()
@@ -103,6 +107,19 @@ namespace HCIProjekat.views.manager.pages
             {
                 HelpProvider.SetHelpKey((DependencyObject)focusedControl, "index");
             }
+        }
+
+
+        public void NameChangeExecuted(object sender, EventArgs e)
+        {
+            Train train = Database.GetTrainByName(((TextBlock)sender).Tag.ToString());
+            NameChanger nameChanger = new NameChanger(train);
+            nameChanger.ShowDialog();
+            Loading.IsIndeterminate = true;
+
+            trainsGrid.Items.Refresh();
+            Loading.IsIndeterminate = false;
+            this.Focus();
         }
     }
 }

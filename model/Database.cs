@@ -52,6 +52,7 @@ namespace HCIProjekat.model
             train3.Name = "Jastreb";
             AddRowsToTrain(train3, RowEnum.ALL, 2);
             AddRowsToTrain(train3, RowEnum.TOP, 2);
+            train3.PricePerMinute = 12;
 
             train1.Stations.Add(Stations[0], 1);
             train1.Stations.Add(Stations[1], 2);
@@ -67,7 +68,6 @@ namespace HCIProjekat.model
             train3.Stations.Add(Stations[2], 2);
 
             train3.SetSeatLabels();
-            train3.PricePerMinute = 12;
 
             Trains.Add(train1);
             Trains.Add(train2);
@@ -120,6 +120,21 @@ namespace HCIProjekat.model
             return tuple;
         }
 
+        internal static Tuple<int, double> GetTicketNumberAndIncomeForDeparture(Train train, Departure departure, DateOnly departureDate)
+        {
+            List<Ticket> matching = Tickets.Where(x => CompareDepartures(x.Departure, x.DepartureDate, departure, departureDate) && x.Train.Name.Equals(train.Name)).ToList();
+            return new(matching.Count, matching.Sum(x => x.Price));
+        }
+
+        public static Boolean CompareDepartures(Departure departure1, DateOnly departureDate1, Departure departure2, DateOnly departureDate2)
+        {
+            if(departureDate1 == departureDate2 && departure1.DepartureDateTime == departure2.DepartureDateTime && departure1.ArrivalDateTime == departure2.ArrivalDateTime)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static void GenerateTestTickets()
         {
             Random random = new();
@@ -145,7 +160,10 @@ namespace HCIProjekat.model
 
                 Tickets.Add(new Ticket(x, x.Timetable.Departures[random.Next(0, x.Timetable.Departures.Count)], Users[random.Next(0, 2)], new Seat(), DateOnly.FromDateTime(newDateFuture)));
 
+
             });
+
+            Tickets.ForEach(x => System.Diagnostics.Debug.WriteLine($"{x}"));
         }
 
         public static Timetable GetTimetableForTrainName(string name)

@@ -48,22 +48,22 @@
                 <ColumnDefinition Width="20*"></ColumnDefinition>
                 <ColumnDefinition Width="25*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBox
+            <TextBlock
                 Grid.Column="1"
                 x:Name="TrainNameInput"
-                Style="{StaticResource MaterialDesignFilledTextBox}"
+                Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                 VerticalAlignment="Center"
-                AcceptsReturn="True"
                 TextWrapping="Wrap"
+                HorizontalAlignment="Center"
                 MaxWidth="400"
                 materialDesign:HintAssist.Hint="Ime voza"
-                FontSize="16"
+                FontSize="32"
                 IsEnabled="True" />
             <StackPanel Orientation="Horizontal">
                 <Button
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="True"
                     Height="40"
                     Width="100"
                     Background="#2d2c94"
@@ -78,7 +78,7 @@
                 <Button
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="MaterialDesignFloatingActionMiniDarkButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="True"
                     Height="40"
                     Width="110"
                     Background="#2d2c94"

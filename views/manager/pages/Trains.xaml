@@ -10,12 +10,12 @@
       Title="Timetable"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
       TextElement.FontWeight="Regular"
       TextElement.FontSize="13"
       TextOptions.TextFormattingMode="Ideal" 
       TextOptions.TextRenderingMode="Auto"        
       Background="#EEE"
-      FontFamily="{DynamicResource MaterialDesignFont}"
       GotFocus="SetHelpKey">
 
     <Page.CommandBindings>
@@ -48,8 +48,8 @@
             >
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <Grid Margin="0 50 0 20">
                     <Grid.ColumnDefinitions>
@@ -144,23 +144,32 @@
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid
+                    <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="99*"/>
+                     </Grid.RowDefinitions>
+                            <ProgressBar Name="Loading" Grid.Column="1" IsIndeterminate="True" />
+                        <DataGrid
                         x:Name="trainsGrid"
                         Grid.Column="1"
+                        Grid.Row="1"
                         CanUserAddRows="False"
                         SelectionUnit="Cell"
                         SelectionMode="Extended"
+                        VirtualizingStackPanel.IsVirtualizing="True"
                         AutoGenerateColumns="False"
                         CanUserResizeRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Width="4*"
-                                Header="Naziv"
-                                IsReadOnly="True"
-                                Binding="{Binding Name}"
-                                FontSize="20"/>
 
-                            <DataGridTemplateColumn 
+                                <DataGridTemplateColumn Header="Naziv" Width="4*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Tag="{Binding Name}" x:Name="tbox" Text="{Binding Name}" FontSize="20" MouseDown="NameChangeExecuted"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn 
                                 Width="180"
                                 IsReadOnly="True"
                                 >
