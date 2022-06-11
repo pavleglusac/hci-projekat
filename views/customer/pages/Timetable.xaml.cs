@@ -47,7 +47,7 @@ namespace HCIProjekat.views.customer
 
         private List<Train> GetTrains()
         {
-            return Database.FilterTrains(departureStation, destinationStation);
+            return Database.FilterTrains(departureStation, destinationStation).Where(x => !x.Deleted).ToList();
         }
 
         private void GetLocations()

@@ -43,6 +43,10 @@ namespace HCIProjekat.views.manager.tutorial
         public TimetableTutorial()
         {
             InitializeComponent();
+            UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
         }
 
         ToolTip LastToolTip;
@@ -51,7 +55,11 @@ namespace HCIProjekat.views.manager.tutorial
 
         public TimetableTutorial(Train train)
         {
-            
+            UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+
             DataContext = this;
             InitializeComponent();
             this.Focus();
@@ -92,12 +100,18 @@ namespace HCIProjekat.views.manager.tutorial
 
         public void Step3()
         {
+            SaveButton.IsEnabled = false;
+            UndoButton.IsEnabled = false;
+            RedoButton.IsEnabled = false;
             var result = MessageBox.Show("Čestitamo! Uspešno ste dodali red vožnje!.", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
             var result2 = MessageBox.Show("Pokušajte da dodate vreme koje je u konfliktu.", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
         }
 
         public void Step4()
         {
+            SaveButton.IsEnabled = false;
+            UndoButton.IsEnabled = true;
+            RedoButton.IsEnabled = false;
             var result = MessageBox.Show("Čestitamo! Uspešno ste napravili konflikt!.", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
             var result2 = MessageBox.Show("Pokušajte da uradite korak unazad pritiskom na dugme Unazad ili" +
                 " pritiskom tastera Ctrl + Z!", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
@@ -114,6 +128,7 @@ namespace HCIProjekat.views.manager.tutorial
         {
             SaveButton.IsEnabled = false;
             UndoButton.IsEnabled = false;
+            SaveButton.IsEnabled = true;
             var result = MessageBox.Show("Čestitamo! Pokušajte da sačuvate klikom na dugme Sačuvaj ili" +
                 " kombinacijom tastera Ctrl + S!", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
 
@@ -123,6 +138,7 @@ namespace HCIProjekat.views.manager.tutorial
         {
             SaveButton.IsEnabled = false;
             UndoButton.IsEnabled = false;
+            SaveButton.IsEnabled = false;
             var result = MessageBox.Show("Čestitamo! Završili ste tutorijal. Ukoliko želite da se nekada pristite funkcionalnosti" +
                 ", otvorite Pomoć sistema klikom na taster F1 ili klikom na dugme '?'. \n\nTakođe možete pokrenuti tutorijal koliko god puta želite.", "Tutor", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
         }
@@ -253,6 +269,8 @@ namespace HCIProjekat.views.manager.tutorial
                 {
                     train.Timetable = Timetable;
                 }
+                StepNum++;
+                Step7();
             }
         }
 

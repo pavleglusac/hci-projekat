@@ -39,15 +39,45 @@ namespace HCIProjekat.views.manager.pages
 
         public void SaveButtonClicked(object sender, EventArgs e)
         {
-            if(!Validation.GetHasError(NameInput))
+            bool valid = !model.Database.Trains.Any(x => x.Name == NameInput.Text.Trim() && x != Train);
+            if(!valid)
             {
-                Train.Name = NameInput.Text;
+                BindingExpression bindingExpression = BindingOperations.GetBindingExpression(NameInput, TextBox.TextProperty);
+
+                BindingExpressionBase bindingExpressionBase = BindingOperations.GetBindingExpressionBase(NameInput, TextBox.TextProperty);
+
+                ValidationError validationError = new ValidationError(new ExceptionValidationRule(), bindingExpression);
+                validationError.ErrorContent = "Već postoji voz sa tim imenom!";
+
+                Validation.MarkInvalid(bindingExpressionBase, validationError);
+                return;
             }
+
+            if (!Validation.GetHasError(NameInput) && valid)
+            {
+                Train.Name = NameInput.Text.Trim();
+                this.Close();
+            }
+
         }
 
         private void NameInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SaveButton.IsEnabled = !Validation.GetHasError(NameInput);
+            bool valid = !model.Database.Trains.Any(x => x.Name == NameInput.Text.Trim() && x != Train);
+            if (!valid)
+            {
+                BindingExpression bindingExpression = BindingOperations.GetBindingExpression(NameInput, TextBox.TextProperty);
+
+                BindingExpressionBase bindingExpressionBase = BindingOperations.GetBindingExpressionBase(NameInput, TextBox.TextProperty);
+
+                ValidationError validationError = new ValidationError(new ExceptionValidationRule(), bindingExpression);
+                validationError.ErrorContent = "Već postoji voz sa tim imenom!";
+
+                Validation.MarkInvalid(bindingExpressionBase, validationError);
+                return;
+            }
+
+            SaveButton.IsEnabled = !Validation.GetHasError(NameInput) && valid;
         }
     }
 }

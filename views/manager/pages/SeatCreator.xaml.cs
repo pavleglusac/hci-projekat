@@ -287,6 +287,9 @@ namespace HCIProjekat.views.manager.pages
             Train newTrain = new Train();
             newTrain.PricePerMinute = train.PricePerMinute;
             newTrain.CreationDate = train.CreationDate;
+            newTrain.Timetable = train.Timetable;
+            newTrain.Deleted = train.Deleted;
+            newTrain.Stations = train.Stations;
             newTrain.Name = TrainNameInput.Text;
             foreach (Row row in rows)
             {

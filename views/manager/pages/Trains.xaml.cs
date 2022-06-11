@@ -29,6 +29,8 @@ namespace HCIProjekat.views.manager.pages
 
         public static RoutedCommand OpenCreate = new RoutedCommand();
 
+        public static RoutedCommand OpenDelete = new RoutedCommand();
+
         public Frame DialogContent = new Frame();
 
         public bool IsDialogOpen = true;
@@ -36,15 +38,15 @@ namespace HCIProjekat.views.manager.pages
         public Trains()
         {
             InitializeComponent();
-            TrainsData = Database.Trains;
-            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name)); ;
+            TrainsData = Database.Trains.Where(x => !x.Deleted).ToList();
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x))); ;
             AutoComplete();
         }
 
         private void handleFilterClick(object sender, EventArgs e)
         {
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
-            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name)); ;
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x))); ;
         }
 
         private void AutoComplete()
@@ -70,6 +72,23 @@ namespace HCIProjekat.views.manager.pages
         {
             MainWindow mw = new MainWindow(new AddTrain());
             mw.ShowDialog();
+        }
+
+        public void OpenDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Da li ste sigurni da želite da obrišete voz?", $"Brisanje voza: {(string)e.Parameter}", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if(result == MessageBoxResult.Yes)
+            {
+                var result2 = MessageBox.Show("Da li ste sasvim sigurni da želite da obrišete voz? Ova akcija je nepovratna!", $"Brisanje voza: {(string)e.Parameter}", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result2 == MessageBoxResult.Yes)
+                {
+                    Database.GetTrainByName((string)e.Parameter).Deleted = true;
+                    MessageBox.Show("Voz je obrisan!", $"Brisanje voza: {(string)e.Parameter}", MessageBoxButton.OK, MessageBoxImage.Information);
+                    TrainsData = Database.Trains.Where(x => !x.Deleted).ToList();
+                    trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x))); ;
+                    AutoComplete();
+                }
+            }
         }
 
         public void Refresh(object sender, EventArgs args)
@@ -115,9 +134,12 @@ namespace HCIProjekat.views.manager.pages
         class GridEntry
         {
             public string Name { get; set; }
-            public GridEntry (string name)
+            public Boolean CanBeDeleted { get; set; }
+            public GridEntry (string name, bool cantBeDeleted)
             {
                 Name = name;
+                CanBeDeleted = !cantBeDeleted;
+                System.Diagnostics.Debug.Write($"CAN BE DELETED {cantBeDeleted}");
             }
         }
     }

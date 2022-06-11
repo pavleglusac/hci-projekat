@@ -16,6 +16,7 @@ namespace HCIProjekat.model
         public Timetable Timetable { get; set; }
         public DateOnly CreationDate { get; set; }
         public double PricePerMinute { get; set; }
+        public bool Deleted { get; set; }
 
         public Train()
         {
@@ -33,6 +34,7 @@ namespace HCIProjekat.model
             this.Stations = stations;
             this.Timetable = new Timetable { Departures = timetable };
             this.PricePerMinute = pricePerMinute;
+            this.Deleted = false;
         }
         public Train(string name, Dictionary<Station, int> stations, double pricePerMinute)
         {
@@ -41,6 +43,7 @@ namespace HCIProjekat.model
             this.RightRows = new List<Row>();
             this.Timetable = new Timetable { Departures = new List<Departure>() };
             this.PricePerMinute = pricePerMinute;
+            this.Deleted = false;
         }
 
         public Train(string name, List<Departure> timetable, double pricePerMinute)
@@ -50,6 +53,7 @@ namespace HCIProjekat.model
             this.RightRows = new List<Row>();
             this.Timetable = new Timetable { Departures = timetable };
             this.PricePerMinute = pricePerMinute;
+            this.Deleted = false;
         }
 
         internal List<Station> GetCriticalStations(Station from, Station to)

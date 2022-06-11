@@ -86,14 +86,6 @@
                                     </StackPanel>
                                 </Button>
 
-                                <TextBlock Grid.Row="2" Grid.Column="0" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center">Upravljanje stanicama i rutama</TextBlock>
-                                <Button Grid.Row="2" Grid.Column="1" FontSize="16" Margin="10 10 0 10" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#2d2c94">
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Height="20" Width="20" Kind="PlayOutline" />
-                                        <TextBlock> Pokreni</TextBlock>
-                                    </StackPanel>
-                                </Button>
-
 
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="0"

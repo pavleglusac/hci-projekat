@@ -16,6 +16,7 @@ namespace HCIProjekat.views.manager.pages
             try
             {
                 if (value == null || ((string)value).Length == 0) return new ValidationResult(false, "Ime ne može biti prazno!");
+
                 if (((string)value).Trim().Length != ((string)value).Length) return new ValidationResult(false, "Nedozvoljeni razmaci na početku ili kraju imena!");
                 if (!IsValid((string)value)) return new ValidationResult(false, "Ime nije validno!");
             }

@@ -23,6 +23,7 @@
         <CommandBinding Command="{x:Static local:Trains.OpenUpdate}" Executed="OpenUpdateExecuted" />
         <CommandBinding Command="{x:Static local:Trains.OpenCreate}" Executed="OpenCreateExecuted" />
         <CommandBinding Command="{x:Static local:Trains.OpenTimetables}" Executed="OpenTimetablesExecuted" />
+        <CommandBinding Command="{x:Static local:Trains.OpenDelete}" Executed="OpenDeleteExecuted" />
     </Page.CommandBindings>
 
     <Page.Resources>
@@ -207,9 +208,10 @@
                                             FontSize="14"
                                             Height="28"
                                             ToolTip="Upravljajte sedištima"
+                                            IsEnabled="{Binding CanBeDeleted}"
                                             Command="{x:Static local:Trains.OpenSeats}"
                                             CommandParameter="{Binding Name}"
-                                            IsEnabled="True">
+                                            >
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="SofaSingleOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Sedišta" ></TextBlock>
@@ -250,10 +252,10 @@
                                     Background="#2d2c94"
                                     FontSize="14"
                                     Height="28"
-                                    Command="{x:Static local:Trains.OpenUpdate}"
+                                    Command="{x:Static local:Trains.OpenDelete}"
                                     CommandParameter="{Binding Name}"
                                     ToolTip="Obrišite voz"
-                                    IsEnabled="True">
+                                    IsEnabled="{Binding CanBeDeleted}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="DeleteOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Obriši"></TextBlock>

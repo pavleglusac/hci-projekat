@@ -105,6 +105,18 @@ namespace HCIProjekat.model
             System.Diagnostics.Debug.WriteLine("kraj ucitavanja");
         }
 
+        internal static bool CantBeDeleted(Train train)
+        {
+            return Tickets.Any(x => TicketAfterNow(x) && x.Train.Name == train.Name);
+        }
+
+        internal static bool TicketAfterNow(Ticket x)
+        {
+            if (x.DepartureDate == DateOnly.FromDateTime(DateTime.Now) && x.Departure.DepartureDateTime > TimeOnly.FromDateTime(DateTime.Now)) return true;
+            else if (x.DepartureDate > DateOnly.FromDateTime(DateTime.Now)) return true;
+            else return false;
+        }
+
         public static Tuple<double, double> getTicketNumberAndIncomeForTrain(int month, string year, Train train)
         {
             double x = 0;

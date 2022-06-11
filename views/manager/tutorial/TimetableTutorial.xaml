@@ -24,7 +24,6 @@
         <CommandBinding Command="{x:Static local:TimetableTutorial.RemoveDeparture}" Executed="RemoveDeparture_Executed" />
         <CommandBinding Command="{x:Static local:TimetableTutorial.UndoCommand}" Executed="UndoCommand_Executed" />
         <CommandBinding Command="{x:Static local:TimetableTutorial.RedoCommand}" Executed="RedoCommand_Executed" />
-
         <CommandBinding Command="{x:Static local:TimetableTutorial.SaveCommand}" Executed="SaveCommand_Executed" />
     </Page.CommandBindings>
 
