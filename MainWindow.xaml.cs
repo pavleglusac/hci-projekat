@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using HCIProjekat.views.manager.pages;
 
 namespace HCIProjekat
 {
@@ -60,5 +62,38 @@ namespace HCIProjekat
                 HelpProvider.ShowHelp(str, this);
             }
         }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var content = MainFrame.Content;
+            if(content is SeatCreator)
+            {
+                var res = MessageBox.Show("Da li ste sigurni da želite da zatvorite prozor? Možete izgubiti podatke ukoliko niste sačuvali.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if(res == MessageBoxResult.Yes)
+                {
+                    base.OnClosing(e);
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            if(content is TimetableAddition)
+            {
+                var res = MessageBox.Show("Da li ste sigurni da želite da zatvorite prozor? Možete izgubiti podatke ukoliko niste sačuvali.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (res == MessageBoxResult.Yes)
+                {
+                    base.OnClosing(e);
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+        }
+
     }
 }

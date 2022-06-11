@@ -126,6 +126,7 @@ namespace HCIProjekat.views.customer.dialogs
                     System.Windows.MessageBox.Show(
                         "Uspešno ste kupili karte!",
                         "Potvrda uspešne kupovine", System.Windows.MessageBoxButton.OK);
+                    Application.Current.Windows[0].Close();
                 }
             }
         }

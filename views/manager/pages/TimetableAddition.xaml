@@ -16,7 +16,8 @@
 	  Background="#EEE"
       xmlns:converters="clr-namespace:HCIProjekat.converters"
 	  FontFamily="{DynamicResource MaterialDesignFont}"
-      GotFocus="SetHelpKey">
+      GotFocus="SetHelpKey"
+      >
 
     <Page.CommandBindings>
         <CommandBinding Command="{x:Static local:TimetableAddition.RemoveDeparture}" Executed="RemoveDeparture_Executed" />

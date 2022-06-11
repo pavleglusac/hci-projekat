@@ -66,6 +66,7 @@ namespace HCIProjekat.views.manager.pages
             timetablesGrid.ItemsSource = Timetable.Departures;
         }
 
+
         public void RemoveDeparture_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int ind = Timetable.Departures.FindIndex(x => x.DepartureDateTime == (TimeOnly)e.Parameter);
@@ -164,6 +165,7 @@ namespace HCIProjekat.views.manager.pages
             if (MessageBox.Show(message, caption, buttons, icon) == MessageBoxResult.Yes)
             {
                 train.Timetable = Timetable;
+                MessageBox.Show("Sačuvano!", "Potvrda", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

@@ -448,6 +448,7 @@ namespace HCIProjekat.views.manager.pages
                 HistoryAction();
                 Train ct = history.CurrentTrain();
                 Database.UpdateTrain(history.History[0], ct);
+                MessageBox.Show("Sačuvano!", "Potvrda", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
