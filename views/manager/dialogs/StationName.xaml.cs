@@ -33,7 +33,40 @@ namespace HCIProjekat.views.manager.dialogs
         public Map map;
         Func<int> parentMethod;
         Func<int> parentMethod2;
-        public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent)
+
+        void enterKey(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                if (addButton.IsEnabled)
+                {
+
+                    if (!tutor)
+                    {
+                        Database.getOrAddStation(currentLocation);
+                        Database.setName(currentLocation, textBoxTrainName.Text);
+                        pushpin.ToolTip = Database.getOrAddStation(pushpin.Location).Name;
+                    }
+                    else
+                    {
+                        TutorDatabase.getOrAddStation(currentLocation);
+                        TutorDatabase.setName(currentLocation, textBoxTrainName.Text);
+                        pushpin.ToolTip = TutorDatabase.getOrAddStation(pushpin.Location).Name;
+                    }
+                    if (map != null)
+                    {
+                        map.Children.Add(pushpin);
+                        pushpin.Content = parentMethod();
+                    }
+                    if (parentMethod2 != null)
+                    {
+                        parentMethod2();
+                    }
+                    hostDialog.IsOpen = false;
+                }
+            }
+        }
+            public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent)
         {
             currentStationName = "";
             currentLocation = pin.Location;
@@ -45,6 +78,7 @@ namespace HCIProjekat.views.manager.dialogs
             tutor = false;
             DataContext = new LoginInfo("", "");
             InitializeComponent();
+            StationNameGrid.KeyDown += new KeyEventHandler(enterKey);
         }
         public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent,Boolean tutor)
         {
@@ -58,6 +92,7 @@ namespace HCIProjekat.views.manager.dialogs
             this.tutor = true;
             DataContext = new LoginInfo("", "");
             InitializeComponent();
+            StationNameGrid.KeyDown += new KeyEventHandler(enterKey);
         }
         public StationName(Pushpin pin, ref DialogHost dialog, string name)
         {
@@ -69,6 +104,7 @@ namespace HCIProjekat.views.manager.dialogs
             DataContext = new LoginInfo(name, "");
             tutor = false;
             InitializeComponent();
+            StationNameGrid.KeyDown += new KeyEventHandler(enterKey);
             textBoxTrainName.Text = name;
         }
 
@@ -82,6 +118,7 @@ namespace HCIProjekat.views.manager.dialogs
             hostDialog = dialog;
             DataContext = new LoginInfo(name, "");
             InitializeComponent();
+            StationNameGrid.KeyDown += new KeyEventHandler(enterKey);
             tutor = false;
             parentMethod2 = parentMethod2Sent;
         }
@@ -95,6 +132,7 @@ namespace HCIProjekat.views.manager.dialogs
             hostDialog = dialog;
             DataContext = new LoginInfo("", "");
             InitializeComponent();
+            StationNameGrid.KeyDown += new KeyEventHandler(enterKey);
             textBoxTrainName.Text = name;
             this.tutor = true;
             parentMethod2 = parentMethod2Sent;

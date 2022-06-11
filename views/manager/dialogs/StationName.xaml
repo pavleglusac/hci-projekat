@@ -10,7 +10,7 @@
       d:DesignWidth="500"
       Title="StationName">
 
-    <Grid>
+    <Grid x:Name="StationNameGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
