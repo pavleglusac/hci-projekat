@@ -16,7 +16,8 @@
       TextOptions.TextRenderingMode="Auto"
       Background="#EEE"
       FontFamily="{DynamicResource MaterialDesignFont}"
-      Title="RideHistory">
+      Title="RideHistory"
+      GotFocus="SetHelpKey">
 
 
     <Page.Resources>
@@ -52,13 +53,28 @@
                             <!-- BLUE TITLE STRIP -->
                             <Border CornerRadius="10,10,0,0"
                                     Background="#2d2c94">
-                                <StackPanel ClipToBounds="True"
-                                            Height="50">
-                                    <TextBlock Margin="20 18 0 0"
-                                               Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-                                               Foreground="White"
-                                               Text="Mesečni izveštaji" />
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*"></ColumnDefinition>
+                                        <ColumnDefinition Width="50*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                            Grid.Column="0"
+                                            Margin="20 18 0 0"
+                                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                            Foreground="White"
+                                            Text="Mesečni izveštaji" />
+
+                                    <Button
+                                            HorizontalAlignment="Right"
+                                            Margin="0 0 30 0"
+                                            Click="Help_Click"
+                                            ToolTip="Otvorite pomoć"
+                                            Grid.Column="1" Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                        <materialDesign:PackIcon Foreground="White" Kind="Help" />
+                                    </Button>
+                                </Grid>
                             </Border>
 
                             <Grid Margin="20">

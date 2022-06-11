@@ -19,6 +19,7 @@
     <None Remove="help\addTrainMap.PNG" />
     <None Remove="help\banner.png" />
     <None Remove="help\err.html" />
+    <None Remove="help\history.html" />
     <None Remove="help\index.html" />
     <None Remove="help\login.html" />
     <None Remove="help\loginPageLook.png" />
@@ -27,10 +28,15 @@
     <None Remove="help\pushpin-orange.png" />
     <None Remove="help\register.html" />
     <None Remove="help\registrationPageLook.png" />
+    <None Remove="help\reports.html" />
+    <None Remove="help\reportshelp.png" />
     <None Remove="help\seats.html" />
     <None Remove="help\seats_help_1.png" />
     <None Remove="help\seats_help_2.png" />
     <None Remove="help\timetables.html" />
+    <None Remove="help\timetables_help.png" />
+    <None Remove="help\timetables_help_elements.png" />
+    <None Remove="help\train_history.png" />
     <None Remove="help\updateTrain.html" />
     <None Remove="help\updateTrainMap.PNG" />
   </ItemGroup>
@@ -43,6 +49,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\banner.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\history.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\login.html">
@@ -66,10 +75,25 @@
     <Content Include="help\registrationPageLook.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="help\reports.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\reportshelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\seats_help_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seats_help_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetables_help.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetables_help_elements.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\train_history.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\updateTrainMap.PNG">
