@@ -61,14 +61,18 @@ namespace HCIProjekat.views.manager.pages
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Train train = Database.GetTrainByName((string)e.Parameter);
-            MainWindow mw = new MainWindow(new UpdateTrain(train));
+            UpdateTrain updateTrain = new UpdateTrain(train);
+            MainWindow mw = new MainWindow(updateTrain);
+            updateTrain.thisWindow = mw;
             mw.ShowDialog();
             
         }
 
         public void OpenCreateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow(new AddTrain());
+            AddTrain addTrain = new AddTrain();
+            MainWindow mw = new MainWindow(addTrain);
+            addTrain.thisWindow = mw;
             mw.ShowDialog();
         }
 

@@ -35,6 +35,7 @@ namespace HCIProjekat.views.manager.pages
         public bool IsDialogOpen = true;
         public Frame DialogContent = new Frame();
         public DialogHost parentDialog;
+        public MainWindow thisWindow;
         public AddTrain()
         {
             Database.CurrentTrainName = "";
@@ -494,6 +495,10 @@ namespace HCIProjekat.views.manager.pages
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
             Database.Trains.Add(train);
+            thisWindow.Close();
+
+            MainWindow mw = new MainWindow(new SeatCreator(train));
+            mw.ShowDialog();
         }
 
         private void drawLines(List<Pushpin> pushpinsToAdd)

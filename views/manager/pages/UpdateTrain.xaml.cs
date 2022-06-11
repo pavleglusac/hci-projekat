@@ -44,6 +44,7 @@ namespace HCIProjekat.views.manager.pages
         public DialogHost parentDialog;
         public bool IsDialogOpen = true;
         public Frame DialogContent = new Frame();
+        public MainWindow thisWindow;
         public IEnumerable<string> DataSource { get; set; }
         public Pushpin SelectedPushpin{get; set; }
         CancellationTokenSource timeout { get; set; }
@@ -530,6 +531,7 @@ namespace HCIProjekat.views.manager.pages
             }
             t.updateStations(trainsStations);
             MessageBox.Show("Red vožnje uspešno ažuriran.", "Potvrda", MessageBoxButton.OK);
+            thisWindow.Close();
             //parentDialog.IsOpen = false;
         }
 
