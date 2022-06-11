@@ -526,6 +526,13 @@ namespace HCIProjekat.views.manager.pages
                     if (rightRowStack.Children.Count >= 7) return;
                 }
                 Row clone = parent.DeepCopy();
+                foreach(var s in clone.Seats)
+                {
+                    s.MouseLeftButtonDown += root_MouseLeftButtonDown;
+                    s.MouseLeftButtonUp += root_MouseLeftButtonUp;
+                    s.MouseMove += root_MouseMove;
+                    seatParent.Add(s, clone);
+                }
                 SetRowEvents(clone, clone.RowType);
                 Rectangle emptySeat = SeatBuilder.buildEmptySeat();
                 emptySeat.Visibility = Visibility.Collapsed;
@@ -580,6 +587,7 @@ namespace HCIProjekat.views.manager.pages
                 seat.MouseLeftButtonDown += root_MouseLeftButtonDown;
                 seat.MouseMove += root_MouseMove;
                 seat.MouseLeftButtonUp += root_MouseLeftButtonUp;
+                seatParent.Add(seat, parent);
                 seat.Margin = new Thickness(5, 5, 5, 5);
                 var emptySeat = rowEmptySeat[parent];
                 parent.RowUI.Children.Remove(emptySeat);
@@ -616,7 +624,6 @@ namespace HCIProjekat.views.manager.pages
             {
                 Border border = (Border)SelectedElement;
                 var parent = borderParent[border];
-                Row clone = parent.DeepCopy();
                 int ind = rows.IndexOf(parent);
                 if (ind == 0) return;
                 var brd = rows[ind - 1].RowBorder;
@@ -648,7 +655,6 @@ namespace HCIProjekat.views.manager.pages
             {
                 Border border = (Border)SelectedElement;
                 var parent = borderParent[border];
-                Row clone = parent.DeepCopy();
                 int ind = rows.IndexOf(parent);
                 if (ind >= rows.Count - 1) return;
                 var brd = rows[ind + 1].RowBorder;
@@ -1576,8 +1582,10 @@ namespace HCIProjekat.views.manager.pages
                     newSeat.Stroke = seat.Stroke;
                     newSeat.Fill = seat.Fill;
                     newSeat.Margin = seat.Margin;
+                    newSeat.Cursor = seat.Cursor;
+
                     row.RowUI.Children.Add(newSeat);
-                    row.Seats.Add(seat);
+                    row.Seats.Add(newSeat);
                 }
 
                 return row;
