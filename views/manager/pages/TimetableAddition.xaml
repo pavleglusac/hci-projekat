@@ -20,6 +20,9 @@
 
     <Page.CommandBindings>
         <CommandBinding Command="{x:Static local:TimetableAddition.RemoveDeparture}" Executed="RemoveDeparture_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableAddition.UndoCommand}" Executed="UndoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableAddition.RedoCommand}" Executed="RedoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableAddition.SaveCommand}" Executed="SaveCommand_Executed" />
     </Page.CommandBindings>
 
     <Page.Resources>

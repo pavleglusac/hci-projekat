@@ -34,16 +34,26 @@ namespace HCIProjekat.views.manager.pages
         Timetable Timetable { get; set; }
 
         public static RoutedCommand RemoveDeparture = new RoutedCommand();
+        public static RoutedCommand UndoCommand = new RoutedCommand();
+        public static RoutedCommand RedoCommand = new RoutedCommand();
+
+        public static RoutedCommand SaveCommand = new RoutedCommand();
 
         public TimetableAddition()
         {
             InitializeComponent();
             this.Focus();
+            UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
         }
 
         public TimetableAddition(Train train)
         {
             InitializeComponent();
+            UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
+            RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             this.Focus();
             DataContext = this;
             this.train = train;
@@ -171,6 +181,22 @@ namespace HCIProjekat.views.manager.pages
                 HelpProvider.SetHelpKey((DependencyObject)focusedControl, "timetables");
             }
         }
+
+        private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Undo_Click(sender, e);
+        }
+
+        private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Redo_Click(sender, e);
+        }
+
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Save_Click(sender, e);
+        }
+
     }
 
 }

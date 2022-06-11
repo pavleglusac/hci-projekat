@@ -52,7 +52,7 @@ namespace HCIProjekat.views.manager.pages
         public int refreshItems()
         {
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
-            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name));
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x)));
             return 0;
         }
 

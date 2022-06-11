@@ -57,7 +57,6 @@ namespace HCIProjekat.views.manager.tutorial
         {
             UndoCommand.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control));
             RedoCommand.InputGestures.Add(new KeyGesture(Key.Y, ModifierKeys.Control));
-
             SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
 
             DataContext = this;
