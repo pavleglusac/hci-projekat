@@ -47,6 +47,13 @@ namespace HCIProjekat.views.manager.pages
             trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name)); ;
         }
 
+        public int refreshItems()
+        {
+            TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
+            trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name));
+            return 0;
+        }
+
         private void AutoComplete()
         {
             TrainSearchInput.ItemsSource = TrainsData.Select(x => x.Name);
@@ -73,6 +80,7 @@ namespace HCIProjekat.views.manager.pages
             AddTrain addTrain = new AddTrain();
             MainWindow mw = new MainWindow(addTrain);
             addTrain.thisWindow = mw;
+            addTrain.callOnClose = refreshItems;
             mw.ShowDialog();
         }
 

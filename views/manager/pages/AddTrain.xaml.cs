@@ -36,6 +36,7 @@ namespace HCIProjekat.views.manager.pages
         public Frame DialogContent = new Frame();
         public DialogHost parentDialog;
         public MainWindow thisWindow;
+        public Func<int> callOnClose;
         public AddTrain()
         {
             Database.CurrentTrainName = "";
@@ -495,6 +496,7 @@ namespace HCIProjekat.views.manager.pages
             }
             Train train = new Train(textBoxTrainName.Text, trainsStations, new List<Departure>(), 20);
             Database.Trains.Add(train);
+            callOnClose();
             thisWindow.Close();
 
             MainWindow mw = new MainWindow(new SeatCreator(train));
