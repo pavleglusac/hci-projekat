@@ -14,7 +14,7 @@ namespace HCIProjekat.views.auth
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (value == null || ((string)value).Length == 0)
+            if (value == null || ((string)value).Trim().Length == 0)
             {
                 return new ValidationResult(false, "Obavezno polje.");
             }

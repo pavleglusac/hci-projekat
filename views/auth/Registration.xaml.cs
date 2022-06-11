@@ -32,11 +32,12 @@ namespace HCIProjekat.views.auth
         private void Register()
         {
             hideError();
-            string username = usernameField.Text;
-            string name = nameField.Text;
-            string surname = surnameField.Text;
-            string password = passwordField.Password;
-            string confirmPassword = confirmPasswordField.Password;
+            string username = usernameField.Text.Trim();
+            string name = nameField.Text.Trim();
+            string surname = surnameField.Text.Trim();
+            string password = passwordField.Password.Trim();
+            string confirmPassword = confirmPasswordField.Password.Trim();
+
             ((TextBox)usernameField).Text = ((TextBox)usernameField).Text;
             ((TextBox)nameField).Text = ((TextBox)nameField).Text;
             ((TextBox)surnameField).Text = ((TextBox)surnameField).Text;
