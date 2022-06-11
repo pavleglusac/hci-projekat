@@ -199,7 +199,7 @@
                                                 Background="#2d2c94"
                                                 FontSize="12"
                                                 Height="28"
-                                                Content="Kupi kartu"/>
+                                                Content="Kupi karte"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

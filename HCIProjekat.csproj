@@ -15,6 +15,7 @@
     <None Remove="assets\takenseat.jpg" />
     <None Remove="assets\takenseat.png" />
     <None Remove="assets\trash.png" />
+    <None Remove="help\actualSeatChoosingHelp.png" />
     <None Remove="help\addTrain.html" />
     <None Remove="help\addTrainMap.PNG" />
     <None Remove="help\banner.png" />
@@ -27,15 +28,28 @@
     <None Remove="help\pushpin-orange.png" />
     <None Remove="help\register.html" />
     <None Remove="help\registrationPageLook.png" />
+    <None Remove="help\seatChoosingHelp.png" />
     <None Remove="help\seats.html" />
     <None Remove="help\seats_help_1.png" />
     <None Remove="help\seats_help_2.png" />
+    <None Remove="help\ticketBuying.html" />
+    <None Remove="help\ticketBuyingHelpButton.png" />
+    <None Remove="help\ticketBuyingHelpConfirmation.png" />
+    <None Remove="help\ticketHistory.html" />
+    <None Remove="help\ticketHistoryHelp.png" />
+    <None Remove="help\ticketHistoryNavigationHelp.png" />
+    <None Remove="help\timetable.html" />
+    <None Remove="help\timetableHelp.png" />
+    <None Remove="help\timetableNavigationHelp.png" />
     <None Remove="help\timetables.html" />
     <None Remove="help\updateTrain.html" />
     <None Remove="help\updateTrainMap.PNG" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="help\actualSeatChoosingHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\addTrain.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -66,10 +80,40 @@
     <Content Include="help\registrationPageLook.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="help\seatChoosingHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="help\seats_help_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seats_help_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuying.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuyingHelpButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuyingHelpConfirmation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistory.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistoryHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistoryNavigationHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetable.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetableHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetableNavigationHelp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\updateTrainMap.PNG">
