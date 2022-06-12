@@ -29,6 +29,9 @@
     <None Remove="help\pushpin-orange.png" />
     <None Remove="help\register.html" />
     <None Remove="help\registrationPageLook.png" />
+    <None Remove="help\routeMap.html" />
+    <None Remove="help\routeMapHelp.png" />
+    <None Remove="help\routeMapNavigationHelp.png" />
     <None Remove="help\seatChoosingHelp.png" />
     <None Remove="help\reports.html" />
     <None Remove="help\reportshelp.png" />
@@ -87,6 +90,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\registrationPageLook.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMap.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMapHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMapNavigationHelp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="help\seatChoosingHelp.png">
