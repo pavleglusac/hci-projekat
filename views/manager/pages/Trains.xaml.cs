@@ -45,7 +45,7 @@ namespace HCIProjekat.views.manager.pages
 
         private void handleFilterClick(object sender, EventArgs e)
         {
-            TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
+            TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text).Where(x => !x.Deleted).ToList();
             trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x))); ;
         }
 

@@ -104,6 +104,12 @@ namespace HCIProjekat.views.manager.pages
         {
             try
             {
+                if (Validation.GetHasError(TimeStart) || Validation.GetHasError(TimeEnd))
+                {
+                    MessageBox.Show("Vremena nisu validna.", "Nevalidni podaci.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                };
+
                 TimeOnly dep = TimeOnly.Parse((string)TimeStartInput);
                 TimeOnly arr = TimeOnly.Parse((string)TimeEndInput);
                 if(arr <= dep)

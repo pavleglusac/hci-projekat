@@ -189,6 +189,7 @@
 							Is24Hours="True"
 							FontSize="18"
 							Grid.Row="2"
+                            Name="TimeEnd"
 							Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Top">
                             <materialDesign:TimePicker.Text>
                                 <Binding
