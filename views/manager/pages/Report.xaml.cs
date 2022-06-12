@@ -98,7 +98,7 @@ namespace HCIProjekat.views.manager.pages
                 int income = 0;
                 List<Departure> departures = new List<Departure>();
                 int totalStations = train.Stations.Count;
-                if (totalStations < 2) return;
+                //if (totalStations < 2) return;
                 Tuple<double,double> tuple = Database.getTicketNumberAndIncomeForTrain(monthDict[TrainSearchInput.Text], TrainSearchInput2.Text, train);
                 ticketSum += (int)tuple.Item1;
                 incomeSum += tuple.Item2;

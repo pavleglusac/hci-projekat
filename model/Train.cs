@@ -126,12 +126,12 @@ namespace HCIProjekat.model
             if (stationsToRemove.Count > 0)
             {
                 Stations.Remove(stationsToRemove.First());
-            }
-            foreach (Station s in Stations.Keys)
-            {
-                if (i > idRemoved)
-                    Stations[s] = Stations[s] - 1;
-                i++;
+                foreach (Station s in Stations.Keys)
+                {
+                    if (i > idRemoved)
+                        Stations[s] = Stations[s] - 1;
+                    i++;
+                }
             }
         }
 

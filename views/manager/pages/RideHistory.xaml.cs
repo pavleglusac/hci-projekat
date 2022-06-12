@@ -120,7 +120,7 @@ namespace HCIProjekat.views.manager.pages
                 }
                 List<Departure> departures = new List<Departure>();
                 int totalStations = train.Stations.Count;
-                if (totalStations < 2) return;
+                //if (totalStations < 2) return;
                 train.Timetable.Departures.ForEach(originalDeparture =>
                 {
                     TimeOnly totalStart = originalDeparture.DepartureDateTime;

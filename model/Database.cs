@@ -392,11 +392,11 @@ namespace HCIProjekat.model
                     break;
                 }
             }
-            Stations.Remove(removeStation.First());
             foreach (Train t in Trains)
             {
                 t.tryRemoveStation(removeStation.First());
             }
+            Stations.Remove(removeStation.First());
 
         }
 
