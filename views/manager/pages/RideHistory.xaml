@@ -207,6 +207,26 @@
                                 IsReadOnly="True"
                                 Binding="{Binding Income}">
                             </DataGridTextColumn>
+                            <DataGridTemplateColumn 
+                                Width="180"
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28"
+                                            ToolTip="Pregled kupljenih karata"
+                                            Click="TicketHistoryClick"
+                                            IsEnabled="{Binding TicketsButtonVisible}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Ticket" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                <TextBlock Text="Karte"></TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

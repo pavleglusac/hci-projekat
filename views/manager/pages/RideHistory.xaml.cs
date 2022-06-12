@@ -145,7 +145,7 @@ namespace HCIProjekat.views.manager.pages
                 departures.ForEach(departure =>
                     {
                         Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
-                        RideHistoryData.Add(new(train, departure, res.Item1, res.Item2));
+                        RideHistoryData.Add(new(train, departure, res.Item1, res.Item2, departureDate));
                     }
                 );
 
@@ -154,7 +154,7 @@ namespace HCIProjekat.views.manager.pages
                 missingDepartures.ForEach(departure =>
                 {
                     Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
-                    RideHistoryData.Add(new(train, departure, res.Item1, res.Item2));
+                    RideHistoryData.Add(new(train, departure, res.Item1, res.Item2, departureDate));
                 }
                 );
             });
@@ -175,6 +175,14 @@ namespace HCIProjekat.views.manager.pages
         {
             string destinationStation = (string)destinationStationComboBox.SelectedValue;
             departureStationComboBox.ItemsSource = Locations.FindAll(location => location != destinationStation);
+        }
+
+        public void TicketHistoryClick(object sender, RoutedEventArgs e)
+        {
+            RideHistoryEntry historyEntry = (RideHistoryEntry)((Button)e.Source).DataContext;
+            System.Diagnostics.Debug.WriteLine(historyEntry.Departure.DepartureDateTime);
+            MainWindow mw = new MainWindow(new ManagerTicketHistory(historyEntry.Train, historyEntry.Departure, historyEntry.DepartureDate));
+            mw.ShowDialog();
         }
 
 
@@ -222,13 +230,17 @@ namespace HCIProjekat.views.manager.pages
             public Departure Departure { get; set; }
             public int Tickets { get; set; }
             public double Income { get; set; }
+            public DateOnly DepartureDate { get; set; }
+            public bool TicketsButtonVisible { get; set; }
 
-            public RideHistoryEntry(Train train, Departure departure, int tickets, double income)
+            public RideHistoryEntry(Train train, Departure departure, int tickets, double income, DateOnly departureDate)
             {
                 Train = train;
                 Departure = departure;
                 Tickets = tickets;
                 Income = income;
+                DepartureDate = departureDate;
+                TicketsButtonVisible = tickets > 0;
             }
             public RideHistoryEntry()
             {
