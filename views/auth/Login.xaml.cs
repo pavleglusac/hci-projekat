@@ -26,9 +26,11 @@ namespace HCIProjekat.views.auth
         public Login()
         {
             InitializeComponent();
+            this.Focus();
             usernameField.Focus();
             DataContext = new LoginInfo("", "");
             loginError.Visibility = Visibility.Visible;
+            SetHelpKey(null, null);
         }
 
         private void SignIn()
@@ -57,6 +59,16 @@ namespace HCIProjekat.views.auth
                     loginError.Text = "Pogrešne informacije.";
                     loginError.Visibility = Visibility.Visible;
                 }
+            }
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "login");
+
             }
         }
 

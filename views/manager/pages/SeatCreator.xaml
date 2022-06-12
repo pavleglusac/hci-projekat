@@ -11,7 +11,7 @@
       x:Name="trainAdditionPage"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       Focusable="True"
-      l:HelpProvider.HelpKey="seats"
+      l:HelpProvider.HelpKey="ticketBuying"
       GotFocus="SetHelpKey"
 >
     <Page.CommandBindings>

@@ -15,7 +15,11 @@
       TextOptions.TextFormattingMode="Ideal" 
       TextOptions.TextRenderingMode="Auto"        
       Background="#EEE"
-      FontFamily="{DynamicResource MaterialDesignFont}">
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      Focusable="True"
+      xmlns:l="clr-namespace:HCIProjekat"
+      l:HelpProvider.HelpKey="ticketHistory"
+      GotFocus="SetHelpKey">
 
     <Page.Resources>
         <ResourceDictionary>

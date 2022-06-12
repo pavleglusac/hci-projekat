@@ -43,6 +43,18 @@ namespace HCIProjekat.views.customer
             DataContext = this;
             GetLocations();
             ShowLocations();
+            this.Focus();
+            SetHelpKey(null, null);
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "timetable");
+
+            }
         }
 
         private List<Train> GetTrains()

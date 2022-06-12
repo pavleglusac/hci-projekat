@@ -229,6 +229,7 @@ namespace HCIProjekat.views.manager.pages
             UndoButton.IsEnabled = history.CanUndo();
             RedoButton.IsEnabled = history.CanRedo();
             history.AddTrain(train);
+            SetHelpKey(null, null);
         }
 
         void ConvertTrainToUI(Train train)

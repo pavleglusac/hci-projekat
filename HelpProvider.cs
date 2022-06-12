@@ -1,9 +1,12 @@
-﻿using System;
+﻿using HCIProjekat.views.auth;
+using HCIProjekat.views.manager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace HCIProjekat
 {
@@ -27,6 +30,7 @@ namespace HCIProjekat
 
         public static void ShowHelp(string key, MainWindow originator)
         {
+            //System.Diagnostics.Debug.WriteLine($">>>>> {keyce} {key} {ko}");
             HelpViewer hh = new HelpViewer(key, originator);
             hh.Show();
         }

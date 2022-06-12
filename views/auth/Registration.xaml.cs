@@ -24,9 +24,23 @@ namespace HCIProjekat.views.auth
         public Registration()
         {
             InitializeComponent();
-            usernameField.Focus();
+            this.Focus();
             DataContext = new RegistrationInfo("", "", "", "");
             loginError.Visibility = Visibility.Visible;
+            SetHelpKey(null, null);
+            usernameField.Focus();
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            var windows = Application.Current.Windows.OfType<Window>();
+            foreach(var window in windows)
+            {
+                if (window is DependencyObject)
+                {
+                    HelpProvider.SetHelpKey(window, "register");
+                }
+            }
         }
 
         private void Register()

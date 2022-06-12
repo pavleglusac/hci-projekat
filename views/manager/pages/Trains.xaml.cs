@@ -41,6 +41,8 @@ namespace HCIProjekat.views.manager.pages
             TrainsData = Database.Trains.Where(x => !x.Deleted).ToList();
             trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x))); ;
             AutoComplete();
+            this.Focus();
+            SetHelpKey(null, null);
         }
 
         private void handleFilterClick(object sender, EventArgs e)
@@ -67,6 +69,7 @@ namespace HCIProjekat.views.manager.pages
             Train train = Database.GetTrainByName((string)e.Parameter);
             MainWindow mw = new MainWindow(new SeatCreator(train));
             mw.ShowDialog();
+            this.Focus();
         }
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -75,7 +78,8 @@ namespace HCIProjekat.views.manager.pages
             MainWindow mw = new MainWindow(updateTrain);
             updateTrain.thisWindow = mw;
             mw.ShowDialog();
-            
+            this.Focus();
+
         }
 
         public void OpenCreateExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -85,6 +89,7 @@ namespace HCIProjekat.views.manager.pages
             addTrain.thisWindow = mw;
             addTrain.callOnClose = refreshItems;
             mw.ShowDialog();
+            this.Focus();
         }
 
         public void OpenDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -116,6 +121,7 @@ namespace HCIProjekat.views.manager.pages
             Train train = Database.GetTrainByName((string)e.Parameter);
             MainWindow mw = new MainWindow(new TimetableAddition(train));
             mw.ShowDialog();
+            this.Focus();
         }
 
         public void Help_Click(object sender, EventArgs e)

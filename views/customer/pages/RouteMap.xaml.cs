@@ -34,6 +34,18 @@ namespace HCIProjekat.views.customer
             InitializeComponent();
             Trains = Database.Trains;
             trainsListBox.ItemsSource = Trains;
+            this.Focus();
+            SetHelpKey(null, null);
+        }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "routeMap");
+
+            }
         }
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

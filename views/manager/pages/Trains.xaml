@@ -16,6 +16,9 @@
       TextOptions.TextFormattingMode="Ideal" 
       TextOptions.TextRenderingMode="Auto"        
       Background="#EEE"
+      Focusable="True"
+      xmlns:l="clr-namespace:HCIProjekat"
+      l:HelpProvider.HelpKey="index"
       GotFocus="SetHelpKey">
 
     <Page.CommandBindings>

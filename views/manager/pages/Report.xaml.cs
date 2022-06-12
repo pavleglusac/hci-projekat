@@ -42,6 +42,8 @@ namespace HCIProjekat.views.manager.pages
             monthDict.Add("Oktobar", 10);
             monthDict.Add("Novembar", 11);
             monthDict.Add("Decembar", 12);
+            this.Focus();
+            SetHelpKey(null, null);
             //FillRideHistoryData();
         }
 

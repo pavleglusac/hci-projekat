@@ -64,6 +64,7 @@ namespace HCIProjekat.views.manager.pages
             ArrivalLocation.Text = To.Name;
             HistoryManager.AddEntry(Timetable.Copy());
             timetablesGrid.ItemsSource = Timetable.Departures;
+            SetHelpKey(null, null);
         }
 
 

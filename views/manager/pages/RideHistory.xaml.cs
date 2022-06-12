@@ -30,6 +30,8 @@ namespace HCIProjekat.views.manager.pages
         public RideHistory()
         {
             InitializeComponent();
+            this.Focus();
+            SetHelpKey(null, null);
             Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
             AutoComplete();
             GetLocations();

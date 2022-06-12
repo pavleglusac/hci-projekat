@@ -14,7 +14,11 @@
       TextOptions.TextFormattingMode="Ideal" 
       TextOptions.TextRenderingMode="Auto"        
       Background="{DynamicResource MaterialDesignPaper}"
-      FontFamily="{DynamicResource MaterialDesignFont}">
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      Focusable="True"
+      xmlns:l="clr-namespace:HCIProjekat"
+      l:HelpProvider.HelpKey="register"
+      GotFocus="SetHelpKey">
 
     <Grid Background="#A7C7E7">
         <Border CornerRadius="30" Width="450" Height="560" Background="White">

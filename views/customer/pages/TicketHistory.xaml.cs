@@ -30,6 +30,8 @@ namespace HCIProjekat.views.customer
             InitializeComponent();
             GetTickets();
             ShowTickets();
+            this.Focus();
+            SetHelpKey(null, null);
         }
 
         private void GetTickets()
@@ -49,5 +51,15 @@ namespace HCIProjekat.views.customer
             ticketHistoryGrid.ItemsSource = PastTickets;
             reservationHistoryGrid.ItemsSource = Tickets;
         }
+
+        public void SetHelpKey(object sender, EventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
+            {
+                HelpProvider.SetHelpKey((DependencyObject)focusedControl, "ticketHistory");
+            }
+        }
+
     }
 }

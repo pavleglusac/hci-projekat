@@ -52,6 +52,8 @@ namespace HCIProjekat.views.manager.pages
         {
             Database.CurrentTrainName = train.Name;
             InitializeComponent();
+            this.Focus();
+            SetHelpKey(null, null);
             //Set focus on map
             MapWithEvents.Focus();
             currentTrain = train.Name;
