@@ -253,6 +253,7 @@ namespace HCIProjekat.views.manager.pages
             borderParent[newRow.RowBorder] = newRow;
             newRow.RowUI = (StackPanel)newRow.RowBorder.Child;
             newRow.RowType = row.RowType;
+            SetRowEvents(newRow, newRow.RowType);
             newRow.LeftRow = left;
             newRow.Seats.AddRange(row.Seats.Select(
                 x => {
