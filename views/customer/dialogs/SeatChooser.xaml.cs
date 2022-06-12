@@ -19,7 +19,7 @@ namespace HCIProjekat.views.customer.dialogs
     /// <summary>
     /// Interaction logic for TrainAddition.xaml
     /// </summary>
-    public partial class SeatChooser : Page
+    public partial class SeatChooser : Window
     {
         Train Train;
         Departure Departure;
@@ -126,6 +126,15 @@ namespace HCIProjekat.views.customer.dialogs
                     System.Windows.MessageBox.Show(
                         "Uspešno ste kupili karte!",
                         "Potvrda uspešne kupovine", System.Windows.MessageBoxButton.OK);
+
+                    foreach (Window w in Application.Current.Windows)
+                    {
+                        if (w.GetType() == typeof(SeatChooser))
+                        {
+                            w.Close();
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -247,9 +256,7 @@ namespace HCIProjekat.views.customer.dialogs
             else seatLabel = $"{(char)('A' + maxLeft + foundSeatOrder)}-{rightsFound}-R";
 
             System.Diagnostics.Debug.WriteLine($"CLICKED SEAT {seatLabel}");
-            // add to list or remove from list
             chosenSeats.ForEach(x => System.Diagnostics.Debug.WriteLine($" {x.Label} "));
-            // aloooooooooo
             Train.PrintSeatLabels();
 
             if(toAdd)

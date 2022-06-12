@@ -32,7 +32,7 @@
                     <TextBox.Text>
                         <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
-                                <local:NonEmptyRule/>
+                                <local:UsernameValidationRule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -49,7 +49,7 @@
                     <TextBox.Text>
                         <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
-                                <local:NonEmptyRule/>
+                                <local:NameValidationRule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -66,7 +66,7 @@
                     <TextBox.Text>
                         <Binding Path="Surname" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
-                                <local:NonEmptyRule/>
+                                <local:SurnameValidationRule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

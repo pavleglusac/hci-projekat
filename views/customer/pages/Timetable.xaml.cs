@@ -148,12 +148,12 @@ namespace HCIProjekat.views.customer
             TimetableEntry timetableEntry = (TimetableEntry)((Button)e.Source).DataContext;
             System.Diagnostics.Debug.WriteLine(timetableEntry.Departure.DepartureDateTime);
 
-            MainWindow mw = new(new SeatChooser(
+            SeatChooser mw = new(
                 timetableEntry.Train,
                 timetableEntry.Departure,
                 timetableEntry.DepartureDate,
                 departureStation,
-                destinationStation));
+                destinationStation);
             mw.Height = 600;
             mw.Width = 800;
             mw.ShowDialog();
