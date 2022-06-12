@@ -65,6 +65,22 @@ namespace HCIProjekat.views.manager.dialogs
                     hostDialog.IsOpen = false;
                 }
             }
+            if (e.Key == Key.R)
+            {
+                e.Handled = true;
+            }
+            if (e.Key == Key.Down)
+            {
+                e.Handled = true;
+            }
+            if (e.Key == Key.Up)
+            {
+                e.Handled = true;
+            }
+            if (e.Key > Key.NumPad0 && e.Key < Key.NumPad9)
+            {
+                e.Handled = true;
+            }
         }
             public StationName(ref Pushpin pin, ref DialogHost dialog, ref Map MapWithEvents, Func<int> parentMethodSent, Func<int> parentMethod2Sent)
         {

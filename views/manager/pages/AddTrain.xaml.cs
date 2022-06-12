@@ -179,14 +179,21 @@ namespace HCIProjekat.views.manager.pages
             }
             if(e.Key == Key.R)
             {
-                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, SelectedPushpin.ToolTip.ToString());
-                DialogContent.Height = 250;
-                DialogContent.Width = 500;
-                System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
-                IsDialogOpen = true;
-                TrainsDialogHost.DialogContent = DialogContent;
-                TrainsDialogHost.CloseOnClickAway = true;
-                TrainsDialogHost.ShowDialog(DialogContent);
+                if (SelectedPushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Blue).ToString()) && SelectedPushpin!=null)
+                {
+                    DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, SelectedPushpin.ToolTip.ToString());
+                    DialogContent.Height = 250;
+                    DialogContent.Width = 500;
+                    System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
+                    IsDialogOpen = true;
+                    TrainsDialogHost.DialogContent = DialogContent;
+                    TrainsDialogHost.CloseOnClickAway = true;
+                    TrainsDialogHost.ShowDialog(DialogContent);
+                }
+                else
+                {
+                    MessageBox.Show("Morate izabrati stanicu kojoj ćete promeniti ime");
+                }
             }
         }
 
@@ -376,7 +383,7 @@ namespace HCIProjekat.views.manager.pages
             pin.Background = new SolidColorBrush(Colors.Blue);
             // Adds the pushpin to the map.
             //MapWithEvents.Children.Add(pin);
-            if (SelectedPushpin != null)
+            if (SelectedPushpin != null && !SelectedPushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Orange).ToString()))
             {
                 SelectedPushpin.Background = new SolidColorBrush(Colors.Green);
             }
