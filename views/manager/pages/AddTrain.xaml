@@ -209,6 +209,7 @@
                                                 <Binding.ValidationRules>
                                                     <local1:NonEmptyRule />
                                                     <local1:SameTrainRule />
+                                                    <local:NameChangeValidationRule/>
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>

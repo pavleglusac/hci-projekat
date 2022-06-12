@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:HCIProjekat.views.manager.dialogs"
       xmlns:local1="clr-namespace:HCIProjekat.views.auth"
+      xmlns:local2="clr-namespace:HCIProjekat.views.manager.pages"
       mc:Ignorable="d"
       d:DesignHeight="250"
       d:DesignWidth="500"
@@ -39,6 +40,7 @@
                     <Binding.ValidationRules>
                         <local1:NonEmptyRule />
                         <local1:SameStationRule />
+                        <local2:NameChangeValidationRule />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
