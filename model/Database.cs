@@ -132,6 +132,12 @@ namespace HCIProjekat.model
             return tuple;
         }
 
+        public static Tuple<int, double> GetTicketNumberAndIncomeForMissingDepartures(Train train, List<Departure> departures, DateOnly departureDate)
+        {
+            List<Ticket> missing = Tickets.Where(x => x.Train.Name == train.Name && !departures.Any(y => CompareDepartures(y, departureDate, x.Departure, x.DepartureDate))).ToList();
+            return new(missing.Count, missing.Sum(x => x.Price));
+        }
+
         internal static Tuple<int, double> GetTicketNumberAndIncomeForDeparture(Train train, Departure departure, DateOnly departureDate)
         {
             List<Ticket> matching = Tickets.Where(x => CompareDepartures(x.Departure, x.DepartureDate, departure, departureDate) && x.Train.Name.Equals(train.Name)).ToList();
@@ -141,6 +147,24 @@ namespace HCIProjekat.model
         public static Boolean CompareDepartures(Departure departure1, DateOnly departureDate1, Departure departure2, DateOnly departureDate2)
         {
             if(departureDate1 == departureDate2 && departure1.DepartureDateTime == departure2.DepartureDateTime && departure1.ArrivalDateTime == departure2.ArrivalDateTime)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        internal static List<Departure> GetMissingDepartures(Train train, DateOnly departureDate)
+        {
+            var departures = train.Timetable.Departures;
+            List<Departure> missing = Tickets.Where(x => x.DepartureDate == departureDate && x.Train.Name == train.Name && !departures.Any(y => CompareDepartureTimes(y, x.Departure)))
+                .Select(x => x.Departure).ToList();
+            return missing;
+            
+        }
+
+        public static bool CompareDepartureTimes(Departure x, Departure y)
+        {
+            if(x.DepartureDateTime == y.DepartureDateTime && x.ArrivalDateTime == y.ArrivalDateTime)
             {
                 return true;
             }
@@ -177,6 +201,8 @@ namespace HCIProjekat.model
 
             Tickets.ForEach(x => System.Diagnostics.Debug.WriteLine($"{x}"));
         }
+
+
 
         public static Timetable GetTimetableForTrainName(string name)
         {
