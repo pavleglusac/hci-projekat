@@ -197,6 +197,7 @@
                                     <TextBox x:Name="textBoxTrainName"
                                              ToolTip="Unesite ime voza"
                                              Grid.Row="1"
+                                             MaxLength="20"
                                              HorizontalAlignment="Stretch"
                                              BorderBrush="LightGray"
                                              BorderThickness="0 0 0 1"

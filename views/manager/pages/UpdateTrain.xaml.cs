@@ -72,7 +72,7 @@ namespace HCIProjekat.views.manager.pages
             e.Handled = true;
             if (e.Key == Key.Delete)
             {
-                if (SelectedPushpin != null)
+                if (SelectedPushpin != null && SelectedPushpin.Content != null)
                 {
                     Database.removeStation(SelectedPushpin.Location);
                     MapWithEvents.Children.Remove(SelectedPushpin);
@@ -83,15 +83,20 @@ namespace HCIProjekat.views.manager.pages
                     }
                     SelectedPushpin = null;
                 }
+                else
+                {
+                    MessageBox.Show("Morate izabrati stanicu koju ćete obrisati.");
+                }
                 drawLines();
 
             }
             if (e.Key == Key.Down)
             {
-                if (SelectedPushpin != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
+                if (SelectedPushpin != null && SelectedPushpin.Content != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
                 {
                     if (Int32.Parse(SelectedPushpin.Content.ToString()) == 1)
                     {
+                        MessageBox.Show("Ne možete smanjiti broj stanice 1.");
                         return;
                     }
                     SelectedPushpin.Content = Int32.Parse(SelectedPushpin.Content.ToString()) - 1;
@@ -116,10 +121,11 @@ namespace HCIProjekat.views.manager.pages
             }
             if (e.Key == Key.Up)
             {
-                if (SelectedPushpin != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
+                if (SelectedPushpin != null && SelectedPushpin.Content != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
                 {
                     if (Int32.Parse(SelectedPushpin.Content.ToString()) == pinNumber - 1)
                     {
+                        MessageBox.Show("Ne možete povećati broj stanice " + (pinNumber - 1) + " jer ima toliko stanica.");
                         return;
                     }
                     SelectedPushpin.Content = Int32.Parse(SelectedPushpin.Content.ToString()) + 1;
@@ -140,64 +146,83 @@ namespace HCIProjekat.views.manager.pages
                         }
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Morate izabrati stanicu kojoj ćete promeniti broj.");
+                }
                 drawLines();
             }
             if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
             {
-                numberPressed *= (numbersPressed == 0) ? 0 : Convert.ToInt32(Math.Pow(10, numbersPressed));
-                numberPressed += (e.Key.ToString()[e.Key.ToString().Length - 1] - 48);
-                numbersPressed++;
-                System.Diagnostics.Debug.WriteLine(numberPressed);
-                ClearTimeout(timeout);
-                timeout = SetTimeout(() => {
-                    this.Dispatcher.Invoke(() =>
+                if (SelectedPushpin != null && SelectedPushpin.Content != null)
+                {
+                    numberPressed *= (numbersPressed == 0) ? 0 : Convert.ToInt32(Math.Pow(10, numbersPressed));
+                    numberPressed += (e.Key.ToString()[e.Key.ToString().Length - 1] - 48);
+                    numbersPressed++;
+                    System.Diagnostics.Debug.WriteLine(numberPressed);
+                    ClearTimeout(timeout);
+                    timeout = SetTimeout(() =>
                     {
-                        int contentBefore;
-                        System.Diagnostics.Debug.WriteLine("AAAAAAA" + numberPressed);
-                        if (SelectedPushpin != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
+                        this.Dispatcher.Invoke(() =>
                         {
-                            if (numberPressed > pinNumber - 1 || numberPressed < 0)
+                            int contentBefore;
+                            System.Diagnostics.Debug.WriteLine("AAAAAAA" + numberPressed);
+                            if (SelectedPushpin != null && (Int32.TryParse(SelectedPushpin.Content.ToString(), out _)))
                             {
-                                numberPressed = 0;
-                                numbersPressed = 0;
-                                return;
-                            }
-                            contentBefore = Int32.Parse(SelectedPushpin.Content.ToString());
-                            SelectedPushpin.Content = numberPressed;
-                            foreach (var child in MapWithEvents.Children)
-                            {
-                                if (child is not Pushpin)
+                                if (numberPressed > pinNumber - 1 || numberPressed < 0)
                                 {
-                                    continue;
+                                    numberPressed = 0;
+                                    numbersPressed = 0;
+                                    return;
                                 }
-                                Pushpin pushpin = (Pushpin)child;
-                                if (!Int32.TryParse(pushpin.Content.ToString(), out _))
+                                contentBefore = Int32.Parse(SelectedPushpin.Content.ToString());
+                                SelectedPushpin.Content = numberPressed;
+                                foreach (var child in MapWithEvents.Children)
                                 {
-                                    continue;
+                                    if (child is not Pushpin)
+                                    {
+                                        continue;
+                                    }
+                                    Pushpin pushpin = (Pushpin)child;
+                                    if (!Int32.TryParse(pushpin.Content.ToString(), out _))
+                                    {
+                                        continue;
+                                    }
+                                    if (Int32.Parse(pushpin.Content.ToString()) == Int32.Parse(SelectedPushpin.Content.ToString()) && !pushpin.Location.Equals(SelectedPushpin.Location))
+                                    {
+                                        pushpin.Content = contentBefore;
+                                    }
                                 }
-                                if (Int32.Parse(pushpin.Content.ToString()) == Int32.Parse(SelectedPushpin.Content.ToString()) && !pushpin.Location.Equals(SelectedPushpin.Location))
-                                {
-                                    pushpin.Content = contentBefore;
-                                }
-                            }
 
-                        }
-                        numberPressed = 0;
-                        numbersPressed = 0;
-                        drawLines();
-                    });
-                }, 200);
+                            }
+                            numberPressed = 0;
+                            numbersPressed = 0;
+                            drawLines();
+                        });
+                    }, 200);
+                }
+                else
+                {
+                    MessageBox.Show("Morate izabrati stanicu kojoj ćete promeniti broj.");
+                }
             }
             if (e.Key == Key.R)
             {
-                DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, SelectedPushpin.ToolTip.ToString());
-                DialogContent.Height = 250;
-                DialogContent.Width = 500;
-                System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
-                IsDialogOpen = true;
-                TrainsDialogHost.DialogContent = DialogContent;
-                TrainsDialogHost.CloseOnClickAway = true;
-                TrainsDialogHost.ShowDialog(DialogContent);
+                if (SelectedPushpin != null && SelectedPushpin.Background.ToString().Equals(new SolidColorBrush(Colors.Blue).ToString()) && SelectedPushpin.ToolTip != null)
+                {
+                    DialogContent.Content = new StationName(SelectedPushpin, ref TrainsDialogHost, SelectedPushpin.ToolTip.ToString());
+                    DialogContent.Height = 250;
+                    DialogContent.Width = 500;
+                    System.Diagnostics.Debug.WriteLine("AFD-SDSFSD");
+                    IsDialogOpen = true;
+                    TrainsDialogHost.DialogContent = DialogContent;
+                    TrainsDialogHost.CloseOnClickAway = true;
+                    TrainsDialogHost.ShowDialog(DialogContent);
+                }
+                else
+                {
+                    MessageBox.Show("Morate izabrati stanicu kojoj ćete promeniti ime.");
+                }
             }
         }
 
