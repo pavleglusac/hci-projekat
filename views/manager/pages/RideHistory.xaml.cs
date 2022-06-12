@@ -148,6 +148,15 @@ namespace HCIProjekat.views.manager.pages
                         RideHistoryData.Add(new(train, departure, res.Item1, res.Item2));
                     }
                 );
+
+                List<Departure> missingDepartures = Database.GetMissingDepartures(train, departureDate);
+
+                missingDepartures.ForEach(departure =>
+                {
+                    Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
+                    RideHistoryData.Add(new(train, departure, res.Item1, res.Item2));
+                }
+                );
             });
             departuresGrid.ItemsSource = RideHistoryData;
             departuresGrid.Items.Refresh();
