@@ -222,16 +222,21 @@ namespace HCIProjekat.views.manager.tutorial
             e.Handled = true;
             if (e.Key == Key.Delete && deleteEnabled)
             {
-                if (SelectedPushpin != null && SelectedPushpin.Content != null)
+                if (SelectedPushpin != null && SelectedPushpin.Content != null && SelectedPushpin.ToolTip != null)
                 {
-                    TutorDatabase.removeStation(SelectedPushpin.Location);
-                    MapWithEvents.Children.Remove(SelectedPushpin);
-                    if (Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
+
+                    if (MessageBox.Show("Da li ste sigurni da želite da obrišete stanicu pod nazivom " + SelectedPushpin.ToolTip + "?",
+                        "Potvrda", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
-                        pinNumber--;
+                        TutorDatabase.removeStation(SelectedPushpin.Location);
+                        MapWithEvents.Children.Remove(SelectedPushpin);
+                        if (Int32.TryParse(SelectedPushpin.Content.ToString(), out _))
+                        {
+                            updatePushpinsNumber(Int32.Parse(SelectedPushpin.Content.ToString()));
+                            pinNumber--;
+                        }
+                        SelectedPushpin = null;
                     }
-                    SelectedPushpin = null;
                 }
                 else
                 {
