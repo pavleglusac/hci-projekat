@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HCIProjekat.model
 {
-    internal class Ticket
+    public class Ticket
     {
         public User Owner { get; set; }
         public Train Train { get; set; }

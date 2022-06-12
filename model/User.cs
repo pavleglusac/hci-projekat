@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HCIProjekat.model
 {
-    internal class User
+    public class User
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -24,7 +24,7 @@ namespace HCIProjekat.model
         }
     }
 
-    internal enum UserType
+    public enum UserType
     {
         CUSTOMER,
         MANAGER

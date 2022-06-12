@@ -69,13 +69,18 @@ namespace HCIProjekat.views.manager.pages
 
         public void RemoveDeparture_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            int ind = Timetable.Departures.FindIndex(x => x.DepartureDateTime == (TimeOnly)e.Parameter);
-            Timetable.Departures.RemoveAt(ind);
-            HistoryManager.AddEntry(Timetable.Copy());
-            timetablesGrid.ItemsSource = Timetable.Departures;
-            timetablesGrid.Items.Refresh();
-            UndoButton.IsEnabled = HistoryManager.CanUndo();
-            RedoButton.IsEnabled = HistoryManager.CanRedo();
+            var result = MessageBox.Show("Da li ste sigurni? Ova akcija je nepovratna i obrisaće karte vezane za dati red vožnje pri čuvanju." +
+                " Karte neće biti obrisane ukoliko nakon ovoga dodate red vožnje koji će obuhvatati obrisane.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if(result == MessageBoxResult.Yes)
+            {
+                int ind = Timetable.Departures.FindIndex(x => x.DepartureDateTime == (TimeOnly)e.Parameter);
+                Timetable.Departures.RemoveAt(ind);
+                HistoryManager.AddEntry(Timetable.Copy());
+                timetablesGrid.ItemsSource = Timetable.Departures;
+                timetablesGrid.Items.Refresh();
+                UndoButton.IsEnabled = HistoryManager.CanUndo();
+                RedoButton.IsEnabled = HistoryManager.CanRedo();
+            }
         }
 
         private void Undo_Click(object sender, RoutedEventArgs e)
@@ -172,6 +177,7 @@ namespace HCIProjekat.views.manager.pages
             {
                 train.Timetable = Timetable;
                 MessageBox.Show("Sačuvano!", "Potvrda", MessageBoxButton.OK, MessageBoxImage.Information);
+                Database.RemoveDanglingTickets();
             }
         }
 

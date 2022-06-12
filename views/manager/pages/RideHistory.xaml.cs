@@ -30,9 +30,11 @@ namespace HCIProjekat.views.manager.pages
         public RideHistory()
         {
             InitializeComponent();
+            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
             AutoComplete();
             GetLocations();
             ShowLocations();
+
             //FillRideHistoryData();
         }
 
@@ -144,19 +146,11 @@ namespace HCIProjekat.views.manager.pages
 
                 departures.ForEach(departure =>
                     {
-                        Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
-                        RideHistoryData.Add(new(train, departure, res.Item1, res.Item2, departureDate));
+                        Tuple<int, double, List<Ticket>> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
+                        RideHistoryData.Add(new(train, departure, res.Item1, res.Item2, departureDate, res.Item3));
                     }
                 );
 
-                List<Departure> missingDepartures = Database.GetMissingDepartures(train, departureDate);
-
-                missingDepartures.ForEach(departure =>
-                {
-                    Tuple<int, double> res = Database.GetTicketNumberAndIncomeForDeparture(train, departure, departureDate);
-                    RideHistoryData.Add(new(train, departure, res.Item1, res.Item2, departureDate));
-                }
-                );
             });
             departuresGrid.ItemsSource = RideHistoryData;
             departuresGrid.Items.Refresh();
@@ -181,7 +175,7 @@ namespace HCIProjekat.views.manager.pages
         {
             RideHistoryEntry historyEntry = (RideHistoryEntry)((Button)e.Source).DataContext;
             System.Diagnostics.Debug.WriteLine(historyEntry.Departure.DepartureDateTime);
-            MainWindow mw = new MainWindow(new ManagerTicketHistory(historyEntry.Train, historyEntry.Departure, historyEntry.DepartureDate));
+            MainWindow mw = new MainWindow(new ManagerTicketHistory(historyEntry.TicketsList));
             mw.ShowDialog();
         }
 
@@ -232,8 +226,9 @@ namespace HCIProjekat.views.manager.pages
             public double Income { get; set; }
             public DateOnly DepartureDate { get; set; }
             public bool TicketsButtonVisible { get; set; }
+            public List<Ticket> TicketsList { get; set; }
 
-            public RideHistoryEntry(Train train, Departure departure, int tickets, double income, DateOnly departureDate)
+            public RideHistoryEntry(Train train, Departure departure, int tickets, double income, DateOnly departureDate, List<Ticket> ticketsList)
             {
                 Train = train;
                 Departure = departure;
@@ -241,6 +236,7 @@ namespace HCIProjekat.views.manager.pages
                 Income = income;
                 DepartureDate = departureDate;
                 TicketsButtonVisible = tickets > 0;
+                TicketsList = ticketsList;
             }
             public RideHistoryEntry()
             {

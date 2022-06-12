@@ -138,10 +138,11 @@ namespace HCIProjekat.model
             return new(missing.Count, missing.Sum(x => x.Price));
         }
 
-        internal static Tuple<int, double> GetTicketNumberAndIncomeForDeparture(Train train, Departure departure, DateOnly departureDate)
+        internal static Tuple<int, double, List<Ticket>> GetTicketNumberAndIncomeForDeparture(Train train, Departure departure, DateOnly departureDate)
         {
-            List<Ticket> matching = Tickets.Where(x => CompareDepartures(x.Departure, x.DepartureDate, departure, departureDate) && x.Train.Name.Equals(train.Name)).ToList();
-            return new(matching.Count, matching.Sum(x => x.Price));
+            List<Ticket> matching = Tickets.Where(x => CompareDepartures(x.Departure, x.DepartureDate, departure, departureDate) && x.Train.Name.Equals(train.Name))
+                .ToList();
+            return new(matching.Count, matching.Sum(x => x.Price), matching);
         }
 
         public static Boolean CompareDepartures(Departure departure1, DateOnly departureDate1, Departure departure2, DateOnly departureDate2)
@@ -156,7 +157,8 @@ namespace HCIProjekat.model
         internal static List<Departure> GetMissingDepartures(Train train, DateOnly departureDate)
         {
             var departures = train.Timetable.Departures;
-            List<Departure> missing = Tickets.Where(x => x.DepartureDate == departureDate && x.Train.Name == train.Name && !departures.Any(y => CompareDepartureTimes(y, x.Departure)))
+            List<Departure> missing = Tickets.Where(x => x.DepartureDate == departureDate && x.Train.Name == train.Name)
+                .Where(x => !departures.Any(y => CompareDepartureTimes(y, x.Departure)))
                 .Select(x => x.Departure).ToList();
             return missing;
             
@@ -168,6 +170,96 @@ namespace HCIProjekat.model
             {
                 return true;
             }
+            return false;
+        }
+
+        public static void RecalculateTicketTime(Train train)
+        {
+            int totalStations = train.Stations.Count;
+            System.Diagnostics.Debug.WriteLine($"voz ima {train.Stations.Count} stanica");
+            train.Timetable.Departures.ForEach(originalDeparture =>
+            {
+                Dictionary<Station, TimeOnly> stationArrival = new Dictionary<Station, TimeOnly>();
+                TimeOnly totalStart = originalDeparture.DepartureDateTime;
+                TimeOnly totalEnd = originalDeparture.ArrivalDateTime;
+                TimeSpan span = totalEnd - totalStart;
+
+                int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
+                double timeSpanBetweenStations = spanInMinutes * 1.0 / (totalStations - 1);
+
+                List<Station> stations = train.Stations.Keys.ToList();
+
+                stations.Sort(delegate (Station x, Station y)
+                {
+                    return train.Stations[x].CompareTo(train.Stations[y]);
+                });
+
+
+
+                for(int i = 0; i < train.Stations.Count; i++)
+                {
+                    var from = stations[i];
+
+                    int numFromFirstStation = train.Stations[from] - 1;
+
+                    TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(numFromFirstStation * timeSpanBetweenStations));
+
+                    if(!stationArrival.ContainsKey(from))
+                        stationArrival.Add(from, start);
+                }
+
+
+                Tickets
+                    .Where(x => x.Train.Name == train.Name)
+                    .Where(x => BetweenOrEquals(x.Departure.DepartureDateTime,originalDeparture.DepartureDateTime, originalDeparture.ArrivalDateTime))
+                    .Where(x => BetweenOrEquals(x.Departure.ArrivalDateTime, originalDeparture.DepartureDateTime, originalDeparture.ArrivalDateTime))
+                    .ToList()
+                    .ForEach(x =>
+                    {
+                        var from = x.Departure.From;
+                        var to = x.Departure.To;
+                        if(train.Stations.ContainsKey(from) && train.Stations.ContainsKey(to))
+                        {
+                            Departure dep = new Departure();
+                            dep.From = from;
+                            dep.To = to;
+                            dep.DepartureDateTime = stationArrival[from];
+                            dep.ArrivalDateTime = stationArrival[to];
+                            x.Departure = dep;
+                            System.Diagnostics.Debug.WriteLine($"RECALCULATED {x.Departure.From} {x.Departure.To} {x.Departure.ArrivalDateTime} {x.Departure.DepartureDateTime}");
+                        }
+                    }
+               );
+            });
+
+        }
+
+        internal static void RemoveDanglingTickets()
+        {
+            HashSet<Ticket> ticketsToRemove = new HashSet<Ticket>();
+            Tickets.ForEach(x =>
+            {
+                bool has = false;
+                foreach (var dep in x.Train.Timetable.Departures)
+                {
+                    if (BetweenOrEquals(x.Departure.DepartureDateTime, dep.DepartureDateTime, dep.ArrivalDateTime) && BetweenOrEquals(x.Departure.ArrivalDateTime, dep.DepartureDateTime, dep.ArrivalDateTime))
+                    {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has)
+                {
+                    ticketsToRemove.Add(x);
+                }
+
+            });
+            Tickets.RemoveAll(x => ticketsToRemove.Contains(x));
+        }
+
+        public static bool BetweenOrEquals(TimeOnly goal, TimeOnly start, TimeOnly end)
+        {
+            if (goal.IsBetween(start, end) || goal == start || goal == end) return true;
             return false;
         }
 

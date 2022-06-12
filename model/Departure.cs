@@ -48,5 +48,14 @@ namespace HCIProjekat.model
             departure.ArrivalDateTime = ArrivalDateTime;
             return departure;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (!(obj is Departure)) return false;
+            var dep = (Departure)obj;
+            if (dep.DepartureDateTime == DepartureDateTime && dep.ArrivalDateTime == ArrivalDateTime && dep.From.Name == From.Name && dep.To.Name == To.Name) return true;
+            return false;
+        }
     }
 }

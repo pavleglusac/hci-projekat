@@ -27,6 +27,7 @@ namespace HCIProjekat.views.manager.pages
         Train Train { get; set; }
         Departure Departure { get; set; }
         DateOnly Date { get; set; }
+        public List<Ticket> AllTickets = new List<Ticket>();
 
         public ManagerTicketHistory(Train train, Departure departure, DateOnly date)
         {
@@ -34,23 +35,33 @@ namespace HCIProjekat.views.manager.pages
             Train = train;
             Departure = departure;
             Date = date;
-            GetTickets();
-            ShowTickets();
-        }
-
-        private void GetTickets()
-        {
-            List<Ticket> AllTickets = Database.Tickets
+            AllTickets = Database.Tickets
                 .Where(x => x.Train.Name == Train.Name)
                 .Where(x => x.DepartureDate == Date)
-                .Where(x => x.Departure.From == Departure.From)
-                .Where(x => x.Departure.To == Departure.To)
                 .Where(x => x.Departure.DepartureDateTime == Departure.DepartureDateTime)
                 .Where(x => x.Departure.ArrivalDateTime == Departure.ArrivalDateTime)
                 .ToList();
 
+            GetTickets();
+            ShowTickets();
+        }
+
+        public ManagerTicketHistory(List<Ticket> ticketsList)
+        {
+            InitializeComponent();
+            AllTickets = ticketsList;
+            GetTickets();
+            ShowTickets();
+        }
+
+        public void GetTickets()
+        {
+            
+
             PastTickets = AllTickets.FindAll(x => x.DepartureDate.ToDateTime(x.Departure.DepartureDateTime) < DateTime.Now);
             Tickets = AllTickets.FindAll(x => x.DepartureDate.ToDateTime(x.Departure.DepartureDateTime) >= DateTime.Now);
+
+            System.Diagnostics.Debug.WriteLine($"{PastTickets.Count} {Tickets.Count} ");
 
 
             if (Tickets.Any())
@@ -71,9 +82,7 @@ namespace HCIProjekat.views.manager.pages
                 PastTicketsComponent.Visibility = Visibility.Collapsed;
             }
 
-
         }
-
 
         private void ShowTickets()
         {
