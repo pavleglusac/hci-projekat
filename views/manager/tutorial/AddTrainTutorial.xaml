@@ -45,7 +45,7 @@
                                 <Grid Height="50">
                                     <StackPanel Height="50">
                                         <CheckBox x:Name="showStationsCheckBox" Checked="CheckBox_Checked"
-                                                  Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
+                                                  Unchecked="CheckBox_Unchecked">Prikaži sve stanice</CheckBox>
                                     </StackPanel>
                                 </Grid>
                             </Border>

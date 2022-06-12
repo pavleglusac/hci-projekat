@@ -160,7 +160,7 @@
                                                     Orientation="Horizontal">
                                             <CheckBox Checked="CheckBox_Checked"
                                                       ToolTip="Pritisnite za prikaz/sklanjanje svih neodabranih stanica"
-                                                      Unchecked="CheckBox_Unchecked">Prikazi sve stanice</CheckBox>
+                                                      Unchecked="CheckBox_Unchecked">Prikaži sve stanice</CheckBox>
                                         </StackPanel>
                                         <StackPanel Height="50"
                                                     Grid.Column="1"
