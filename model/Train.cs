@@ -112,7 +112,7 @@ namespace HCIProjekat.model
         internal void tryRemoveStation(Station station)
         {
             List<Station> stationsToRemove = new List<Station>();
-            int idRemoved = -1, i = 0;
+            int idRemoved = 0, i = 0;
             foreach (Station s in Stations.Keys)
             {
                 if (s.Location.Equals(station.Location))
@@ -123,12 +123,13 @@ namespace HCIProjekat.model
                 }
                 i++;
             }
+            i = 0;
             if (stationsToRemove.Count > 0)
             {
                 Stations.Remove(stationsToRemove.First());
                 foreach (Station s in Stations.Keys)
                 {
-                    if (i > idRemoved)
+                    if (i >= idRemoved)
                         Stations[s] = Stations[s] - 1;
                     i++;
                 }

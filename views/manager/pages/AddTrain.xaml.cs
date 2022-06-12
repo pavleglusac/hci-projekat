@@ -55,7 +55,7 @@ namespace HCIProjekat.views.manager.pages
             addButton.IsEnabled = false;
         }
 
-
+        
 
         void preventDefault(object sender, KeyEventArgs e)
         {
