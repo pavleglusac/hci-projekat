@@ -30,6 +30,7 @@
                  Grid.Column="1"
                  Grid.Row="2"
                  Height="25"
+                 MaxLength="20"
                  BorderBrush="LightGray"
                  TextChanged="TextBox_TextChanged"
                  BorderThickness="0 0 0 1">
