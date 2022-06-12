@@ -53,6 +53,7 @@ namespace HCIProjekat.views.manager.pages
         {
             TrainsData = Database.SearchTrainsByName(TrainSearchInput.Text);
             trainsGrid.ItemsSource = TrainsData.Select(x => new GridEntry(x.Name, Database.CantBeDeleted(x)));
+            AutoComplete();
             return 0;
         }
 
