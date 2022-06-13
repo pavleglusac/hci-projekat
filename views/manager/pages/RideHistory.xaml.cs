@@ -137,10 +137,11 @@ namespace HCIProjekat.views.manager.pages
                     Station to = destinationStation == null || destinationStation.Length == 0 ? train.GetLastStation() : Database.getStationByName(destinationStation);
 
                     int spanFromFirstStation = train.Stations[from] - 1;
+                    int spanFromFirstStationEnd = train.Stations[to] - 1;
                     int spanBetweenStations = train.Stations[to] - train.Stations[from];
 
                     TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStation * timeSpanBetweenStations));
-                    TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations * timeSpanBetweenStations));
+                    TimeOnly end = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStationEnd * timeSpanBetweenStations));
                     if (start == end) return;
                     departures.Add(new Departure(start, end, from, to));
                 });

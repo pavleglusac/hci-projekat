@@ -117,17 +117,18 @@ namespace HCIProjekat.views.customer
                     TimeSpan span = totalEnd - totalStart;
 
                     int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-                    int timeSpanBetweenStations = spanInMinutes / (totalStations - 1);
+                    double timeSpanBetweenStations = spanInMinutes*1.0 / (totalStations - 1);
 
 
                     Station from = Database.getStationByName(departureStation);
                     Station to = Database.getStationByName(destinationStation);
 
                     int spanFromFirstStation = train.Stations[from] - 1;
+                    int spanFromFirstStationEnd = train.Stations[to] - 1;
                     int spanBetweenStations = train.Stations[to] - train.Stations[from];
 
                     TimeOnly start = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStation * timeSpanBetweenStations));
-                    TimeOnly end = start.Add(TimeSpan.FromMinutes(spanBetweenStations * timeSpanBetweenStations));
+                    TimeOnly end = totalStart.Add(TimeSpan.FromMinutes(spanFromFirstStationEnd * timeSpanBetweenStations));
                     if (departureDate == DateOnly.FromDateTime(DateTime.Now) && start <= TimeOnly.FromDateTime(DateTime.Now)) return;
                     departures.Add(new Departure(start, end, from, to));
                 });
