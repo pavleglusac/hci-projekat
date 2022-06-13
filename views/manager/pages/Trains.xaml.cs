@@ -70,6 +70,8 @@ namespace HCIProjekat.views.manager.pages
             MainWindow mw = new MainWindow(new SeatCreator(train));
             mw.ShowDialog();
             this.Focus();
+            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+
         }
         public void OpenUpdateExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -79,6 +81,8 @@ namespace HCIProjekat.views.manager.pages
             updateTrain.thisWindow = mw;
             mw.ShowDialog();
             this.Focus();
+            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+
 
         }
 
@@ -90,6 +94,7 @@ namespace HCIProjekat.views.manager.pages
             addTrain.callOnClose = refreshItems;
             mw.ShowDialog();
             this.Focus();
+
         }
 
         public void OpenDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -122,6 +127,8 @@ namespace HCIProjekat.views.manager.pages
             MainWindow mw = new MainWindow(new TimetableAddition(train));
             mw.ShowDialog();
             this.Focus();
+            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+
         }
 
         public void Help_Click(object sender, EventArgs e)

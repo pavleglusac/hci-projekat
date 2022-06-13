@@ -216,9 +216,21 @@
                                             Background="#2d2c94"
                                             FontSize="14"
                                             Height="28"
-                                            ToolTip="Pregled kupljenih karata"
                                             Click="TicketHistoryClick"
+                                            ToolTipService.ShowOnDisabled="True"
                                             IsEnabled="{Binding TicketsButtonVisible}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding TicketsButtonVisible}" Value="True">
+                                                            <Setter Property="ToolTip" Value="Pregled karata" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding TicketsButtonVisible}" Value="False">
+                                                            <Setter Property="ToolTip" Value="Nema prodatih karti za vožnju!" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="Ticket" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Karte"></TextBlock>

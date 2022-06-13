@@ -233,11 +233,23 @@
                                             Background="#2d2c94"
                                             FontSize="14"
                                             Height="28"
-                                            ToolTip="Upravljajte sedištima"
                                             IsEnabled="{Binding CanBeDeleted}"
                                             Command="{x:Static local:Trains.OpenSeats}"
                                             CommandParameter="{Binding Name}"
+                                            ToolTipService.ShowOnDisabled="True"
                                             >
+                                                <Button.Style>
+                                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CanBeDeleted}" Value="True">
+                                                                <Setter Property="ToolTip" Value="Upravljajte sedištima" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding CanBeDeleted}" Value="False">
+                                                                <Setter Property="ToolTip" Value="Postoje buduće karte, nije moguće urediti sedišta!" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="SofaSingleOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Sedišta" ></TextBlock>
@@ -258,13 +270,25 @@
                                     Height="28"
                                     Command="{x:Static local:Trains.OpenDelete}"
                                     CommandParameter="{Binding Name}"
-                                    ToolTip="Obrišite voz"
+                                    ToolTipService.ShowOnDisabled="True"
                                     IsEnabled="{Binding CanBeDeleted}">
-                                            <StackPanel Orientation="Horizontal">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CanBeDeleted}" Value="True">
+                                                        <Setter Property="ToolTip" Value="Obrišite voz" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CanBeDeleted}" Value="False">
+                                                        <Setter Property="ToolTip" Value="Postoje buduće karte, brisanje nije moguće!" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="DeleteOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
                                                 <TextBlock Text="Obriši"></TextBlock>
-                                            </StackPanel>
-                                        </Button>
+                                        </StackPanel>
+                                    </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

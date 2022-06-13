@@ -32,7 +32,6 @@ namespace HCIProjekat.views.manager.pages
             InitializeComponent();
             this.Focus();
             SetHelpKey(null, null);
-            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
             AutoComplete();
             GetLocations();
             ShowLocations();
