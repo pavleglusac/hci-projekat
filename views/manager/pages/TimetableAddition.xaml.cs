@@ -178,7 +178,6 @@ namespace HCIProjekat.views.manager.pages
             {
                 train.Timetable = Timetable;
                 MessageBox.Show("Sačuvano!", "Potvrda", MessageBoxButton.OK, MessageBoxImage.Information);
-                Database.RemoveDanglingTickets();
             }
         }
 

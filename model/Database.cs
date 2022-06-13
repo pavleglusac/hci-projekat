@@ -185,7 +185,7 @@ namespace HCIProjekat.model
                 TimeSpan span = totalEnd - totalStart;
 
                 int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-                double timeSpanBetweenStations = spanInMinutes * 1.0 / (totalStations - 1);
+                double timeSpanBetweenStations = totalStations > 1 ? spanInMinutes * 1.0 / (totalStations - 1) : 0;
 
                 List<Station> stations = train.Stations.Keys.ToList();
 
@@ -242,7 +242,9 @@ namespace HCIProjekat.model
                 bool has = false;
                 foreach (var dep in x.Train.Timetable.Departures)
                 {
-                    if (BetweenOrEquals(x.Departure.DepartureDateTime, dep.DepartureDateTime, dep.ArrivalDateTime) && BetweenOrEquals(x.Departure.ArrivalDateTime, dep.DepartureDateTime, dep.ArrivalDateTime))
+                    if (BetweenOrEquals(x.Departure.DepartureDateTime, dep.DepartureDateTime, dep.ArrivalDateTime) &&
+                        BetweenOrEquals(x.Departure.ArrivalDateTime, dep.DepartureDateTime, dep.ArrivalDateTime)
+                        && x.Train.Stations.ContainsKey(x.Departure.From) && x.Train.Stations.ContainsKey(x.Departure.To))
                     {
                         has = true;
                         break;

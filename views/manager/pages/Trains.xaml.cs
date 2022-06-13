@@ -82,6 +82,7 @@ namespace HCIProjekat.views.manager.pages
             mw.ShowDialog();
             this.Focus();
             Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+            Database.RemoveDanglingTickets();
 
 
         }
@@ -94,6 +95,8 @@ namespace HCIProjekat.views.manager.pages
             addTrain.callOnClose = refreshItems;
             mw.ShowDialog();
             this.Focus();
+            Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+            Database.RemoveDanglingTickets();
 
         }
 
@@ -128,6 +131,7 @@ namespace HCIProjekat.views.manager.pages
             mw.ShowDialog();
             this.Focus();
             Database.Trains.ForEach(x => Database.RecalculateTicketTime(x));
+            Database.RemoveDanglingTickets();
 
         }
 
