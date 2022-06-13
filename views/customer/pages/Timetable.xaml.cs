@@ -117,7 +117,7 @@ namespace HCIProjekat.views.customer
                     TimeSpan span = totalEnd - totalStart;
 
                     int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-                    double timeSpanBetweenStations = spanInMinutes*1.0 / (totalStations - 1);
+                    double timeSpanBetweenStations = totalStations > 1 ? spanInMinutes * 1.0 / (totalStations - 1) : 0;
 
 
                     Station from = Database.getStationByName(departureStation);

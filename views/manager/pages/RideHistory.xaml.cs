@@ -131,7 +131,7 @@ namespace HCIProjekat.views.manager.pages
                     TimeSpan span = totalEnd - totalStart;
 
                     int spanInMinutes = span.Days * 24 * 60 + span.Hours * 60 + span.Minutes;
-                    double timeSpanBetweenStations = spanInMinutes*1.0 / (totalStations - 1);
+                    double timeSpanBetweenStations = totalStations > 1 ? spanInMinutes * 1.0 / (totalStations - 1) : 0;
 
                     Station from = departureStation == null || departureStation.Length == 0 ? train.GetFirstStation() : Database.getStationByName(departureStation);
                     Station to = destinationStation == null || destinationStation.Length == 0 ? train.GetLastStation() : Database.getStationByName(destinationStation);
