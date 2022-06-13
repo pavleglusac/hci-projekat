@@ -1,0 +1,51 @@
+﻿<Window x:Class="HCIProjekat.views.manager.pages.NameChanger"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HCIProjekat.views.manager.pages"
+        d:DesignHeight="220" d:DesignWidth="400"
+        Height="220" Width="400"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="White"
+        Icon="pack://application:,,,/assets/icon.ico"
+        Title="Promena imena"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0 20 0 0">
+            <TextBox
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                VerticalAlignment="Top"
+                Margin="8"
+                FontSize="18"
+                TextWrapping="Wrap"
+                Name="NameInput"
+                MaxLength="20"
+                materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                materialDesign:HintAssist.Hint="Ime voza"
+                TextChanged="NameInput_TextChanged">
+                <TextBox.Text>
+                    <Binding  Path="Name" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:NameChangeValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </StackPanel>
+        <Button Width="200" Style="{StaticResource MaterialDesignRaisedButton}" Grid.Row="1" Content="Sačuvaj" Click="SaveButtonClicked" Name="SaveButton" 
+                HorizontalAlignment="Right" Margin="0 0 10 0"/>
+    </Grid>
+</Window>

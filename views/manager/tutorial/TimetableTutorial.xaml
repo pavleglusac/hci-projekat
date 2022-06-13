@@ -1,0 +1,275 @@
+﻿<Page x:Class="HCIProjekat.views.manager.tutorial.TimetableTutorial"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.manager.tutorial"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TimetableTutorial"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	  TextElement.FontWeight="Regular"
+	  TextElement.FontSize="13"
+	  TextOptions.TextFormattingMode="Ideal" 
+	  TextOptions.TextRenderingMode="Auto"        
+	  Background="#EEE"
+      xmlns:converters="clr-namespace:HCIProjekat.converters"
+	  FontFamily="{DynamicResource MaterialDesignFont}"
+      Loaded="Step1"
+ >
+
+
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:TimetableTutorial.RemoveDeparture}" Executed="RemoveDeparture_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableTutorial.UndoCommand}" Executed="UndoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableTutorial.RedoCommand}" Executed="RedoCommand_Executed" />
+        <CommandBinding Command="{x:Static local:TimetableTutorial.SaveCommand}" Executed="SaveCommand_Executed" />
+    </Page.CommandBindings>
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
+            <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+            <converters:PriceConverter x:Key="PriceConverter" />
+            <converters:TimeOnlyToTimeConverter x:Key="DateTimeToTimeConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="White">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="90*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <Grid Grid.Row="0" Grid.Column="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        Height="40"
+                        Width="100"
+                        Background="#2d2c94"
+                        Margin="25 0 0 0"
+                        IsEnabled="False"
+                        x:Name="UndoButton"
+                        HorizontalAlignment="Left" Click="Undo_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Undo" Height="25" Width="25"/>
+                            <TextBlock Text="Nazad" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="False"
+                        Height="40"
+                        Width="110"
+                        Background="#2d2c94"
+                        HorizontalAlignment="Left"
+                        x:Name="RedoButton"
+                        Margin="5 0 0 0"
+                        Click="Redo_Click">
+                        <StackPanel Orientation="Horizontal" >
+                            <materialDesign:PackIcon Kind="Redo" Height="25" Width="25"/>
+                            <TextBlock Text="Napred" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="True"
+                        Height="40"
+                        Width="110"
+                        Background="#2d2c94"
+                        Margin="5 0 5 0"
+                        Name="SaveButton"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Click="Save_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25"/>
+                            <TextBlock Text=" Sačuvaj" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        IsEnabled="True"
+                        Height="40"
+                        Width="40"
+                        Background="#2d2c94"
+                        Margin="5 0 40 0"
+                        Name="HelpButton"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Click="Help_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Help" Height="25" Width="25"></materialDesign:PackIcon>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+                <Border Grid.Column="1" Grid.Row="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                    <StackPanel Grid.Column="1">
+                        <!-- BLUE TITLE STRIP -->
+
+                        <Grid Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="200"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox
+						  materialDesign:HintAssist.Hint="Polazak"
+						  materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+						  materialDesign:HintAssist.FloatingScale="0.50"
+						  Text="Polazak"
+						  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+						  FontSize="24"
+						  IsReadOnly="True"
+                            Grid.Column="1"
+                          x:Name="DepartureLocation"
+							/>
+
+                            <TextBox
+						  materialDesign:HintAssist.Hint="Dolazak"
+						  materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+						  materialDesign:HintAssist.FloatingScale="0.50"
+						  Text="Dolazak"
+						  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+						  FontSize="24"
+						  IsReadOnly="True"
+						  Grid.Column="3"
+                          x:Name="ArrivalLocation"
+							/>
+
+                            <materialDesign:PackIcon Kind="ArrowRight" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center" Height="30" Width="30"/>
+
+                            <materialDesign:TimePicker
+						  materialDesign:HintAssist.Hint="Vreme"
+						  IsInvalidTextAllowed="True"
+						  Is24Hours="True"
+						  FontSize="18"
+						  Name="TimeStart" Grid.Row="2" Grid.Column="1">
+                                <materialDesign:TimePicker.Text>
+                                    <Binding Path="TimeStartInput" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </materialDesign:TimePicker.Text>
+                            </materialDesign:TimePicker>
+
+                            <materialDesign:TimePicker
+							materialDesign:HintAssist.Hint="Vreme"
+							IsInvalidTextAllowed="True"
+							Is24Hours="True"
+							FontSize="18"
+							Grid.Row="2"
+							Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                                <materialDesign:TimePicker.Text>
+                                    <Binding
+									Path="TimeEndInput" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local:TimeValidationRule ValidatesOnTargetUpdated="True"></local:TimeValidationRule>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </materialDesign:TimePicker.Text>
+                            </materialDesign:TimePicker>
+
+                            <Button
+									Grid.Row="3" Grid.Column="3"
+									Margin="7 80 7 7"
+									Height="50"
+									FontSize="18"
+									materialDesign:ButtonAssist.CornerRadius="5"
+									Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+									ToolTip="Dodaj nov red vožnje"
+									Content="Dodaj"
+									Background="#2d2c94"
+									Foreground="White"
+                            Click="AddDeparture"
+									/>
+
+                            <DataGrid
+                        x:Name="timetablesGrid"
+                        Margin="0 0 30 0"
+                        Grid.RowSpan="6"
+                        CanUserAddRows="False"
+                        SelectionUnit="Cell"
+                        SelectionMode="Extended"
+                        VerticalAlignment="Top"
+                        AutoGenerateColumns="False"
+                        CanUserResizeRows="False">
+                                <DataGrid.Columns>
+
+
+                                    <DataGridTextColumn
+                                Width="2*"
+                                Header="Polazak"
+                                IsReadOnly="True"
+                                Binding="{Binding DepartureDateTime,
+                                        Converter={StaticResource DateTimeToTimeConverter}}"/>
+
+                                    <DataGridTextColumn
+                                Width="2*"
+                                Header="Dolazak"
+                                IsReadOnly="True"
+                                Binding="{Binding ArrivalDateTime,
+                                        Converter={StaticResource DateTimeToTimeConverter}}"/>
+
+
+                                    <DataGridTemplateColumn Width="2*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button 
+                                            Background="#2d2c94"
+                                            FontSize="14"
+                                            Height="28"
+                                            IsEnabled="False"
+                                            Command="{x:Static local:TimetableTutorial.RemoveDeparture}"
+                                            CommandParameter="{Binding DepartureDateTime}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="CloseOutline" Margin="0 0 5 0"></materialDesign:PackIcon>
+                                                        <TextBlock Text="Ukloni"></TextBlock>
+                                                    </StackPanel>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HCIProjekat"
-        Icon="./assets/icon.ico"
+        Icon="pack://application:,,,/assets/icon.ico"
         mc:Ignorable="d"
         Title="Železnice Srbije" Height="720" Width="1280" MinWidth="640" MinHeight="360"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -12,97 +12,22 @@
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
-        TextOptions.TextRenderingMode="Auto"        
+        TextOptions.TextRenderingMode="Auto"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
-    <StackPanel>
-        <Grid Height="60" Background="#2d2c94">
-            <Grid.RowDefinitions>
-                 <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        x:Name="window">
 
-            <Image HorizontalAlignment="Left" Grid.Column="0" Source="pack://application:,,,/assets/logo3.png" Width="80" Margin="20 0"/>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
 
-            <!-- registered customer -->
-            <Button x:Name="timetableNavButton"
-                    Grid.Row="0" Grid.Column="1"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Red vožnje" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="linesNavButton"
-                    Grid.Row="0" Grid.Column="2"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
-                <AccessText Text="Mreža linija" TextWrapping="Wrap" TextAlignment="Center"/>
-                
-            </Button>
-            <Button x:Name="reservationHistoryNavButton"
-                    Grid.Row="0" Grid.Column="3"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Istorija rezervacija" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-
-            <!-- registered customer -->
-            <Button x:Name="systemControlNavButton"
-                    Grid.Row="0" Grid.Column="1"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Upravljanje sistemom" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-            <Button x:Name="reportNavButton"
-                    Grid.Row="0" Grid.Column="2"
-                    Height="45"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                <AccessText Text="Izveštaji" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0" Grid.Column="5">
-
-                <!-- login/register -->
-                <Button x:Name="loginButton"
-                    Width="110"
-                    Grid.Row="0" Grid.Column="1"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                    <AccessText Text="Prijavi se" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-                <Border Width="1.5" Margin="0 14" Background="#EEE"/>
-                <Button x:Name="registerButton"
-                    Width="110"
-                    Grid.Row="0" Grid.Column="0"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    Foreground="White"
-                    ToolTip="MaterialDesignFlatLightButton"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" >
-                    <AccessText Text="Registruj se" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+    <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" 
+                HorizontalAlignment="Stretch"
+	            VerticalAlignment="Stretch"
+	            HorizontalContentAlignment="Stretch"
+	            VerticalContentAlignment="Stretch"/>
+    </Grid>
 </Window>

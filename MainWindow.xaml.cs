@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HCIProjekat.views.auth;
+using HCIProjekat.views.manager;
+﻿using HCIProjekat.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using HCIProjekat.views.manager.pages;
 
 namespace HCIProjekat
 {
@@ -25,33 +30,70 @@ namespace HCIProjekat
         public MainWindow()
         {
             InitializeComponent();
-            customerNavigation.Add(timetableNavButton);
-            customerNavigation.Add(linesNavButton);
-            customerNavigation.Add(reservationHistoryNavButton);
-
-            managerNavigation.Add(systemControlNavButton);
-            managerNavigation.Add(reportNavButton);
-
-            ToggleNavigation(UserType.Customer);
+            Database.loadData();
+            TutorDatabase.loadData();
+            MainFrame.Content = new Login();
         }
 
-        private void ToggleNavigation(UserType type)
+        public MainWindow(model.Train train)
         {
-            if (type == UserType.Customer)
+            InitializeComponent();
+            this.Activate();
+            MainFrame.Content = new ManagerNavigationLayout(train);
+        }
+
+        public MainWindow(Page page)
+        {
+            InitializeComponent();
+            MainFrame.Content = page;
+            WindowState = WindowState.Normal;
+        }
+
+        public void doThings(string param)
+        {
+        }
+
+        public void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(Application.Current.Windows[0]);
+            if (focusedControl is DependencyObject)
             {
-                customerNavigation.ForEach(b => b.Visibility = Visibility.Visible);
-                managerNavigation.ForEach(b => b.Visibility = Visibility.Collapsed);
-            } else
-            {
-                customerNavigation.ForEach(b => b.Visibility = Visibility.Collapsed);
-                managerNavigation.ForEach(b => b.Visibility = Visibility.Visible);
+                string str = HelpProvider.GetHelpKey((DependencyObject)focusedControl);
+                HelpProvider.ShowHelp(str, this);
             }
         }
-
-        enum UserType
+        protected override void OnClosing(CancelEventArgs e)
         {
-            Customer,
-            Manager
+            var content = MainFrame.Content;
+            if(content is SeatCreator)
+            {
+                var res = MessageBox.Show("Da li ste sigurni da želite da zatvorite prozor? Možete izgubiti podatke ukoliko niste sačuvali.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if(res == MessageBoxResult.Yes)
+                {
+                    base.OnClosing(e);
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            if(content is TimetableAddition)
+            {
+                var res = MessageBox.Show("Da li ste sigurni da želite da zatvorite prozor? Možete izgubiti podatke ukoliko niste sačuvali.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (res == MessageBoxResult.Yes)
+                {
+                    base.OnClosing(e);
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
         }
+
     }
 }

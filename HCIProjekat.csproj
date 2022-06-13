@@ -10,18 +10,254 @@
   <ItemGroup>
     <None Remove="assets\icon.ico" />
     <None Remove="assets\logo3.png" />
+    <None Remove="assets\seat.jpg" />
+    <None Remove="assets\seat.png" />
+    <None Remove="assets\takenseat.jpg" />
+    <None Remove="assets\takenseat.png" />
+    <None Remove="assets\trash.png" />
+    <None Remove="help\actualSeatChoosingHelp.png" />
+    <None Remove="help\addTrain.html" />
+    <None Remove="help\addTrainMap.PNG" />
+    <None Remove="help\banner.png" />
+    <None Remove="help\err.html" />
+    <None Remove="help\history.html" />
+    <None Remove="help\index.html" />
+    <None Remove="help\login.html" />
+    <None Remove="help\loginPageLook.png" />
+    <None Remove="help\pushpin-blue.png" />
+    <None Remove="help\pushpin-green.png" />
+    <None Remove="help\pushpin-orange.png" />
+    <None Remove="help\register.html" />
+    <None Remove="help\registrationPageLook.png" />
+    <None Remove="help\routeMap.html" />
+    <None Remove="help\routeMapHelp.png" />
+    <None Remove="help\routeMapNavigationHelp.png" />
+    <None Remove="help\seatChoosingHelp.png" />
+    <None Remove="help\reports.html" />
+    <None Remove="help\reportshelp.png" />
+    <None Remove="help\seats.html" />
+    <None Remove="help\seats_help_1.png" />
+    <None Remove="help\seats_help_2.png" />
+    <None Remove="help\ticketBuying.html" />
+    <None Remove="help\ticketBuyingHelpButton.png" />
+    <None Remove="help\ticketBuyingHelpConfirmation.png" />
+    <None Remove="help\ticketHistory.html" />
+    <None Remove="help\ticketHistoryHelp.png" />
+    <None Remove="help\ticketHistoryNavigationHelp.png" />
+    <None Remove="help\timetable.html" />
+    <None Remove="help\timetableHelp.png" />
+    <None Remove="help\timetableNavigationHelp.png" />
+    <None Remove="help\timetables.html" />
+    <None Remove="help\timetables_help.png" />
+    <None Remove="help\timetables_help_elements.png" />
+    <None Remove="help\train_history.png" />
+    <None Remove="help\updateTrain.html" />
+    <None Remove="help\updateTrainMap.PNG" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="assets\icon.ico" />
+    <Content Include="help\actualSeatChoosingHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\addTrain.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\addTrainMap.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\banner.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\history.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\login.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\loginPageLook.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\pushpin-orange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\registrationPageLook.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMap.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMapHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\routeMapNavigationHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\seatChoosingHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\reports.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\reportshelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\seats_help_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\seats_help_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetables_help.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetables_help_elements.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\train_history.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuying.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuyingHelpButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketBuyingHelpConfirmation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistory.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistoryHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\ticketHistoryNavigationHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetable.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetableHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetableNavigationHelp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\updateTrainMap.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\timetables.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="help\seats.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="help\err.html">
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\updateTrain.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Maps.MapControl.WPF" Version="1.0.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\logo3.png" />
+    <Resource Include="assets\logo3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\seat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\seat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\takenseat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\takenseat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="assets\trash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="views\customer\dialogs\SeatChooser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\manager\pages\UpdateTrain.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\manager\tutorial\AddTrainTutorial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\manager\tutorial\Tutor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="views\manager\tutorial\SeatCreatorTutorial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="assets\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="assets\logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="views\customer\dialogs\SeatChooser.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\pages\ManagerTicketHistory.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="views\manager\pages\UpdateTrain.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\AddTrainTutorial.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\Tutor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="views\manager\tutorial\SeatCreatorTutorial.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

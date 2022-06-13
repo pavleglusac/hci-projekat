@@ -1,0 +1,217 @@
+﻿<Page x:Class="HCIProjekat.views.customer.Timetable"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.customer"
+      xmlns:converters="clr-namespace:HCIProjekat.converters"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      d:DesignHeight="640" d:DesignWidth="1280"
+      Title="Timetable"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"        
+      Background="#EEE"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      Focusable="True"
+      xmlns:l="clr-namespace:HCIProjekat"
+      l:HelpProvider.HelpKey="timetable"
+      GotFocus="SetHelpKey">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:TimeConcatConverter x:Key="TimeConcatConverter" />
+            <converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+            <converters:PriceConverter x:Key="PriceConverter" />
+            <converters:TimeOnlyToTimeConverter x:Key="TimeOnlyToTimeConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="0 50 0 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1"  CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gainsboro">
+                        <StackPanel Grid.Column="1">
+                            <!-- BLUE TITLE STRIP -->
+                            <Border CornerRadius="10,10,0,0" Background="#2d2c94">
+                                <StackPanel ClipToBounds="True" Height="50">
+                                    <TextBlock
+                                            Margin="20 18 0 0"
+                                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                                            Foreground="White"
+                                            Text="Pretraga i filtriranje" />
+                                </StackPanel>
+                            </Border>
+
+                            <Grid Margin="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <ComboBox
+                                    Grid.Row="0" Grid.Column="0"
+                                    Margin="5"
+                                    Padding="10 13"
+                                    x:Name="departureStationComboBox"
+                                    FontSize="18"
+                                    FontWeight="Medium"
+                                    SelectionChanged="stationComboBox_SelectionChanged"
+                                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                    materialDesign:HintAssist.Hint="Od"
+                                    ToolTip="Mesto polaska"/>
+
+                                <Button Grid.Column="1"
+                                        Click="SwapPlaces"
+                                        Background="White"
+                                        Height="60" Width="60" 
+                                        Style="{StaticResource MaterialDesignFlatDarkButton}">
+                                    <materialDesign:PackIcon 
+                                        Foreground="Black"
+                                        Kind="SwapHorizontal" Height="35" Width="35" 
+                                        VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                        />
+                                </Button>
+
+                                <ComboBox
+                                    Grid.Row="0" Grid.Column="2"
+                                    Margin="5"
+                                    Padding="10 13"
+                                    FontSize="18"
+                                    FontWeight="Medium"
+                                    x:Name="destinationStationComboBox"
+                                    SelectionChanged="stationComboBox_SelectionChanged"
+                                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                    materialDesign:HintAssist.Hint="Do"
+                                    ToolTip="Mesto odredišta"/>
+
+                                <DatePicker
+                                    Grid.Row="0" Grid.Column="3"
+                                    Margin="5"
+                                    Padding="10 13"
+                                    FontSize="18"
+                                    FontWeight="Medium"
+                                    materialDesign:HintAssist.Hint="Datum"
+                                    ToolTip="Datum polaska"
+                                    x:Name="departureDatePicker"
+                                    DisplayDateStart="{x:Static sys:DateTime.Today}"
+                                    SelectedDate="{x:Static sys:DateTime.Today}"
+                                    Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                                <Button
+                                        Grid.Row="1" Grid.Column="3"
+                                        Margin="7 20 7 7"
+                                        Height="46"
+                                        FontSize="18"
+                                        materialDesign:ButtonAssist.CornerRadius="5"
+                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                        ToolTip="Resource name: MaterialDesignRaisedSecondaryDarkButton"
+                                        Content="Potvrdi"
+                                        Background="#2d2c94"
+                                        Foreground="White"
+                                        Click="handleFilterClick"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0 20 0 40" x:Name="timetableComponent" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid
+                            x:Name="departuresGrid"
+                            Grid.Column="1"
+                            CanUserAddRows="False"
+                            SelectionUnit="Cell"
+                            SelectionMode="Extended"
+                            AutoGenerateColumns="False"
+                            CanUserResizeRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Naziv"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Train.Name}"/>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Datum"
+                                    IsReadOnly="True"
+                                    Binding="{Binding DepartureDate, Converter={StaticResource DateTimeFormatConverter}}"/>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Polazak"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Departure.DepartureDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Dolazak"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Departure.ArrivalDateTime, Converter={StaticResource TimeOnlyToTimeConverter}}"/>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Trajanje"
+                                    IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource TimeConcatConverter}">
+                                        <Binding Path="Departure.DepartureDateTime" />
+                                        <Binding Path="Departure.ArrivalDateTime" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn
+                                    Width="2*"
+                                    Header="Cena"
+                                    IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource PriceConverter}">
+                                        <Binding Path="Train" />
+                                        <Binding Path="Departure" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn 
+                                    Width="130"
+                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                                Click="buyTicketButtonClick"
+                                                Background="#2d2c94"
+                                                FontSize="12"
+                                                Height="28"
+                                                Content="Kupi karte"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,80 @@
+﻿<Page x:Class="HCIProjekat.views.auth.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HCIProjekat.views.auth"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="Login"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"        
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      xmlns:l="clr-namespace:HCIProjekat"
+      Focusable="True"
+      l:HelpProvider.HelpKey="login"
+      GotFocus="SetHelpKey">
+
+    <Grid Background="#A7C7E7">
+        <Border CornerRadius="30" Width="450" Height="375" Background="White">
+            <StackPanel Width="350" HorizontalAlignment="Center">
+
+                <TextBlock Text="Prijava" FontSize="28" Margin="0 30 0 30"/>
+                <TextBox
+                        x:Name="usernameField"
+                        FontSize="16"
+                        Margin="0 0 0 24"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        materialDesign:HintAssist.Hint="Korisničko ime"
+                        materialDesign:HintAssist.HelperText="Unesite Vaše korisničko ime."
+                        KeyDown="handleLoginKeypress">
+
+                    <TextBox.Text>
+                        <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <local:NonEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <PasswordBox
+                        x:Name="passwordField"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Lozinka"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:HintAssist.HelperText="Unesite Vašu lozinku." 
+                        KeyDown="handleLoginKeypress"
+                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                </PasswordBox>
+
+                <TextBlock Margin="0 50 0 2" HorizontalAlignment="Center" x:Name="loginError" 
+                           Visibility="Hidden" Foreground="DarkRed" FontSize="11">
+                </TextBlock>
+                <Button
+                    Margin="0 0 0 0"
+                    Click="handleLoginButton"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="Prijavi se u aplikaciju"
+                    Content="Prijavi se"
+                    Background="#2d2c94"
+                    IsEnabled="True" />
+
+                <Button
+                    Click="handleChooseRegisterButton"
+                    Width="200"
+                    Height="25"
+                    ToolTip="Otvori formu za registraciju"
+                    Content="Kreiraj novi profil"
+                    Foreground="#2d2c94"
+                    Background="Transparent"
+                    BorderBrush="Transparent"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
